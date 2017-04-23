@@ -1,0 +1,63 @@
+.map {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  height: 100vh;
+  width: 100vw;
+  margin: 0px;
+  padding: 0px;
+  z-index: 50;
+}
+
+#header .form-group {
+  margin-top: 0px;
+}
+
+#header .glyphicon {
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+#btn-add-location .btn-fab {
+  position: fixed !important;
+  right: 20px;
+  bottom: 20px;
+}
+
+#btn-center-map  .btn-fab {
+  position: fixed !important;
+  right: 20px;
+  bottom: 85px;
+}
+
+#btn-add-location, #btn-center-map {
+  z-index: 100;
+}
+
+.form-group .form-control::-moz-placeholder {
+  color: #000;
+}
+
+.form-group .form-control:-ms-input-placeholder {
+  color: #000;
+}
+
+.form-group .form-control::-webkit-input-placeholder {
+  color: #000;
+}
+
+.form-group input,
+textarea {
+  background-color: #000;
+  color: #000;
+}
+
+.form-group.is-focused .form-control {
+  background-image: linear-gradient(#c22, #c11), linear-gradient(#a43, #a11);
+}
+
+.form-group .form-control {
+  background-image: linear-gradient(#c22, #c11), linear-gradient(#a43, #a11);
+}

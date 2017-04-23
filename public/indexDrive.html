@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+<!--
+https://console.developers.google.com/apis/credentials/oauthclient/59941244194-uf40ssn9jm0fehvpj1eb6o7tn0o9jqbb.apps.googleusercontent.com?project=api-project-59941244194
+
+https://gist.github.com/Daniel15/5994054
+
+http://bytutorial.com/tutorials/google-api/introduction-to-google-drive-api-using-javascript
+
+http://localhost:3000/indexDrive.html
+
+https://developers.google.com/drive/v3/reference/
+
+https://developers.google.com/api-client-library/javascript/
+
+JS code from:
+  http://stackoverflow.com/questions/38213298/using-google-drive-appdatafolder-to-store-app-state-with-javascript-on-the-clien
+-->
+
+<html>
+
+<head>
+  <title>Drive API Quickstart</title>
+  <meta charset='utf-8' />
+</head>
+
+<body>
+  <p>Drive API Quickstart</p>
+
+  <!--Add buttons to initiate auth sequence and sign out-->
+  <button id="authorize-button" style="display: none;">Authorize</button>
+  <button id="signout-button" style="display: none;">Sign Out</button>
+  <button id="create-folder" style="display: none;">Create, save and delete file</button>
+
+  <pre id="content"></pre>
+
+  <script type="text/javascript">
+
+    var authorizeButton = document.getElementById('authorize-button');
+    var signoutButton = document.getElementById('signout-button');
+    var createFolderButton = document.getElementById('create-folder');
+
+    /**
+     *  Initializes the API client library and sets up sign-in state
+     *  listeners.
+     */
+    function initClient() {
+      GoogleSignin.load()
+      .then(GoogleSignin.init)
+      .then(function() {
+        // Handle the initial sign-in state.
+        updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+        authorizeButton.onclick = GoogleSignin.signIn;
+        signoutButton.onclick = GoogleSignin.signOut;
+        createFolderButton.onclick = createFolder;
+
+        gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus)
+      })
+    }
+
+    /**
+     *  Called when the signed in status changes, to update the UI
+     *  appropriately. After a sign-in, the API is called.
+     */
+    function updateSigninStatus(isSignedIn) {
+      if (isSignedIn) {
+        authorizeButton.style.display = 'none';
+        signoutButton.style.display = 'block';
+        createFolderButton.style.display = 'block';
+        listFiles();
+      } else {
+        authorizeButton.style.display = 'block';
+        signoutButton.style.display = 'none';
+        createFolderButton.style.display = 'none';
+      }
+    }
+
+    /*
+      Idea: Create batch request to create file and store contents
+      https://developers.google.com/api-client-library/javascript/features/batch
+    */
+    function createFolder() {
+      GoogleDrive.createAppDataFile('your-app-data-file-name.json')
+        .then(function(data) {
+          console.log("Created file");
+          return GoogleDrive.saveAppData(data.fileId, {
+            "attribute1": "value1"
+          })
+        })
+        .then(function(data) {
+          console.log("Saved content");
+          return GoogleDrive.getAppDataFileContent(data.fileId)
+        })
+        .then(function(data) {
+          console.log("Retrieved content " + JSON.stringify(data.content));
+          return GoogleDrive.deleteFile(data.fileId)
+        })
+        .then(function(data) {
+          console.log("Deleted file")
+        })
+    }
+
+    /**
+     * Append a pre element to the body containing the given message
+     * as its text node. Used to display the results of the API call.
+     *
+     * @param {string} message Text to be placed in pre element.
+     */
+    function appendPre(message) {
+      var pre = document.getElementById('content');
+      var textContent = document.createTextNode(message + '\n');
+      pre.appendChild(textContent);
+    }
+
+    /**
+     * Print files.
+     */
+    function listFiles() {
+      GoogleDrive.getAppDataFiles()
+      .then(function(files) {
+        appendPre('Files:');
+        if (files && files.length > 0) {
+          for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            appendPre(file.fileName + ' (' + file.fileId + ')');
+          }
+        } else {
+          appendPre('No files found.');
+        }
+      });
+
+    }
+  </script>
+
+  <script src="resources/js/GoogleSignin.js"></script>
+  <script src="resources/js/GoogleDrive.js"></script>
+  <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};initClient()" onreadystatechange="if (this.readyState === 'complete') this.onload()">
+  </script>
+
+</body>
+
+</html>

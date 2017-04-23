@@ -1,0 +1,14 @@
+{
+  "login" : {
+    "name": "Jasper Maes",
+    "token": "A_RANDOM_STRING"
+  },
+  "trips" : [
+      {
+        "label": "Trip 1",
+        "locations": [
+          {"label":"","lat":"","lng":"","description":"","category":"","website":"","photos":[]}
+        ]
+      }
+  ]
+}

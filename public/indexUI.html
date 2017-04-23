@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>My Page</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="vendors/jqueryMobile/jquery.mobile-1.4.5.min.css">
+  <script src="vendors/jquery/jquery-2.1.0.js"></script>
+  <script src="vendors/jqueryMobile/jquery.mobile-1.4.5.min.js"></script>
+
+  <!-- https://github.com/wildhaber/nativeDroid2/wiki/Cordova-Setup-&-Chat-UI -->
+
+  <link rel="stylesheet" href="vendors/fontAwesome/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="vendors/nativeDroid2/css/nativedroid2.css" />
+  <link rel="stylesheet" href="vendors/nativeDroid2/css/nativedroid2.color.blue.css" />
+
+  <script src="vendors/jqueryUi/jquery-ui.min.js"></script>
+
+  <script src="vendors/nativeDroid2/js/nativedroid2.js"></script>
+  <script src="vendors/nativeDroid2/nd2settings.js"></script>
+
+  <link rel="stylesheet" href="vendors/leaflet/leaflet.css" />
+  <script src="vendors/leaflet/leaflet.js"></script>
+
+  <script src="resources/js/GeoLocation.js"></script>
+
+</head>
+
+<style>
+  .map {
+    height: 300px;
+    width: 300px;
+  }
+</style>
+
+<body>
+  <div id="testPage" data-role="page" class="nd2-no-menu-swipe">
+
+    <div data-role="panel" id="leftpanel" data-display="overlay" data-position-fixed="true" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-inherit ui-panel-fixed ui-panel-animate ui-panel-closed">
+
+      <div class="ui-panel-inner">
+        <div class="nd2-sidepanel-profile wow fadeInDown" style="visibility: visible; animation-name: fadeInDown;">
+          <img class="profile-background" src="//lorempixel.com/400/200/abstract/2/">
+          <div class="row">
+            <div class="col-xs-4 center-xs">
+              <div class="box">
+                <img class="profile-thumbnail" src="//lorempixel.com/200/200/people/9/">
+              </div>
+            </div>
+            <div class="col-xs-8">
+              <div class="box profile-text">
+                <strong>Jane Doe</strong>
+                <span class="subline">Super Power User</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ul data-role="listview" data-inset="false" class="ui-listview">
+          <li data-role="list-divider" role="heading" class="ui-li-divider ui-bar-inherit ui-first-child ui-last-child">Elements</li>
+        </ul>
+        <div data-role="collapsible" data-inset="false" data-collapsed-icon="carat-d" data-expanded-icon="carat-d" data-iconpos="right" class="ui-collapsible ui-collapsible-themed-content ui-collapsible-collapsed">
+          <h3 class="ui-collapsible-heading ui-collapsible-heading-collapsed"><a href="#" class="ui-collapsible-heading-toggle ui-btn ui-btn-icon-right ui-btn-inherit ui-icon-carat-d waves-effect waves-button">Basic Elements<span class="ui-collapsible-heading-status"> click to expand contents</span></a></h3>
+          <div class="ui-collapsible-content ui-body-inherit ui-collapsible-content-collapsed" aria-hidden="true">
+          </div>
+        </div>
+        <ul data-role="listview" data-inset="false" class="ui-listview">
+          <li data-role="list-divider" role="heading" class="ui-li-divider ui-bar-inherit ui-first-child ui-last-child">Information</li>
+        </ul>
+        <div data-role="collapsible" data-inset="false" data-collapsed-icon="carat-d" data-expanded-icon="carat-d" data-iconpos="right" class="ui-collapsible ui-collapsible-themed-content ui-collapsible-collapsed">
+          <h3 class="ui-collapsible-heading ui-collapsible-heading-collapsed"><a href="#" class="ui-collapsible-heading-toggle ui-btn ui-btn-icon-right ui-btn-inherit ui-icon-carat-d waves-effect waves-button">Nice to Know<span class="ui-collapsible-heading-status"> click to expand contents</span></a></h3>
+          <div class="ui-collapsible-content ui-body-inherit ui-collapsible-content-collapsed" aria-hidden="true">
+
+            <ul data-role="listview" data-icon="false" class="ui-listview">
+              <li class="ui-first-child"><a href="/info/colors_and_styles.html" data-ajax="false" class="ui-btn waves-effect waves-button">Colors &amp; Styles</a></li>
+              <li class="ui-last-child"><a href="/info/credits.html" data-ajax="false" class="ui-btn waves-effect waves-button">Credits &amp; License</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div data-role="header" data-position="fixed" class="fadeIn ui-header ui-bar-inherit ui-header-fixed slidedown" role="banner" style="visibility: visible; animation-name: fadeIn;">
+      <a href="#leftpanel" class="ui-btn-left ui-btn ui-btn-active" data-wow-delay="0.8s" data-role="button" role="button" style="visibility: visible; animation-delay: 0.8s; animation-name: fadeIn;">
+        <i class="zmdi zmdi-menu"></i>
+      </a>
+      <h1 class="fadeIn ui-title" data-wow-delay="0.4s" role="heading" aria-level="1" style="visibility: visible; animation-delay: 0.4s; animation-name: fadeIn;">Panels</h1>
+    </div>
+
+    <div data-role="content">
+      <ul id="listMessage" data-role="listview" data-icon="false" class="ui-listview" data-inset="true">
+        <li class="ui-li-has-thumb">
+          <a href="#" class="ui-btn waves-effect waves-button waves-effect waves-button">
+            <h2>Amit Anmol</h2>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+          </a>
+        </li>
+      </ul>
+
+      <a id="searchExchangeResultsViewButton" href="#searchExchangeResultsView" class="ui-btn
+                                    ui-btn-inline
+                                    ui-btn-fab
+                                    ui-btn-fab-bottom
+                                    ui-btn-raised
+                                    clr-primary">
+        <i class='zmdi zmdi-search zmd-2x'></i>
+      </a>
+
+      <div id="map" class="map"></div>
+
+    </div>
+
+    <div data-position="fixed" data-tap-toggle="false" data-role="footer" data-tap-toggle="false">
+      <div data-role="navbar">
+        <ul>
+          <li><a href="#exchangesView"><i class='blIcon fa fa-exchange'></i><span data-i18n="nav.exchanges">Intercambios</span></a></li>
+          <li><a href="#mycollectionsView"><i class='blIcon fa fa-image'></i><span data-i18n="nav.mycollections">Mis Colecciones</span></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- /footer -->
+
+    <!-- /page -->
+
+    <script>
+      // Tile providers: https://leaflet-extras.github.io/leaflet-providers/preview/
+      $("#testPage").on("pagecreate", function(event, ui) {
+        window.setTimeout(function() { // Timeout is needed to load everything correctly
+          GeoLocation.get().then(function(position) {
+            var pos = [position.coords.latitude, position.coords.longitude];
+            var accuracy = position.coords.accuracy;
+
+            var map = L.map('map').setView(pos, 14);
+
+            L.tileLayer(
+              'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+              }).addTo(map);
+
+            if (accuracy > 100) {
+              L.circle(pos, {
+                color: 'blue',
+                fillColor: '#2196F3',
+                fillOpacity: 0.3,
+                radius: accuracy * 2,
+                weight: 0
+              }).addTo(map);
+            }
+
+            L.marker(pos).addTo(map);
+          })
+        }, 400);
+      });
+    </script>
+</body>
+
+</html>

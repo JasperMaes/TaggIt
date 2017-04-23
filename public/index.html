@@ -1,0 +1,225 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>My Page</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script src="vendors/jquery/jquery-2.1.0.js"></script>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+  <!-- Bootstrap material design -->
+  <!-- https://cdn.rawgit.com/FezVrasta/bootstrap-material-design/gh-pages-v3/bootstrap-elements.html -->
+  <!-- Material Design fonts -->
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/css/bootstrap-material-design.min.css" integrity="sha256-j3CLSRG31GkOu6kaeLh7XsRgL2YNvRl9aOtXoAYt320=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/css/ripples.min.css" integrity="sha256-+Og2qJI9qzvKYwhGo/LYXg0FzE1BhEQfDsUSjKXQ3Bg=" crossorigin="anonymous" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/js/material.min.js" integrity="sha256-uZbIqasulk7Y9yEwknbeQ0FpF3aUhtPwuggbpvQaI8Y=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/js/ripples.min.js" integrity="sha256-TY/EO/++Ug/P+fSBjaqlmtuphCBKwlP7TOnS+SGnN8g=" crossorigin="anonymous"></script>
+
+  <!-- Leaflet (http://leafletjs.com/) -->
+  <link rel="stylesheet" href="vendors/leaflet/leaflet.css" />
+  <script src="vendors/leaflet/leaflet.js"></script>
+
+  <!-- Leaflet pulsating icon (https://github.com/mapshakers/leaflet-icon-pulse) -->
+  <link rel="stylesheet" href="vendors/LeafletPulsingIcon/L.Icon.Pulse.min.css" />
+  <script src="vendors/LeafletPulsingIcon/L.Icon.Pulse.min.js"></script>
+
+  <!-- Application code -->
+  <script src="resources/js/GeoLocation.js"></script>
+  <script src="resources/js/TripRepository.js"></script>
+
+  <link rel="stylesheet" href="resources/css/page-map.css" />
+  <link rel="stylesheet" href="resources/css/sidebar.css" />
+  <link rel="stylesheet" href="resources/css/glyphicon-util.css" />
+</head>
+
+<body>
+  <div class="page has-sidebar">
+    <div class="sidebar-wrapper">
+      <ul class="sidebar-nav">
+        <li class="sidebar-brand">
+          <a href="#">Start Bootstrap</a>
+        </li>
+        <li>
+          <a href="#">Dashboard</a>
+        </li>
+        <li>
+          <a href="#">Shortcuts</a>
+        </li>
+        <li>
+          <a href="#">Overview</a>
+        </li>
+        <li>
+          <a href="#">Events</a>
+        </li>
+        <li>
+          <a href="#">About</a>
+        </li>
+        <li>
+          <a href="#">Services</a>
+        </li>
+        <li>
+          <a href="#">Contact</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="page-content-wrapper">
+      <div id="header">
+        <div class="row">
+          <div class="col-xs-2 col-sm-2">
+            <span id="toggleButton" class="glyphicon glyphicon-menu-hamburger btn btn-default gi-1_5x material-input" style="z-index:3000"></span>
+          </div>
+          <div class="col-xs-8 col-sm-8" style="z-index:60;">
+            <input type="text" class="form-control" placeholder="Search..." />
+          </div>
+          <div class="col-xs-2 col-sm-2" style="z-index:60;">
+            <span class="glyphicon glyphicon-search navbar-btn btn btn-default gi-1_5x material-input"></span>
+          </div>
+        </div>
+      </div>
+
+      <div id="btn-center-map" class="btn-group">
+        <a class="btn btn-primary btn-fab btn-raised">
+          <i class="material-icons">adjust</i>
+        </a>
+      </div>
+      <div id="btn-add-location" class="btn-group">
+        <a class="btn btn-primary btn-fab btn-raised">
+          <i class="material-icons">pin_drop</i>
+        </a>
+      </div>
+      <div id="map" class="map"></div>
+    </div>
+
+    <div class="overlay" style="display:none;"></div>
+
+  </div>
+  <script>
+        var map;
+        var myLocationMarker;
+        var myLocationCircle;
+        var watchId = -1;
+    (function($) {
+      $.material.init()
+
+      $("#toggleButton").click(function(e) {
+        e.preventDefault();
+        $(".page.has-sidebar").toggleClass("toggled");
+        $(".overlay").toggle();
+      });
+
+      $(".overlay").click(function(e) {
+        $(".page.has-sidebar").removeClass("toggled");
+        $(".overlay").hide();
+      });
+
+
+      function getRandomArbitrary(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function addMarker(latitude, longitude) {
+        L.marker([latitude, longitude]).addTo(map);
+      }
+
+      $("#btn-add-location").click(function(e) {
+        var bounds = map.getBounds();
+
+        var lat = getRandomArbitrary(bounds._northEast.lat, bounds._southWest.lat)
+        var lng = getRandomArbitrary(bounds._southWest.lng, bounds._northEast.lng)
+
+        addMarker(lat, lng)
+      });
+
+      function updateMyLocationMarker(position) {
+        var pos = [position.coords.latitude, position.coords.longitude];
+        var accuracy = position.coords.accuracy;
+
+        if (!!myLocationCircle) {
+          map.removeLayer(myLocationCircle)
+        }
+        console.log("Accuracy: " + accuracy)
+        if (accuracy > 100 && accuracy < 400) {
+          myLocationCircle = L.circle(pos, {
+            color: 'blue',
+            fillColor: '#2196F3',
+            fillOpacity: 0.3,
+            radius: accuracy * 2,
+            weight: 0
+          }).addTo(map);
+        }
+
+        if (!!myLocationMarker) {
+          map.setView(pos);
+          myLocationMarker.setLatLng(pos);
+          myLocationMarker.update();
+        } else {
+          var pulsingIcon = L.icon.pulse({
+            iconSize: [18, 18],
+            color: '#2196F3'
+          });
+          myLocationMarker = L.marker(pos, {
+            icon: pulsingIcon
+          }).addTo(map);
+        }
+      }
+
+      // Tile providers: https://leaflet-extras.github.io/leaflet-providers/preview/
+      window.setTimeout(function() { // Timeout is needed to load everything correctly
+        GeoLocation.get().then(function(position) {
+          var pos = [position.coords.latitude, position.coords.longitude];
+          var accuracy = position.coords.accuracy;
+
+          map = L.map('map', {
+            zoomControl: false
+          }).setView(pos, 16);
+
+          L.tileLayer(
+            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              maxZoom: 18,
+            }).addTo(map);
+
+          updateMyLocationMarker(position)
+
+          watchId = GeoLocation.watch(updateMyLocationMarker);
+
+          TripRepository.getTripDetails("trip1").locations.forEach(function(location) {
+            addMarker(location.latitude, location.longitude);
+          })
+
+          $("#btn-center-map").click(function(e){
+            if(watchId > 0){
+              GeoLocation.clearWatch(watchId);
+              watchId = -1;
+            }
+            watchId = GeoLocation.watch(updateMyLocationMarker);
+          })
+
+          map.on("dragstart", function(){
+            console.log("DISABLE watch")
+            if(watchId > 0){
+              GeoLocation.clearWatch(watchId);
+              watchId = -1;
+            }
+          })
+
+        })
+      }, 400);
+
+      // TODO fill in sidebar with trips
+      // TODO add button to center map on current location, only then the setView will be applied ==> Drag on map = clearWatch(), click button = watch()
+      // TODO add error handling
+
+    })(jQuery);
+  </script>
+</body>
+
+</html>
