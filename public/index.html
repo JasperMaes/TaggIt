@@ -74,14 +74,16 @@
     <div class="page-content-wrapper">
       <div id="header">
         <div class="row">
-          <div class="col-xs-2 col-sm-2">
+          <div class="col-xs-2 col-sm-1">
             <span id="toggleButton" class="glyphicon glyphicon-menu-hamburger btn btn-default gi-1_5x material-input" style="z-index:3000"></span>
           </div>
-          <div class="col-xs-8 col-sm-8" style="z-index:60;">
+          <div class="col-xs-7 col-sm-8" style="z-index:60;padding-right:0px">
             <input type="text" class="form-control" placeholder="Search..." />
           </div>
-          <div class="col-xs-2 col-sm-2" style="z-index:60;">
-            <span class="glyphicon glyphicon-search navbar-btn btn btn-default gi-1_5x material-input"></span>
+          <div class="col-xs-3 col-sm-3" style="z-index:60;padding-left:0px">
+            <span class="glyphicon glyphicon-search navbar-btn btn btn-default gi-1_5x material-input" style="padding-right: 15px;"></span>
+
+            <span class="glyphicon glyphicon-filter navbar-btn btn btn-default gi-1_5x material-input" style="margin-right:10px"></span>
           </div>
         </div>
       </div>
@@ -97,16 +99,17 @@
         </a>
       </div>
       <div id="map" class="map"></div>
+      <p id="message"></p>
     </div>
 
     <div class="overlay" style="display:none;"></div>
 
   </div>
   <script>
-        var map;
-        var myLocationMarker;
-        var myLocationCircle;
-        var watchId = -1;
+    var map;
+    var myLocationMarker;
+    var myLocationCircle;
+    var watchId = -1;
     (function($) {
       $.material.init()
 
@@ -120,7 +123,6 @@
         $(".page.has-sidebar").removeClass("toggled");
         $(".overlay").hide();
       });
-
 
       function getRandomArbitrary(min, max) {
         return Math.random() * (max - min) + min;
@@ -138,6 +140,9 @@
 
         addMarker(lat, lng)
       });
+
+      $("#btn-center-map").hide();
+      $("#btn-add-location").hide();
 
       function updateMyLocationMarker(position) {
         var pos = [position.coords.latitude, position.coords.longitude];
@@ -170,11 +175,29 @@
             icon: pulsingIcon
           }).addTo(map);
         }
+
+        $("#btn-center-map").show();
+        $("#btn-add-location").show();
+        $("#map").show();
       }
 
-      // Tile providers: https://leaflet-extras.github.io/leaflet-providers/preview/
-      window.setTimeout(function() { // Timeout is needed to load everything correctly
+      function updateLocationGpsError(error){
+        GeoLocation.printError(error)
+        $("#btn-center-map").hide();
+        $("#btn-add-location").hide();
+        $("#map").hide();
+        $("#message").text("GPS error: Could not retrieve location")
+      }
+
+      function initLocationGpsError(error){
+        console.log("initLocationGpsError")
+        GeoLocation.printError(error)
+        $("#message").text("GPS error: Initialization error; is the GPS enabled?")
+      }
+
+      function initMap() {
         GeoLocation.get().then(function(position) {
+
           var pos = [position.coords.latitude, position.coords.longitude];
           var accuracy = position.coords.accuracy;
 
@@ -182,6 +205,7 @@
             zoomControl: false
           }).setView(pos, 16);
 
+          // Tile providers: https://leaflet-extras.github.io/leaflet-providers/preview/
           L.tileLayer(
             'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
               maxZoom: 18,
@@ -189,34 +213,42 @@
 
           updateMyLocationMarker(position)
 
-          watchId = GeoLocation.watch(updateMyLocationMarker);
+          watchId = GeoLocation.watch(updateMyLocationMarker, updateLocationGpsError);
 
           TripRepository.getTripDetails("trip1").locations.forEach(function(location) {
             addMarker(location.latitude, location.longitude);
           })
 
-          $("#btn-center-map").click(function(e){
-            if(watchId > 0){
+          $("#btn-center-map").click(function(e) {
+            if (watchId > 0) {
               GeoLocation.clearWatch(watchId);
               watchId = -1;
             }
-            watchId = GeoLocation.watch(updateMyLocationMarker);
+            watchId = GeoLocation.watch(updateMyLocationMarker, updateLocationGpsError);
           })
 
-          map.on("dragstart", function(){
+          $("#btn-center-map").show();
+          $("#btn-add-location").show();
+
+          map.on("dragstart", function() {
             console.log("DISABLE watch")
-            if(watchId > 0){
+            if (watchId > 0) {
               GeoLocation.clearWatch(watchId);
               watchId = -1;
             }
           })
 
-        })
-      }, 400);
+          console.log("All done initial GPS location")
+
+        }).catch(function(error){initLocationGpsError(error);window.setTimeout(initMap, 1000)})
+      }
+
+      window.setTimeout(initMap, 400); // Timeout is needed to load everything correctly
 
       // TODO fill in sidebar with trips
-      // TODO add button to center map on current location, only then the setView will be applied ==> Drag on map = clearWatch(), click button = watch()
-      // TODO add error handling
+      // TODO add internet error handling
+
+      console.log("All done loading")
 
     })(jQuery);
   </script>
