@@ -138,6 +138,7 @@
             }, null, { disposeWhenNodeIsRemoved: element });
 
             var map = L.map(element, ko.unwrap(mapOptions)).setView(ko.unwrap(mapCenter), ko.unwrap(zoom));
+
             L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
             var subscriptions = [
