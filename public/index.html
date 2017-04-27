@@ -38,6 +38,17 @@
   <link rel="stylesheet" href="resources/css/page-map.css" />
   <link rel="stylesheet" href="resources/css/sidebar.css" />
   <link rel="stylesheet" href="resources/css/glyphicon-util.css" />
+
+  <!-- Knockout -->
+  <!--
+      http://knockoutjs.com/
+      Try out knockout ==> Binding for Leaflet: https://github.com/giabos/ko-leaflet/blob/master/ko-leaflet.js
+      Maybe needed for Bootstrap as well: https://faulknercs.github.io/Knockstrap/
+   -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js" integrity="sha256-owX7sroiO/O1a7h3a4X29A1g3QgqdNvijRQ7V5TH45M=" crossorigin="anonymous"></script>
+  <script src="https://raw.githubusercontent.com/giabos/ko-leaflet/master/ko-leaflet.js"></script>
+  <script src="https://cdn.rawgit.com/faulknercs/Knockstrap/v1.3.2/build/knockstrap.min.js"></script>
+
 </head>
 
 <body>
@@ -210,7 +221,7 @@
             'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
               maxZoom: 18,
             }).addTo(map);
-
+          
           updateMyLocationMarker(position)
 
           watchId = GeoLocation.watch(updateMyLocationMarker, updateLocationGpsError);
