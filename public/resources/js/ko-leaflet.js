@@ -138,7 +138,7 @@
             }, null, { disposeWhenNodeIsRemoved: element });
 
             var map = L.map(element, ko.unwrap(mapOptions)).setView(ko.unwrap(mapCenter), ko.unwrap(zoom));
-            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
+            L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
             var subscriptions = [
                 mapCenter.subscribe(function() {
@@ -179,7 +179,7 @@
             each(ko.unwrap(markers), function (m, idx) { markersList.push(new Marker(m, map));  });
             var markerCenter = new Marker(ko.unwrap(centerMarker), map);
             markersList.push(markerCenter);
-            
+
             //TODO Improve circle creation!
             var centerCircleObject = L.circle(markerCenter.centerM(), {
               fillColor: centerMarker.color,
