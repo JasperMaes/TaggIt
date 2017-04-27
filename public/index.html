@@ -31,6 +31,15 @@
   <link rel="stylesheet" href="vendors/LeafletPulsingIcon/L.Icon.Pulse.min.css" />
   <script src="vendors/LeafletPulsingIcon/L.Icon.Pulse.min.js"></script>
 
+  <!-- Knockout.js -->
+  <!--
+        Try out knockout ==> Binding for Leaflet: https://github.com/giabos/ko-leaflet/blob/master/ko-leaflet.js
+        Maybe needed for Bootstrap as well: https://faulknercs.github.io/Knockstrap/
+     -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js" integrity="sha256-owX7sroiO/O1a7h3a4X29A1g3QgqdNvijRQ7V5TH45M=" crossorigin="anonymous"></script>
+  <script src="resources/js/ko-leaflet.js"></script>
+  <script src="https://cdn.rawgit.com/faulknercs/Knockstrap/v1.3.2/build/knockstrap.min.js" type="tet/javascript"></script>
+
   <!-- Application code -->
   <script src="resources/js/GeoLocation.js"></script>
   <script src="resources/js/TripRepository.js"></script>
@@ -39,20 +48,10 @@
   <link rel="stylesheet" href="resources/css/sidebar.css" />
   <link rel="stylesheet" href="resources/css/glyphicon-util.css" />
 
-  <!-- Knockout -->
-  <!--
-      http://knockoutjs.com/
-      Try out knockout ==> Binding for Leaflet: https://github.com/giabos/ko-leaflet/blob/master/ko-leaflet.js
-      Maybe needed for Bootstrap as well: https://faulknercs.github.io/Knockstrap/
-   -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js" integrity="sha256-owX7sroiO/O1a7h3a4X29A1g3QgqdNvijRQ7V5TH45M=" crossorigin="anonymous"></script>
-  <script src="https://raw.githubusercontent.com/giabos/ko-leaflet/master/ko-leaflet.js"></script>
-  <script src="https://cdn.rawgit.com/faulknercs/Knockstrap/v1.3.2/build/knockstrap.min.js"></script>
-
 </head>
 
 <body>
-  <div class="page has-sidebar">
+  <div class="page has-sidebar" data-bind="css : { toggled : sidebarController.isVisible() }">
     <div class="sidebar-wrapper">
       <ul class="sidebar-nav">
         <li class="sidebar-brand">
@@ -81,183 +80,212 @@
         </li>
       </ul>
     </div>
+    <div class="overlay" data-bind="visible: sidebarController.isVisible, click: sidebarController.close"></div>
 
     <div class="page-content-wrapper">
       <div id="header">
         <div class="row">
           <div class="col-xs-2 col-sm-1">
-            <span id="toggleButton" class="glyphicon glyphicon-menu-hamburger btn btn-default gi-1_5x material-input" style="z-index:3000"></span>
+            <span id="toggleButton" class="glyphicon glyphicon-menu-hamburger btn btn-default gi-1_5x material-input" style="z-index:3000" data-bind="click: sidebarController.toggle"></span>
           </div>
+          <!-- ko if:  mapController.filterbarVisible -->
           <div class="col-xs-7 col-sm-8" style="z-index:60;padding-right:0px">
             <input type="text" class="form-control" placeholder="Search..." />
           </div>
           <div class="col-xs-3 col-sm-3" style="z-index:60;padding-left:0px">
             <span class="glyphicon glyphicon-search navbar-btn btn btn-default gi-1_5x material-input" style="padding-right: 15px;"></span>
 
-            <span class="glyphicon glyphicon-filter navbar-btn btn btn-default gi-1_5x material-input" style="margin-right:10px"></span>
+            <span class="glyphicon glyphicon-filter navbar-btn btn btn-default gi-1_5x material-input"></span>
           </div>
+          <!-- /ko -->
         </div>
       </div>
 
-      <div id="btn-center-map" class="btn-group">
+      <div id="btn-center-map" class="btn-group" data-bind="visible: mapController.buttonsVisible, click: mapController.centerMapHandler">
         <a class="btn btn-primary btn-fab btn-raised">
           <i class="material-icons">adjust</i>
         </a>
       </div>
-      <div id="btn-add-location" class="btn-group">
+      <div id="btn-add-location" class="btn-group" data-bind="visible: mapController.buttonsVisible, click: mapController.addMarkerHandler">
         <a class="btn btn-primary btn-fab btn-raised">
           <i class="material-icons">pin_drop</i>
         </a>
       </div>
-      <div id="map" class="map"></div>
-      <p id="message"></p>
-    </div>
+      <div data-bind="leafletMap: mapController, visible: mapController.mapVisible" class="map"></div>
 
-    <div class="overlay" style="display:none;"></div>
+      <p id="message" data-bind="text: messageContent"></p>
+    </div>
 
   </div>
   <script>
-    var map;
-    var myLocationMarker;
-    var myLocationCircle;
-    var watchId = -1;
+    var controller;
+
+    var sidebarController = {
+      isVisible: ko.observable(false),
+      toggle: function() {
+        sidebarController.isVisible(!sidebarController.isVisible());
+      },
+      close: function(e) {
+        sidebarController.isVisible(false);
+      }
+    };
+
+    var messageContent = ko.observable();
+
     (function($) {
       $.material.init()
-
-      $("#toggleButton").click(function(e) {
-        e.preventDefault();
-        $(".page.has-sidebar").toggleClass("toggled");
-        $(".overlay").toggle();
-      });
-
-      $(".overlay").click(function(e) {
-        $(".page.has-sidebar").removeClass("toggled");
-        $(".overlay").hide();
-      });
 
       function getRandomArbitrary(min, max) {
         return Math.random() * (max - min) + min;
       }
 
-      function addMarker(latitude, longitude) {
-        L.marker([latitude, longitude]).addTo(map);
-      }
+      var watchId;
 
-      $("#btn-add-location").click(function(e) {
-        var bounds = map.getBounds();
-
-        var lat = getRandomArbitrary(bounds._northEast.lat, bounds._southWest.lat)
-        var lng = getRandomArbitrary(bounds._southWest.lng, bounds._northEast.lng)
-
-        addMarker(lat, lng)
-      });
-
-      $("#btn-center-map").hide();
-      $("#btn-add-location").hide();
-
-      function updateMyLocationMarker(position) {
-        var pos = [position.coords.latitude, position.coords.longitude];
-        var accuracy = position.coords.accuracy;
-
-        if (!!myLocationCircle) {
-          map.removeLayer(myLocationCircle)
-        }
-        console.log("Accuracy: " + accuracy)
-        if (accuracy > 100 && accuracy < 400) {
-          myLocationCircle = L.circle(pos, {
-            color: 'blue',
-            fillColor: '#2196F3',
-            fillOpacity: 0.3,
-            radius: accuracy * 2,
-            weight: 0
-          }).addTo(map);
-        }
-
-        if (!!myLocationMarker) {
-          map.setView(pos);
-          myLocationMarker.setLatLng(pos);
-          myLocationMarker.update();
-        } else {
-          var pulsingIcon = L.icon.pulse({
-            iconSize: [18, 18],
-            color: '#2196F3'
-          });
-          myLocationMarker = L.marker(pos, {
-            icon: pulsingIcon
-          }).addTo(map);
-        }
-
-        $("#btn-center-map").show();
-        $("#btn-add-location").show();
-        $("#map").show();
-      }
-
-      function updateLocationGpsError(error){
-        GeoLocation.printError(error)
-        $("#btn-center-map").hide();
-        $("#btn-add-location").hide();
-        $("#map").hide();
-        $("#message").text("GPS error: Could not retrieve location")
-      }
-
-      function initLocationGpsError(error){
-        console.log("initLocationGpsError")
-        GeoLocation.printError(error)
-        $("#message").text("GPS error: Initialization error; is the GPS enabled?")
-      }
-
-      function initMap() {
-        GeoLocation.get().then(function(position) {
-
-          var pos = [position.coords.latitude, position.coords.longitude];
-          var accuracy = position.coords.accuracy;
-
-          map = L.map('map', {
-            zoomControl: false
-          }).setView(pos, 16);
-
-          // Tile providers: https://leaflet-extras.github.io/leaflet-providers/preview/
-          L.tileLayer(
-            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-              maxZoom: 18,
-            }).addTo(map);
-          
-          updateMyLocationMarker(position)
-
-          watchId = GeoLocation.watch(updateMyLocationMarker, updateLocationGpsError);
-
-          TripRepository.getTripDetails("trip1").locations.forEach(function(location) {
-            addMarker(location.latitude, location.longitude);
-          })
-
-          $("#btn-center-map").click(function(e) {
-            if (watchId > 0) {
-              GeoLocation.clearWatch(watchId);
-              watchId = -1;
-            }
-            watchId = GeoLocation.watch(updateMyLocationMarker, updateLocationGpsError);
-          })
-
-          $("#btn-center-map").show();
-          $("#btn-add-location").show();
-
-          map.on("dragstart", function() {
+      var mapController = {
+        center: [ko.observable(50.81057), ko.observable(4.93622)],
+        zoom: ko.observable(16),
+        markers: ko.observableArray([]),
+        mapOptions: {
+          zoomControl: false
+        },
+        events: {
+          dragstart: function(evt) {
             console.log("DISABLE watch")
             if (watchId > 0) {
               GeoLocation.clearWatch(watchId);
               watchId = -1;
             }
+          }
+        },
+        centerMarker: {
+          center: [ko.observable(50.81057), ko.observable(4.93622)],
+          draggable: false,
+          icon: L.icon.pulse({
+            iconSize: [18, 18],
+            color: '#2196F3'
           })
+        },
+        centerCircle: {
+          radius: ko.observable(0)
+        },
+        mapVisible: ko.observable(false),
+        buttonsVisible: ko.observable(false),
+        filterbarVisible: ko.observable(false),
+        bounds: ko.observable(),
+        addMarkerHandler: function() {
+          var lat = mapController.centerMarker.center[0]()
+          var lng = mapController.centerMarker.center[1]()
 
-          console.log("All done initial GPS location")
+          mapController.addMarker([lat, lng])
+        },
+        centerMapHandler: function() {
+          // Update the location immediately with the current position of the center marker
+          // It will also be updated when the watch method calls the callback but this can have some delay
+          // Setting the postition immediately avoids this delay
+          mapController.updateCenter({
+            lat: mapController.centerMarker.center[0](),
+            lng: mapController.centerMarker.center[1]()
+          })
+          if (watchId > 0) {
+            GeoLocation.clearWatch(watchId);
+            watchId = -1;
+          }
+          watchId = GeoLocation.watch(updateMyLocationMarker, updateLocationGpsError);
+        },
 
-        }).catch(function(error){initLocationGpsError(error);window.setTimeout(initMap, 1000)})
+        addMarker: function(position) {
+          this.markers.push({
+            center: [ko.observable(position[0]), ko.observable(position[1])],
+            draggable: true,
+            opened: ko.observable(false)
+          });
+        },
+
+        removeMarker: function(i) {
+          this.markers.splice(i, 1);
+        },
+
+        updateCenter: function(arguments) {
+          arguments = arguments || {}
+          this.center[0](arguments.lat);
+          this.center[1](arguments.lng);
+          if (!!arguments.zoom) {
+            this.updateZoom(arguments.zoom);
+          }
+          this.updateCenterMarker(arguments)
+        },
+
+        updateZoom: function(zoom) {
+          this.zoom(zoom);
+        },
+
+        updateCenterMarker: function(arguments) {
+          this.centerMarker.center[0](arguments.lat);
+          this.centerMarker.center[1](arguments.lng);
+          this.centerCircle.radius((arguments.accuracy || 0) * 2)
+        }
       }
 
-      window.setTimeout(initMap, 400); // Timeout is needed to load everything correctly
+      function updateMyLocationMarker(position) {
+        var accuracy = position.coords.accuracy;
+        var centerOptions = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+          accuracy: (accuracy > 100 && accuracy < 400) ? accuracy : 0
+        };
+        mapController.updateCenter(centerOptions)
 
-      // TODO fill in sidebar with trips
-      // TODO add internet error handling
+        mapController.buttonsVisible(true)
+        mapController.mapVisible(true)
+        mapController.filterbarVisible(true)
+      }
+
+      function updateLocationGpsError(error) {
+        GeoLocation.printError(error)
+        mapController.buttonsVisible(false)
+        mapController.mapVisible(false)
+        mapController.filterbarVisible(false)
+        messageContent("GPS error: Could not retrieve location")
+      }
+
+      function initLocationGpsError(error) {
+        console.log("initLocationGpsError")
+        GeoLocation.printError(error)
+        messageContent("GPS error: Initialization error; is the GPS enabled?")
+      }
+
+      function initMap() {
+        GeoLocation.get().then(function(position) {
+          var pos = [position.coords.latitude, position.coords.longitude];
+          var accuracy = position.coords.accuracy;
+          console.log("Got actual position")
+          //TODO add spinner that indicates loading and hide it when this method has finished.
+          var centerOptions = {
+            lat: pos[0],
+            lng: pos[1],
+            zoom: 16,
+            accuracy: (accuracy > 100 && accuracy < 400) ? accuracy : 0
+          };
+          mapController.updateCenter(centerOptions)
+          mapController.buttonsVisible(true)
+          mapController.mapVisible(true)
+          mapController.filterbarVisible(true)
+          watchId = GeoLocation.watch(updateMyLocationMarker, updateLocationGpsError);
+        }).catch(function(error) {
+          initLocationGpsError(error);
+          window.setTimeout(initMap, 1000)
+        })
+      }
+
+      initMap();
+
+      controller = {
+        mapController: mapController,
+        sidebarController: sidebarController,
+        messageContent: messageContent
+      };
+
+      ko.applyBindings(controller);
 
       console.log("All done loading")
 

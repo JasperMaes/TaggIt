@@ -179,11 +179,10 @@
             each(ko.unwrap(markers), function (m, idx) { markersList.push(new Marker(m, map));  });
             var markerCenter = new Marker(ko.unwrap(centerMarker), map);
             markersList.push(markerCenter);
-
+            
             //TODO Improve circle creation!
             var centerCircleObject = L.circle(markerCenter.centerM(), {
-              color: 'blue',
-              fillColor: centerCircle.fillColor,
+              fillColor: centerMarker.color,
               fillOpacity: 0.3,
               radius: centerCircle.radius(),
               weight: 0
