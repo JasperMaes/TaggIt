@@ -33,7 +33,8 @@ var MapController = function(updateLocationGpsError, initLocationGpsError) {
     buttonsVisible: ko.observable(false),
     filterbarVisible: ko.observable(false),
     bounds: ko.observable(),
-    
+    isInitialized: ko.observable(false),
+
     addMarkerHandler: function() {
       var lat = mapController.centerMarker.center[0]();
       var lng = mapController.centerMarker.center[1]();
@@ -118,6 +119,7 @@ var MapController = function(updateLocationGpsError, initLocationGpsError) {
         this.buttonsVisible(true);
         this.mapVisible(true);
         this.filterbarVisible(true);
+        this.isInitialized(true);
         watchId = GeoLocation.watch(this.updateMyLocationMarker, updateLocationGpsError);
       }.bind(this)).catch(function(error) {
         initLocationGpsError(error);

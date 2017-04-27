@@ -46,14 +46,14 @@
 
   <link rel="stylesheet" href="resources/css/page-map.css" />
   <link rel="stylesheet" href="resources/css/sidebar.css" />
+  <link rel="stylesheet" href="resources/css/loadingSpinner.css" />
   <link rel="stylesheet" href="resources/css/glyphicon-util.css" />
 
   <script src="resources/js/controller/sidebar.js"></script>
   <script src="resources/js/controller/map.js"></script>
-</head>
 
-<body>
-  <div class="page has-sidebar" data-bind="css : { toggled : sidebarController.isVisible() }">
+  <script type="text/html" id="sidebar-template">
+
     <div class="sidebar-wrapper">
       <ul class="sidebar-nav">
         <li class="sidebar-brand">
@@ -82,7 +82,46 @@
         </li>
       </ul>
     </div>
-    <div class="overlay" data-bind="visible: sidebarController.isVisible, click: sidebarController.close"></div>
+    <div class="overlay" data-bind="visible: isVisible, click: close"></div>
+  </script>
+  <script type="text/html" id="map-template">
+    <div id="btn-center-map" class="btn-group" data-bind="visible: mapController.buttonsVisible, click: mapController.centerMapHandler">
+      <a class="btn btn-primary btn-fab btn-raised">
+        <i class="material-icons">adjust</i>
+      </a>
+    </div>
+    <div id="btn-add-location" class="btn-group" data-bind="visible: mapController.buttonsVisible, click: mapController.addMarkerHandler">
+      <a class="btn btn-primary btn-fab btn-raised">
+        <i class="material-icons">pin_drop</i>
+      </a>
+    </div>
+    <div data-bind="leafletMap: mapController, visible: mapController.mapVisible" class="map"></div>
+
+    <p id="message" data-bind="text: messageContent"></p>
+    <div data-bind="template: { name: 'loading-template', data: mapController.isInitialized }"></div>
+    </div>
+  </script>
+
+  <!-- From: https://loading.io/ -->
+  <script type="text/html" id="loading-template">
+    <div class='uil-gps-css' style='margin-right: auto; margin-left: auto; transform:scale(0.4);' data-bind="visible: !$data">
+      <div class="inner"></div>
+      <div class="outer"></div>
+      <div class="markers">
+        <div class="markers-ib">
+          <div class="marker"></div>
+          <div class="marker"></div>
+          <div class="marker"></div>
+          <div class="marker"></div>
+        </div>
+      </div>
+    </div>
+  </script>
+</head>
+
+<body>
+  <div class="page has-sidebar" data-bind="css : { toggled : sidebarController.isVisible() }">
+    <div data-bind="template: { name: 'sidebar-template', data: sidebarController }"></div>
 
     <div class="page-content-wrapper">
       <div id="header">
@@ -103,56 +142,44 @@
         </div>
       </div>
 
-      <div id="btn-center-map" class="btn-group" data-bind="visible: mapController.buttonsVisible, click: mapController.centerMapHandler">
-        <a class="btn btn-primary btn-fab btn-raised">
-          <i class="material-icons">adjust</i>
-        </a>
-      </div>
-      <div id="btn-add-location" class="btn-group" data-bind="visible: mapController.buttonsVisible, click: mapController.addMarkerHandler">
-        <a class="btn btn-primary btn-fab btn-raised">
-          <i class="material-icons">pin_drop</i>
-        </a>
-      </div>
-      <div data-bind="leafletMap: mapController, visible: mapController.mapVisible" class="map"></div>
+      <div data-bind="template: { name: 'map-template', data: $data }"></div>
 
-      <p id="message" data-bind="text: messageContent"></p>
     </div>
+    <script>
+      var controller;
 
-  </div>
-  <script>
-    var controller;
+      (function($) {
+        $.material.init();
 
-    (function($) {
-      $.material.init();
+        function updateLocationGpsError(error) {
+          GeoLocation.printError(error);
+          controller.mapController.buttonsVisible(false);
+          controller.mapController.mapVisible(false);
+          controller.mapController.filterbarVisible(false);
+          controller.messageContent("GPS error: Could not retrieve location");
+        }
 
-      function updateLocationGpsError(error) {
-        GeoLocation.printError(error);
-        controller.mapController.buttonsVisible(false);
-        controller.mapController.mapVisible(false);
-        controller.mapController.filterbarVisible(false);
-        controller.messageContent("GPS error: Could not retrieve location");
-      }
-      
-      function initLocationGpsError(error) {
-        console.log("initLocationGpsError");
-        GeoLocation.printError(error);
-        controller.messageContent("GPS error: Initialization error; is the GPS enabled?");
-      }
+        function initLocationGpsError(error) {
+          console.log("initLocationGpsError");
+          GeoLocation.printError(error);
+          controller.messageContent("GPS error: Initialization error; is the GPS enabled?");
+        }
 
-      controller = {
-        mapController: MapController(updateLocationGpsError, initLocationGpsError),
-        sidebarController: SidebarController(),
-        messageContent: ko.observable()
-      };
+        controller = {
+          mapController: MapController(updateLocationGpsError, initLocationGpsError),
+          sidebarController: SidebarController(),
+          messageContent: ko.observable()
+        };
+        console.log(controller.mapController.isInitialized())
 
-      ko.applyBindings(controller);
+        ko.applyBindings(controller);
 
-      controller.mapController.initMap();
+        controller.mapController.initMap();
 
-      console.log("All done loading");
+        console.log("All done loading");
 
-    })(jQuery);
-  </script>
+      })(jQuery);
+    </script>
 </body>
 
 </html>
