@@ -43,7 +43,7 @@
   <!-- Application code -->
   <script src="resources/js/GeoLocation.js"></script>
   <script src="resources/js/TripRepository.js"></script>
-  
+
   <link rel="stylesheet" href="resources/css/page.css" />
   <link rel="stylesheet" href="resources/css/page-map.css" />
   <link rel="stylesheet" href="resources/css/category-tiles.css" />
@@ -158,48 +158,65 @@
             <div class="col-xs-10 col-sm-11" style="z-index:60;padding-right:0px">
               <h2 style="margin-top: 5px">Add location</h2>
             </div>
-            <!-- /ko -->
           </div>
         </div>
 
         <div class="row">
-  <div class="thumbnail">
-    <div class="content">
-      <span id="backbutton" class="material-icons">terrain</span>
+          <div class="thumbnail">
+            <div class="content" data-bind="click:addLocationController.selectCategory('landscape')">
+              <span id="backbutton" class="material-icons">terrain</span>
           </div>
         </div>
         <div class="thumbnail">
-          <div class="content">
+          <div class="content" data-bind="click:addLocationController.selectCategory('nature')">
             <span id="backbutton" class="material-icons">nature</span>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="thumbnail">
-          <div class="content">
+          <div class="content" data-bind="click:addLocationController.selectCategory('dining')">
             <span id="backbutton" class="material-icons">local_dining</span>
           </div>
         </div>
         <div class="thumbnail">
-          <div class="content">
+          <div class="content" data-bind="click:addLocationController.selectCategory('building')">
             <span id="backbutton" class="material-icons">account_balance</span>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="thumbnail">
-          <div class="content">
+          <div class="content" data-bind="click:addLocationController.selectCategory('animal')">
             <span id="backbutton" class="material-icons">pets</span>
           </div>
         </div>
         <div class="thumbnail">
-          <div class="content">
+          <div class="content" data-bind="click:addLocationController.selectCategory('sport')">
             <span id="backbutton" class="material-icons">directions_bike</span>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <div id="addLocationDetailsView" class="page">
+    <div class="page-content-wrapper">
+      <div id="header">
+        <div class="row">
+          <div class="col-xs-2 col-sm-1">
+            <span id="backbutton" class="material-icons material-input" style="z-index:3000; font-size: 3em">navigate_before</i>
+            </div>
+            <div class="col-xs-10 col-sm-11" style="z-index:60;padding-right:0px">
+              <h2 style="margin-top: 5px">Add location</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+          ADD LOCATION DETAILS
+        </p>
+      </div>
+    </div>
 
   <script>
     var controller;
@@ -224,7 +241,17 @@
       controller = {
         mapController: MapController(updateLocationGpsError, initLocationGpsError),
         sidebarController: SidebarController(),
-        messageContent: ko.observable()
+        messageContent: ko.observable(),
+        addLocationController: {
+          locationData: {},
+          selectCategory: function(category){
+            return function(){
+              controller.addLocationController.locationData.category = category;
+              $("div.page.active").removeClass("active");
+              $("#addLocationDetailsView").addClass("active");
+            };
+          }
+        }
       };
 
       ko.applyBindings(controller);
@@ -233,8 +260,8 @@
 
       console.log("All done loading");
 
-      $("div.page.active").removeClass("active")
-      $("#addLocationView").addClass("active")
+      //$("div.page.active").removeClass("active");
+      //$("#addLocationView").addClass("active");
 
     })(jQuery);
   </script>

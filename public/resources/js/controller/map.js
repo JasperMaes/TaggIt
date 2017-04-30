@@ -63,9 +63,15 @@ var MapController = function(updateLocationGpsError, initLocationGpsError) {
       //   draggable: false,
       //   opened: ko.observable(false)
       // });
+      
+      var pos = {
+        lat: position[0],
+        lng: position[1]
+      };
+      controller.addLocationController.locationData.position = pos;
 
-      $("div.page.active").removeClass("active")
-      $("#addLocationView").addClass("active")
+      $("div.page.active").removeClass("active");
+      $("#addLocationView").addClass("active");
     },
 
     removeMarker: function(i) {
