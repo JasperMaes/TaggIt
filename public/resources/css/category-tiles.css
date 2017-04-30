@@ -1,0 +1,22 @@
+.thumbnail {
+    float:left;
+    position: relative;
+    width: 46%;
+    padding-bottom: 46%; /* = width for a 1:1 aspect ratio */
+    margin:1.66%;
+    overflow:hidden;
+    font-size: 3.68vw;
+}
+
+.content .material-icons {
+  font-size: 36.8vw;
+  display: inline-block;
+}
+
+.content {
+    position:absolute;
+    height:80%; /* = 100% - 2*10% padding */
+    width:97%; /* = 100% - 2*5% padding */
+    padding: 10% 5%;
+    text-align-center
+}

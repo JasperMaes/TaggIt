@@ -58,11 +58,14 @@ var MapController = function(updateLocationGpsError, initLocationGpsError) {
     },
 
     addMarker: function(position) {
-      this.markers.push({
-        center: [ko.observable(position[0]), ko.observable(position[1])],
-        draggable: false,
-        opened: ko.observable(false)
-      });
+      // this.markers.push({
+      //   center: [ko.observable(position[0]), ko.observable(position[1])],
+      //   draggable: false,
+      //   opened: ko.observable(false)
+      // });
+
+      $("div.page.active").removeClass("active")
+      $("#addLocationView").addClass("active")
     },
 
     removeMarker: function(i) {

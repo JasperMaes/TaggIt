@@ -43,8 +43,10 @@
   <!-- Application code -->
   <script src="resources/js/GeoLocation.js"></script>
   <script src="resources/js/TripRepository.js"></script>
-
+  
+  <link rel="stylesheet" href="resources/css/page.css" />
   <link rel="stylesheet" href="resources/css/page-map.css" />
+  <link rel="stylesheet" href="resources/css/category-tiles.css" />
   <link rel="stylesheet" href="resources/css/sidebar.css" />
   <link rel="stylesheet" href="resources/css/loadingSpinner.css" />
   <link rel="stylesheet" href="resources/css/glyphicon-util.css" />
@@ -87,12 +89,12 @@
   <script type="text/html" id="map-template">
     <div id="btn-center-map" class="btn-group" data-bind="visible: mapController.buttonsVisible, click: mapController.centerMapHandler">
       <a class="btn btn-primary btn-fab btn-raised">
-        <i class="material-icons">adjust</i>
+        <i class="material-icons">my_location</i>
       </a>
     </div>
     <div id="btn-add-location" class="btn-group" data-bind="visible: mapController.buttonsVisible, click: mapController.addMarkerHandler">
       <a class="btn btn-primary btn-fab btn-raised">
-        <i class="material-icons">pin_drop</i>
+        <i class="material-icons">add_location</i>
       </a>
     </div>
     <div data-bind="leafletMap: mapController, visible: mapController.mapVisible" class="map"></div>
@@ -120,7 +122,7 @@
 </head>
 
 <body>
-  <div class="page has-sidebar" data-bind="css : { toggled : sidebarController.isVisible() }">
+  <div id="mapView" class="page has-sidebar active" data-bind="css : { toggled : sidebarController.isVisible() }">
     <div data-bind="template: { name: 'sidebar-template', data: sidebarController }"></div>
 
     <div class="page-content-wrapper">
@@ -143,42 +145,100 @@
       </div>
 
       <div data-bind="template: { name: 'map-template', data: $data }"></div>
-
     </div>
-    <script>
-      var controller;
+  </div>
 
-      (function($) {
-        $.material.init();
+  <div id="addLocationView" class="page">
+    <div class="page-content-wrapper">
+      <div id="header">
+        <div class="row">
+          <div class="col-xs-2 col-sm-1">
+            <span id="backbutton" class="material-icons material-input" style="z-index:3000; font-size: 3em">navigate_before</i>
+            </div>
+            <div class="col-xs-10 col-sm-11" style="z-index:60;padding-right:0px">
+              <h2 style="margin-top: 5px">Add location</h2>
+            </div>
+            <!-- /ko -->
+          </div>
+        </div>
 
-        function updateLocationGpsError(error) {
-          GeoLocation.printError(error);
-          controller.mapController.buttonsVisible(false);
-          controller.mapController.mapVisible(false);
-          controller.mapController.filterbarVisible(false);
-          controller.messageContent("GPS error: Could not retrieve location");
-        }
+        <div class="row">
+  <div class="thumbnail">
+    <div class="content">
+      <span id="backbutton" class="material-icons">terrain</span>
+          </div>
+        </div>
+        <div class="thumbnail">
+          <div class="content">
+            <span id="backbutton" class="material-icons">nature</span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="thumbnail">
+          <div class="content">
+            <span id="backbutton" class="material-icons">local_dining</span>
+          </div>
+        </div>
+        <div class="thumbnail">
+          <div class="content">
+            <span id="backbutton" class="material-icons">account_balance</span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="thumbnail">
+          <div class="content">
+            <span id="backbutton" class="material-icons">pets</span>
+          </div>
+        </div>
+        <div class="thumbnail">
+          <div class="content">
+            <span id="backbutton" class="material-icons">directions_bike</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        function initLocationGpsError(error) {
-          console.log("initLocationGpsError");
-          GeoLocation.printError(error);
-          controller.messageContent("GPS error: Initialization error; is the GPS enabled?");
-        }
+  <script>
+    var controller;
 
-        controller = {
-          mapController: MapController(updateLocationGpsError, initLocationGpsError),
-          sidebarController: SidebarController(),
-          messageContent: ko.observable()
-        };
-        
-        ko.applyBindings(controller);
+    (function($) {
+      $.material.init();
 
-        controller.mapController.initMap();
+      function updateLocationGpsError(error) {
+        GeoLocation.printError(error);
+        controller.mapController.buttonsVisible(false);
+        controller.mapController.mapVisible(false);
+        controller.mapController.filterbarVisible(false);
+        controller.messageContent("GPS error: Could not retrieve location");
+      }
 
-        console.log("All done loading");
+      function initLocationGpsError(error) {
+        console.log("initLocationGpsError");
+        GeoLocation.printError(error);
+        controller.messageContent("GPS error: Initialization error; is the GPS enabled?");
+      }
 
-      })(jQuery);
-    </script>
+      controller = {
+        mapController: MapController(updateLocationGpsError, initLocationGpsError),
+        sidebarController: SidebarController(),
+        messageContent: ko.observable()
+      };
+
+      ko.applyBindings(controller);
+
+      controller.mapController.initMap();
+
+      console.log("All done loading");
+
+      $("div.page.active").removeClass("active")
+      $("#addLocationView").addClass("active")
+
+    })(jQuery);
+  </script>
+
 </body>
 
 </html>
