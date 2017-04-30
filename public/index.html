@@ -162,36 +162,36 @@
         </div>
 
         <div class="row">
-          <div class="thumbnail">
+          <div class="thumbnail" data-bind="css: { selected: addLocationController.locationData.category() == 'landscape' }">
             <div class="content" data-bind="click:addLocationController.selectCategory('landscape')">
               <span id="backbutton" class="material-icons">terrain</span>
           </div>
         </div>
-        <div class="thumbnail">
+        <div class="thumbnail" data-bind="css: { selected: addLocationController.locationData.category() == 'nature' }">
           <div class="content" data-bind="click:addLocationController.selectCategory('nature')">
             <span id="backbutton" class="material-icons">nature</span>
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="thumbnail">
+        <div class="thumbnail" data-bind="css: { selected: addLocationController.locationData.category() == 'dining' }">
           <div class="content" data-bind="click:addLocationController.selectCategory('dining')">
             <span id="backbutton" class="material-icons">local_dining</span>
           </div>
         </div>
-        <div class="thumbnail">
+        <div class="thumbnail" data-bind="css: { selected: addLocationController.locationData.category() == 'building' }">
           <div class="content" data-bind="click:addLocationController.selectCategory('building')">
             <span id="backbutton" class="material-icons">account_balance</span>
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="thumbnail">
+        <div class="thumbnail" data-bind="css: { selected: addLocationController.locationData.category() == 'animal' }">
           <div class="content" data-bind="click:addLocationController.selectCategory('animal')">
             <span id="backbutton" class="material-icons">pets</span>
           </div>
         </div>
-        <div class="thumbnail">
+        <div class="thumbnail" data-bind="css: { selected: addLocationController.locationData.category() == 'sport' }">
           <div class="content" data-bind="click:addLocationController.selectCategory('sport')">
             <span id="backbutton" class="material-icons">directions_bike</span>
           </div>
@@ -205,7 +205,7 @@
       <div id="header">
         <div class="row">
           <div class="col-xs-2 col-sm-1">
-            <span id="backbutton" class="material-icons material-input" style="z-index:3000; font-size: 3em">navigate_before</i>
+            <span id="backbutton" class="material-icons material-input" style="z-index:3000; font-size: 3em" data-bind="click:addLocationController.backToSelectCategory">navigate_before</i>
             </div>
             <div class="col-xs-10 col-sm-11" style="z-index:60;padding-right:0px">
               <h2 style="margin-top: 5px">Add location</h2>
@@ -220,6 +220,11 @@
 
   <script>
     var controller;
+
+    function showPage(pageName){
+      $("div.page.active").removeClass("active");
+      $("#"+pageName).addClass("active");
+    }
 
     (function($) {
       $.material.init();
@@ -243,18 +248,20 @@
         sidebarController: SidebarController(),
         messageContent: ko.observable(),
         addLocationController: {
-          locationData: {},
+          locationData: {category: ko.observable()},
           selectCategory: function(category){
             return function(){
-              controller.addLocationController.locationData.category = category;
-              $("div.page.active").removeClass("active");
-              $("#addLocationDetailsView").addClass("active");
+              controller.addLocationController.locationData.category(category);
+              showPage("addLocationDetailsView");
             };
           },
           backToMap: function(){
-            controller.addLocationController.locationData = {};
-            $("div.page.active").removeClass("active");
-            $("#mapView").addClass("active");
+            controller.addLocationController.locationData.category(null);
+            controller.addLocationController.locationData.position = null;
+            showPage("mapView");
+          },
+          backToSelectCategory: function(){
+            showPage("addLocationView");
           }
         }
       };
@@ -265,8 +272,7 @@
 
       console.log("All done loading");
 
-      //$("div.page.active").removeClass("active");
-      //$("#addLocationView").addClass("active");
+      //showPage("addLocationView")
 
     })(jQuery);
   </script>
