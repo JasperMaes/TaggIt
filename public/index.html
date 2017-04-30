@@ -161,41 +161,13 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="thumbnail" data-bind="css: { selected: addLocationController.locationData.category() == 'landscape' }">
-            <div class="content" data-bind="click:addLocationController.selectCategory('landscape')">
-              <span class="material-icons">terrain</span>
+        <div class="row" data-bind="foreach: addLocationController.categories, as category">
+          <div class="thumbnail" data-bind="css: { selected: $root.addLocationController.locationData.category() == name }">
+            <div class="content" data-bind="click:$root.addLocationController.selectCategory(name)">
+              <span class="material-icons" data-bind="text:icon"></span>
           </div>
         </div>
-        <div class="thumbnail" data-bind="css: { selected: addLocationController.locationData.category() == 'nature' }">
-          <div class="content" data-bind="click:addLocationController.selectCategory('nature')">
-            <span class="material-icons">nature</span>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="thumbnail" data-bind="css: { selected: addLocationController.locationData.category() == 'dining' }">
-          <div class="content" data-bind="click:addLocationController.selectCategory('dining')">
-            <span class="material-icons">local_dining</span>
-          </div>
-        </div>
-        <div class="thumbnail" data-bind="css: { selected: addLocationController.locationData.category() == 'building' }">
-          <div class="content" data-bind="click:addLocationController.selectCategory('building')">
-            <span class="material-icons">account_balance</span>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="thumbnail" data-bind="css: { selected: addLocationController.locationData.category() == 'animal' }">
-          <div class="content" data-bind="click:addLocationController.selectCategory('animal')">
-            <span class="material-icons">pets</span>
-          </div>
-        </div>
-        <div class="thumbnail" data-bind="css: { selected: addLocationController.locationData.category() == 'sport' }">
-          <div class="content" data-bind="click:addLocationController.selectCategory('sport')">
-            <span class="material-icons">directions_bike</span>
-          </div>
-        </div>
+
       </div>
     </div>
   </div>
@@ -205,31 +177,34 @@
       <div id="header">
         <div class="row">
           <div class="col-xs-2 col-sm-1">
-            <span id="backbutton" class="material-icons material-input" style="z-index:3000; font-size: 3em" data-bind="click:addLocationController.backToSelectCategory">navigate_before</i>
+            <span id="backbutton" class="material-icons" style="z-index:3000; font-size: 3em" data-bind="click:addLocationController.backToSelectCategory">navigate_before</i>
             </div>
             <div class="col-xs-8 col-sm-9" style="z-index:60;padding-right:0px">
               <h2 style="margin-top: 5px">Add location</h2>
             </div>
             <div class="col-xs-2 col-sm-2" style="z-index:60;padding-right:0px">
               <span class="material-icons" style="font-size: 3em;">done</span>
-            </div>
           </div>
         </div>
-        <p>
-          ADD LOCATION DETAILS
-        </p>
       </div>
+      <p>
+        ADD LOCATION DETAILS
+      </p>
     </div>
+  </div>
 
   <script>
     var controller;
 
-    function showPage(pageName){
+    function showPage(pageName) {
       $("div.page.active").removeClass("active");
-      $("#"+pageName).addClass("active");
+      $("#" + pageName).addClass("active");
     }
 
     (function($) {
+      // Use this class to add a ripple effect to a button
+      // ==> Only useful when not changing pages since it is too slow to be visible before page changes
+      $.material.options.ripples = ".withripple";
       $.material.init();
 
       function updateLocationGpsError(error) {
@@ -251,19 +226,30 @@
         sidebarController: SidebarController(),
         messageContent: ko.observable(),
         addLocationController: {
-          locationData: {category: ko.observable()},
-          selectCategory: function(category){
-            return function(){
+          categories: [
+            {name:'landscape', icon:'terrain'},
+            {name:'nature', icon:'nature'},
+            {name:'dining', icon:'local_dining'},
+            {name:'building', icon:'account_balance'},
+            {name:'animal', icon:'pets'},
+            {name:'sport', icon:'directions_bike'},
+          ], //, 'nature', 'dining', 'building', 'animal', 'sport'
+          locationData: {
+            category: ko.observable()
+          },
+          selectCategory: function(category) {
+            return function() {
               controller.addLocationController.locationData.category(category);
               showPage("addLocationDetailsView");
             };
           },
-          backToMap: function(){
+          backToMap: function() {
+            // Reset entered data
             controller.addLocationController.locationData.category(null);
             controller.addLocationController.locationData.position = null;
             showPage("mapView");
           },
-          backToSelectCategory: function(){
+          backToSelectCategory: function() {
             showPage("addLocationView");
           }
         }
