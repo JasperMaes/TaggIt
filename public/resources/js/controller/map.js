@@ -116,7 +116,6 @@ var MapController = function(updateLocationGpsError, initLocationGpsError) {
         var pos = [position.coords.latitude, position.coords.longitude];
         var accuracy = position.coords.accuracy;
         console.log("Got actual position");
-        //TODO add spinner that indicates loading and hide it when this method has finished.
         var centerOptions = {
           lat: pos[0],
           lng: pos[1],

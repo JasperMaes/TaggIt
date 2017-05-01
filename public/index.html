@@ -200,13 +200,20 @@
           </div>
           <div class="row">
             <div class="col-sm-2 col-xs-2">
-              <span class="material-icons" style="font-size: 3em;">place</span>
+              <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#mapPreview" >place</span>
             </div>
             <div class="col-sm-2 col-xs-2">
               <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#changeCategoryCollapse" data-bind="text: addLocationController.getCategoryIcon(addLocationController.locationData.category()), click: addLocationController.openPanelHandler"></span>
             </div>
             <div class="col-sm-2 col-xs-2">
               <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#websiteCollapse" data-bind="click: addLocationController.openPanelHandler">language</span>
+            </div>
+          </div>
+          <div id="mapPreview" class="collapse">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                MAP PREVIEW IN SMALL RECTANGLE
+              </div>
             </div>
           </div>
           <div id="websiteCollapse" class="collapse">
@@ -258,12 +265,18 @@
               </div>
             </div>
           </div>
+        </form>
       </div>
-    </div>
-    </form>
 
-  </div>
-  </div>
+      <nav class="navbar navbar-inverse navbar-fixed-bottom">
+        <div class="container-fluid">
+          <div class="row">
+            <input class="btn btn-default col-xs-12 col-sm-12" type="button" value="New location" style="color:white" data-bind="click: addLocationController.backToMap">
+          </div>
+        </div>
+      </nav>
+
+    </div>
   </div>
 
   <script>
