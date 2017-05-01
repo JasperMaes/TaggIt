@@ -187,10 +187,83 @@
           </div>
         </div>
       </div>
-      <p>
-        ADD LOCATION DETAILS
-      </p>
+
+      <div class="container">
+        <form>
+          <div class="form-group form-group-lg label-floating">
+            <label class="control-label" for="locationTitle">Title</label>
+            <input type="text" class="form-control" id="locationTitle">
+          </div>
+          <div class="form-group label-floating">
+            <label class="control-label" for="locationDescription">Description</label>
+            <textarea class="form-control" id="locationDescription" rows="4"></textarea>
+          </div>
+          <div class="row">
+            <div class="col-sm-2 col-xs-2">
+              <span class="material-icons" style="font-size: 3em;">place</span>
+            </div>
+            <div class="col-sm-2 col-xs-2">
+              <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#changeCategoryCollapse" data-bind="text: addLocationController.getCategoryIcon(addLocationController.locationData.category()), click: addLocationController.openPanelHandler"></span>
+            </div>
+            <div class="col-sm-2 col-xs-2">
+              <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#websiteCollapse" data-bind="click: addLocationController.openPanelHandler">language</span>
+            </div>
+          </div>
+          <div id="websiteCollapse" class="collapse">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="form-group label-floating">
+                  <label class="control-label" for="url" style="margin-top:0px">Website</label>
+                  <input type="url" class="form-control" id="url">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="changeCategoryCollapse" class="collapse">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="panel panel-default">
+                  <div class="panel-body" data-bind="foreach: addLocationController.categories, as category">
+                    <div class="thumbnail-3" data-bind="css: { selected: $root.addLocationController.locationData.category() == name }">
+                      <div class="content" data-bind="click:$root.addLocationController.selectCategoryClosePanel(name)">
+                        <span class="material-icons" data-bind="text:icon"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="thumbnail-3-no-margin photo-tile">
+                <div class="content">
+                  <span class="material-icons">add_a_photo</span>
+                </div>
+              </div>
+              <div class="thumbnail-3-no-margin photo-tile">
+                <div class="content">
+                  <span class="material-icons">add_a_photo</span>
+                </div>
+              </div>
+              <div class="thumbnail-3-no-margin photo-tile">
+                <div class="content">
+                  <span class="material-icons">add_a_photo</span>
+                </div>
+              </div>
+              <div class="thumbnail-3-no-margin photo-tile">
+                <div class="content">
+                  <span class="material-icons">add_a_photo</span>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
     </div>
+    </form>
+
+  </div>
+  </div>
   </div>
 
   <script>
@@ -226,22 +299,63 @@
         sidebarController: SidebarController(),
         messageContent: ko.observable(),
         addLocationController: {
-          categories: [
-            {name:'landscape', icon:'terrain'},
-            {name:'nature', icon:'nature'},
-            {name:'dining', icon:'local_dining'},
-            {name:'building', icon:'account_balance'},
-            {name:'animal', icon:'pets'},
-            {name:'sport', icon:'directions_bike'},
+          categories: [{
+              name: 'landscape',
+              icon: 'terrain'
+            },
+            {
+              name: 'nature',
+              icon: 'nature'
+            },
+            {
+              name: 'dining',
+              icon: 'local_dining'
+            },
+            {
+              name: 'building',
+              icon: 'account_balance'
+            },
+            {
+              name: 'animal',
+              icon: 'pets'
+            },
+            {
+              name: 'sport',
+              icon: 'directions_bike'
+            },
           ], //, 'nature', 'dining', 'building', 'animal', 'sport'
           locationData: {
             category: ko.observable()
+          },
+          getCategoryIcon: function(category) {
+            var result = "home";
+            controller.addLocationController.categories.forEach(function(value) {
+              if (value.name === category) {
+                result = value.icon;
+              }
+            });
+            if (result === "home") {
+              console.error("Unknown category, no icon defined");
+            }
+            return result;
           },
           selectCategory: function(category) {
             return function() {
               controller.addLocationController.locationData.category(category);
               showPage("addLocationDetailsView");
             };
+          },
+          selectCategoryClosePanel: function(category) {
+            return function() {
+              controller.addLocationController.locationData.category(category);
+              $("#changeCategoryCollapse").collapse('toggle');
+            };
+          },
+          openPanelHandler: function() {
+            var $this = $(this);
+            $("[data-collapse-group='myDivs']:not([data-target='" + $this.data("target") + "'])").each(function() {
+              $($(this).data("target")).collapse("hide");
+            });
           },
           backToMap: function() {
             // Reset entered data
@@ -262,7 +376,8 @@
       console.log("All done loading");
 
       //showPage("addLocationView")
-
+      showPage("addLocationDetailsView");
+      controller.addLocationController.locationData.category("nature");
     })(jQuery);
   </script>
 

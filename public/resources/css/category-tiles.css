@@ -8,12 +8,42 @@
   font-size: 3.68vw;
 }
 
-.thumbnail.selected {
+.thumbnail-3.selected, .thumbnail-3-no-margin.selected, .thumbnail.selected {
   outline: #2196F3 solid 5px;
   outline-offset: -5px;
 }
 
-.content .material-icons {
+.thumbnail-3 {
+  float: left;
+  position: relative;
+  width: 30%;
+  padding-bottom: 30%; /* = width for a 1:1 aspect ratio */
+  margin: 1.66%;
+  overflow: hidden;
+  font-size: 3.68vw;
+}
+
+.thumbnail-3-no-margin {
+  float: left;
+  position: relative;
+  width: 33.3%;
+  padding-bottom: 33.3%; /* = width for a 1:1 aspect ratio */
+  overflow: hidden;
+  font-size: 3.68vw;
+}
+
+.thumbnail-3 .content .material-icons {
+  font-size: 20vw;
+  display: inline-block;
+}
+
+.thumbnail-3-no-margin .content .material-icons {
+  font-size: 20vw;
+  display: inline-block;
+}
+
+
+.thumbnail .content .material-icons {
   font-size: 36.8vw;
   display: inline-block;
 }
@@ -26,4 +56,10 @@
   /* = 100% - 2*5% padding */
   padding: 10% 5%;
   text-align-center
+}
+
+
+.photo-tile {
+  background-color: lightgray;
+  margin:0px;
 }
