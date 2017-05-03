@@ -152,7 +152,7 @@
             });
 
             // Add all event listeners to the map by running through the keys of the object
-            each(Object.keys(customEventsHandlers), function(handlerName){map.on(handlerName, customEventsHandlers[handlerName])});
+            each(Object.keys(customEventsHandlers||{}), function(handlerName){map.on(handlerName, customEventsHandlers[handlerName])});
 
             // triggers an 'invalidateSize' when detecting a change in an observable (cfr http://stackoverflow.com/questions/20400713/leaflet-map-not-showing-properly-in-bootstrap-3-0-modal)
             if (invalidateSize && ko.isObservable(invalidateSize)) {
@@ -177,26 +177,27 @@
             });
 
             var markersList = [];
-            each(ko.unwrap(markers), function (m, idx) { markersList.push(new Marker(m, map));  });
-            var markerCenter = new Marker(ko.unwrap(centerMarker), map);
-            markersList.push(markerCenter);
+            each(ko.unwrap(markers), function (m, idx) { markersList.push(new Marker(m, map));  })
+            if (centerMarker){
+              var markerCenter = new Marker(ko.unwrap(centerMarker), map);
+              markersList.push(markerCenter);
 
-            //TODO Improve circle creation!
-            var centerCircleObject = L.circle(markerCenter.centerM(), {
-              fillColor: centerMarker.color,
-              fillOpacity: 0.3,
-              radius: centerCircle.radius(),
-              weight: 0
-            }).addTo(map)
+              //TODO Improve circle creation!
+              var centerCircleObject = L.circle(markerCenter.centerM(), {
+                fillColor: centerMarker.color,
+                fillOpacity: 0.3,
+                radius: centerCircle.radius(),
+                weight: 0
+              }).addTo(map)
 
-            markerCenter.centerM.subscribe(function(newValue){
-              this.setLatLng(newValue)
-            }, centerCircleObject)
+              markerCenter.centerM.subscribe(function(newValue){
+                this.setLatLng(newValue)
+              }, centerCircleObject)
 
-            centerCircle.radius.subscribe(function(newValue){
-              this.setRadius(newValue)
-            }, centerCircleObject)
-
+              centerCircle.radius.subscribe(function(newValue){
+                this.setRadius(newValue)
+              }, centerCircleObject)
+            }
             // http://stackoverflow.com/questions/14149551/subscribe-to-observable-array-for-new-or-removed-entry-only
             var subscr = markers.subscribe(function(changes) {
                 each(changes, function(c) {
