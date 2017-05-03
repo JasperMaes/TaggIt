@@ -119,281 +119,330 @@
       </div>
     </div>
   </script>
-</head>
 
-<body>
-  <div id="mapView" class="page has-sidebar active" data-bind="css : { toggled : sidebarController.isVisible() }">
-    <div data-bind="template: { name: 'sidebar-template', data: sidebarController }"></div>
+  <script type="text/html" id="mapView-template">
+    <div id="mapView" class="page has-sidebar active" data-bind="css : { toggled : sidebarController.isVisible() }">
+      <div data-bind="template: { name: 'sidebar-template', data: sidebarController }"></div>
 
-    <div class="page-content-wrapper">
-      <div id="header">
-        <div class="row">
-          <div class="col-xs-2 col-sm-1">
-            <span id="toggleButton" class="glyphicon glyphicon-menu-hamburger btn btn-default gi-1_5x material-input" style="z-index:3000" data-bind="click: sidebarController.toggle"></span>
-          </div>
-          <!-- ko if:  mapController.filterbarVisible -->
-          <div class="col-xs-7 col-sm-8" style="z-index:60;padding-right:0px">
-            <input type="text" class="form-control" placeholder="Search..." />
-          </div>
-          <div class="col-xs-3 col-sm-3" style="z-index:60;padding-left:0px">
-            <span class="glyphicon glyphicon-search navbar-btn btn btn-default gi-1_5x material-input" style="padding-right: 15px;"></span>
-
-            <span class="glyphicon glyphicon-filter navbar-btn btn btn-default gi-1_5x material-input"></span>
-          </div>
-          <!-- /ko -->
-        </div>
-      </div>
-
-      <div data-bind="template: { name: 'map-template', data: $data }"></div>
-    </div>
-  </div>
-
-  <div id="addLocationView" class="page">
-    <div class="page-content-wrapper">
-      <div id="header">
-        <div class="row">
-          <div class="col-xs-2 col-sm-1">
-            <span id="backbutton" class="material-icons material-input" style="z-index:3000; font-size: 3em" data-bind="click:addLocationController.backToMap">navigate_before</i>
-            </div>
-            <div class="col-xs-10 col-sm-11" style="z-index:60;padding-right:0px">
-              <h2 style="margin-top: 5px">Add location</h2>
-            </div>
-          </div>
-        </div>
-
-        <div class="row" data-bind="foreach: addLocationController.categories, as category">
-          <div class="thumbnail" data-bind="css: { selected: $root.addLocationController.locationData.category() == name }">
-            <div class="content" data-bind="click:$root.addLocationController.selectCategory(name)">
-              <span class="material-icons" data-bind="text:icon"></span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <div id="addLocationDetailsView" class="page">
-    <div class="page-content-wrapper">
-      <div id="header">
-        <div class="row">
-          <div class="col-xs-2 col-sm-1">
-            <span id="backbutton" class="material-icons" style="z-index:3000; font-size: 3em" data-bind="click:addLocationController.backToSelectCategory">navigate_before</i>
-            </div>
-            <div class="col-xs-8 col-sm-9" style="z-index:60;padding-right:0px">
-              <h2 style="margin-top: 5px">Add location</h2>
-            </div>
-            <div class="col-xs-2 col-sm-2" style="z-index:60;padding-right:0px">
-              <span class="material-icons" style="font-size: 3em;">done</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="container">
-        <form>
-          <div class="form-group form-group-lg label-floating">
-            <label class="control-label" for="locationTitle">Title</label>
-            <input type="text" class="form-control" id="locationTitle">
-          </div>
-          <div class="form-group label-floating">
-            <label class="control-label" for="locationDescription">Description</label>
-            <textarea class="form-control" id="locationDescription" rows="4"></textarea>
-          </div>
+      <div class="page-content-wrapper">
+        <div id="header">
           <div class="row">
-            <div class="col-sm-2 col-xs-2">
-              <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#mapPreview" >place</span>
+            <div class="col-xs-2 col-sm-1">
+              <span id="toggleButton" class="glyphicon glyphicon-menu-hamburger btn btn-default gi-1_5x material-input" style="z-index:3000" data-bind="click: sidebarController.toggle"></span>
             </div>
-            <div class="col-sm-2 col-xs-2">
-              <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#changeCategoryCollapse" data-bind="text: addLocationController.getCategoryIcon(addLocationController.locationData.category()), click: addLocationController.openPanelHandler"></span>
+            <!-- ko if:  mapController.filterbarVisible -->
+            <div class="col-xs-7 col-sm-8" style="z-index:60;padding-right:0px">
+              <input type="text" class="form-control" placeholder="Search..." />
             </div>
-            <div class="col-sm-2 col-xs-2">
-              <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#websiteCollapse" data-bind="click: addLocationController.openPanelHandler">language</span>
+            <div class="col-xs-3 col-sm-3" style="z-index:60;padding-left:0px">
+              <span class="glyphicon glyphicon-search navbar-btn btn btn-default gi-1_5x material-input" style="padding-right: 15px;"></span>
+
+              <span class="glyphicon glyphicon-filter navbar-btn btn btn-default gi-1_5x material-input"></span>
             </div>
+            <!-- /ko -->
           </div>
-          <div id="mapPreview" class="collapse">
-            <div class="panel panel-default">
-              <div class="panel-body">
-                MAP PREVIEW IN SMALL RECTANGLE
+        </div>
+
+        <div data-bind="template: { name: 'map-template', data: $data }"></div>
+      </div>
+    </div>
+  </script>
+
+  <script type="text/html" id="addLocationView-template">
+    <div id="addLocationView" class="page">
+      <div class="page-content-wrapper">
+        <div id="header">
+          <div class="row">
+            <div class="col-xs-2 col-sm-1">
+              <span id="backbutton" class="material-icons material-input" style="z-index:3000; font-size: 3em" data-bind="click:addLocationController.backToMap">navigate_before</i>
+              </div>
+              <div class="col-xs-10 col-sm-11" style="z-index:60;padding-right:0px">
+                <h2 style="margin-top: 5px">Add location</h2>
               </div>
             </div>
           </div>
-          <div id="websiteCollapse" class="collapse">
-            <div class="panel panel-default">
-              <div class="panel-body">
-                <div class="form-group label-floating">
-                  <label class="control-label" for="url" style="margin-top:0px">Website</label>
-                  <input type="url" class="form-control" id="url">
+
+          <div class="row" data-bind="foreach: addLocationController.categories, as category">
+            <div class="thumbnail" data-bind="css: { selected: $root.addLocationController.locationData.category() == name }">
+              <div class="content" data-bind="click:$root.addLocationController.selectCategory(name)">
+                <span class="material-icons" data-bind="text:icon"></span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </script>
+
+  <style>
+    #myImg {
+      position: relative;
+      left: 123px;
+      top: 60px;
+      right: 0;
+      bottom: 0;
+
+      display: block;
+      margin: 0;
+      padding: 0;
+    }
+
+    #frame {
+      height: 200px;
+    }
+  </style>
+
+  <script type="text/html" id="addLocationDetailsView-template">
+    <div id="addLocationDetailsView" class="page">
+      <div class="page-content-wrapper">
+        <div id="header">
+          <div class="row">
+            <div class="col-xs-2 col-sm-1">
+              <span id="backbutton" class="material-icons" style="z-index:3000; font-size: 3em" data-bind="click:addLocationController.backToSelectCategory">navigate_before</i>
+              </div>
+              <div class="col-xs-8 col-sm-9" style="z-index:60;padding-right:0px">
+                <h2 style="margin-top: 5px">Add location</h2>
+              </div>
+              <div class="col-xs-2 col-sm-2" style="z-index:60;padding-right:0px">
+                <span class="material-icons" style="font-size: 3em;">done</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <form>
+            <div class="form-group form-group-lg label-floating">
+              <label class="control-label" for="locationTitle">Title</label>
+              <input type="text" class="form-control" id="locationTitle">
+            </div>
+            <div class="form-group label-floating">
+              <label class="control-label" for="locationDescription">Description</label>
+              <textarea class="form-control" id="locationDescription" rows="4"></textarea>
+            </div>
+            <div class="row">
+              <div class="col-sm-2 col-xs-2">
+                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#mapPreview" data-bind="click:addLocationController.openMapPreviewHandler">place</span>
+              </div>
+              <div class="col-sm-2 col-xs-2">
+                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#changeCategoryCollapse" data-bind="text: addLocationController.getCategoryIcon(addLocationController.locationData.category()), click: addLocationController.openPanelHandler"></span>
+              </div>
+              <div class="col-sm-2 col-xs-2">
+                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#websiteCollapse" data-bind="click: addLocationController.openPanelHandler">language</span>
+              </div>
+            </div>
+            <div id="mapPreview" class="collapse">
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <div id="frame">
+                    <img id="myImg" src="http://localhost:3000/vendors/leaflet/images/marker-icon.png" />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div id="changeCategoryCollapse" class="collapse">
-            <div class="container-fluid">
-              <div class="row">
-                <div class="panel panel-default">
-                  <div class="panel-body" data-bind="foreach: addLocationController.categories, as category">
-                    <div class="thumbnail-3" data-bind="css: { selected: $root.addLocationController.locationData.category() == name }">
-                      <div class="content" data-bind="click:$root.addLocationController.selectCategoryClosePanel(name)">
-                        <span class="material-icons" data-bind="text:icon"></span>
+            <div id="websiteCollapse" class="collapse">
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <div class="form-group label-floating">
+                    <label class="control-label" for="url" style="margin-top:0px">Website</label>
+                    <input type="url" class="form-control" id="url">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="changeCategoryCollapse" class="collapse">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="panel panel-default">
+                    <div class="panel-body" data-bind="foreach: addLocationController.categories, as category">
+                      <div class="thumbnail-3" data-bind="css: { selected: $root.addLocationController.locationData.category() == name }">
+                        <div class="content" data-bind="click:$root.addLocationController.selectCategoryClosePanel(name)">
+                          <span class="material-icons" data-bind="text:icon"></span>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="container-fluid">
-            <div class="row">
-              <div class="thumbnail-3-no-margin photo-tile">
-                <div class="content">
-                  <span class="material-icons">add_a_photo</span>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="thumbnail-3-no-margin photo-tile">
+                  <div class="content">
+                    <span class="material-icons">add_a_photo</span>
+                  </div>
                 </div>
-              </div>
-              <div class="thumbnail-3-no-margin photo-tile">
-                <div class="content">
-                  <span class="material-icons">add_a_photo</span>
+                <div class="thumbnail-3-no-margin photo-tile">
+                  <div class="content">
+                    <span class="material-icons">add_a_photo</span>
+                  </div>
                 </div>
-              </div>
-              <div class="thumbnail-3-no-margin photo-tile">
-                <div class="content">
-                  <span class="material-icons">add_a_photo</span>
+                <div class="thumbnail-3-no-margin photo-tile">
+                  <div class="content">
+                    <span class="material-icons">add_a_photo</span>
+                  </div>
                 </div>
-              </div>
-              <div class="thumbnail-3-no-margin photo-tile">
-                <div class="content">
-                  <span class="material-icons">add_a_photo</span>
+                <div class="thumbnail-3-no-margin photo-tile">
+                  <div class="content">
+                    <span class="material-icons">add_a_photo</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </form>
-      </div>
-
-      <nav class="navbar navbar-inverse navbar-fixed-bottom">
-        <div class="container-fluid">
-          <div class="row">
-            <input class="btn btn-default col-xs-12 col-sm-12" type="button" value="New location" style="color:white" data-bind="click: addLocationController.backToMap">
-          </div>
+          </form>
         </div>
-      </nav>
 
+        <nav class="navbar navbar-inverse navbar-fixed-bottom">
+          <div class="container-fluid">
+            <div class="row">
+              <input class="btn btn-default col-xs-12 col-sm-12" type="button" value="New location" style="color:white" data-bind="click: addLocationController.backToMap">
+            </div>
+          </div>
+        </nav>
+
+      </div>
     </div>
-  </div>
-
-  <script>
-    var controller;
-
-    function showPage(pageName) {
-      $("div.page.active").removeClass("active");
-      $("#" + pageName).addClass("active");
-    }
-
-    (function($) {
-      // Use this class to add a ripple effect to a button
-      // ==> Only useful when not changing pages since it is too slow to be visible before page changes
-      $.material.options.ripples = ".withripple";
-      $.material.init();
-
-      function updateLocationGpsError(error) {
-        GeoLocation.printError(error);
-        controller.mapController.buttonsVisible(false);
-        controller.mapController.mapVisible(false);
-        controller.mapController.filterbarVisible(false);
-        controller.messageContent("GPS error: Could not retrieve location");
-      }
-
-      function initLocationGpsError(error) {
-        console.log("initLocationGpsError");
-        GeoLocation.printError(error);
-        controller.messageContent("GPS error: Initialization error; is the GPS enabled?");
-      }
-
-      controller = {
-        mapController: MapController(updateLocationGpsError, initLocationGpsError),
-        sidebarController: SidebarController(),
-        messageContent: ko.observable(),
-        addLocationController: {
-          categories: [{
-              name: 'landscape',
-              icon: 'terrain'
-            },
-            {
-              name: 'nature',
-              icon: 'nature'
-            },
-            {
-              name: 'dining',
-              icon: 'local_dining'
-            },
-            {
-              name: 'building',
-              icon: 'account_balance'
-            },
-            {
-              name: 'animal',
-              icon: 'pets'
-            },
-            {
-              name: 'sport',
-              icon: 'directions_bike'
-            },
-          ], //, 'nature', 'dining', 'building', 'animal', 'sport'
-          locationData: {
-            category: ko.observable()
-          },
-          getCategoryIcon: function(category) {
-            var result = "home";
-            controller.addLocationController.categories.forEach(function(value) {
-              if (value.name === category) {
-                result = value.icon;
-              }
-            });
-            if (result === "home") {
-              console.error("Unknown category, no icon defined");
-            }
-            return result;
-          },
-          selectCategory: function(category) {
-            return function() {
-              controller.addLocationController.locationData.category(category);
-              showPage("addLocationDetailsView");
-            };
-          },
-          selectCategoryClosePanel: function(category) {
-            return function() {
-              controller.addLocationController.locationData.category(category);
-              $("#changeCategoryCollapse").collapse('toggle');
-            };
-          },
-          openPanelHandler: function() {
-            var $this = $(this);
-            $("[data-collapse-group='myDivs']:not([data-target='" + $this.data("target") + "'])").each(function() {
-              $($(this).data("target")).collapse("hide");
-            });
-          },
-          backToMap: function() {
-            // Reset entered data
-            controller.addLocationController.locationData.category(null);
-            controller.addLocationController.locationData.position = null;
-            showPage("mapView");
-          },
-          backToSelectCategory: function() {
-            showPage("addLocationView");
-          }
-        }
-      };
-
-      ko.applyBindings(controller);
-
-      controller.mapController.initMap();
-
-      console.log("All done loading");
-
-      //showPage("addLocationView")
-      showPage("addLocationDetailsView");
-      controller.addLocationController.locationData.category("nature");
-    })(jQuery);
   </script>
 
+</head>
+
+<body>
 </body>
+
+<script>
+  var controller;
+
+  function showPage(pageName) {
+    var element = $("body > div.page")
+    if (element.length > 0) {
+      ko.cleanNode(element[0]);
+      $("body").empty()
+    }
+    var page = $($("#" + pageName + "-template").html())
+
+    $("body").append(page);
+    $("#" + pageName).addClass("active");
+    ko.applyBindings(controller, page[0])
+  }
+
+  (function($) {
+    // Use this class to add a ripple effect to a button
+    // ==> Only useful when not changing pages since it is too slow to be visible before page changes
+    $.material.options.ripples = ".withripple";
+    $.material.init();
+
+    function updateLocationGpsError(error) {
+      GeoLocation.printError(error);
+      controller.mapController.buttonsVisible(false);
+      controller.mapController.mapVisible(false);
+      controller.mapController.filterbarVisible(false);
+      controller.messageContent("GPS error: Could not retrieve location");
+    }
+
+    function initLocationGpsError(error) {
+      console.log("initLocationGpsError");
+      GeoLocation.printError(error);
+      controller.messageContent("GPS error: Initialization error; is the GPS enabled?");
+    }
+
+    controller = {
+      mapController: MapController(updateLocationGpsError, initLocationGpsError),
+      sidebarController: SidebarController(),
+      messageContent: ko.observable(),
+      addLocationController: {
+        categories: [{
+            name: 'landscape',
+            icon: 'terrain'
+          },
+          {
+            name: 'nature',
+            icon: 'nature'
+          },
+          {
+            name: 'dining',
+            icon: 'local_dining'
+          },
+          {
+            name: 'building',
+            icon: 'account_balance'
+          },
+          {
+            name: 'animal',
+            icon: 'pets'
+          },
+          {
+            name: 'sport',
+            icon: 'directions_bike'
+          },
+        ], //, 'nature', 'dining', 'building', 'animal', 'sport'
+        locationData: {
+          category: ko.observable()
+        },
+        getCategoryIcon: function(category) {
+          var result = "home";
+          controller.addLocationController.categories.forEach(function(value) {
+            if (value.name === category) {
+              result = value.icon;
+            }
+          });
+          if (result === "home") {
+            console.error("Unknown category, no icon defined");
+          }
+          return result;
+        },
+        selectCategory: function(category) {
+          return function() {
+            controller.addLocationController.locationData.category(category);
+            showPage("addLocationDetailsView");
+          };
+        },
+        selectCategoryClosePanel: function(category) {
+          return function() {
+            controller.addLocationController.locationData.category(category);
+            $("#changeCategoryCollapse").collapse('toggle');
+          };
+        },
+        openPanelHandler: function() {
+          var $this = $(this);
+          $("[data-collapse-group='myDivs']:not([data-target='" + $this.data("target") + "'])").each(function() {
+            $($(this).data("target")).collapse("hide");
+          });
+        },
+        openMapPreviewHandler: function() {
+          setTimeout(function() { //Needs a little timeout to have the correct width of the panel
+            var panel = $("#mapPreview div.panel-body");
+            var width = panel.width();
+            var height = 0.75 * width;
+            var lat = controller.addLocationController.locationData.position[0];
+            var lng = controller.addLocationController.locationData.position[1];
+            var imageUrl = "http://staticmap.openstreetmap.de/staticmap.php?center=" + lat + "," + lng + "&zoom=16&size=" + width + "x" + height + "&maptype=mapnik"
+            panel.find("#frame")
+              .css('background-image', 'url(' + imageUrl + ')')
+              .css('height', height);
+          }, 50)
+        },
+        backToMap: function() {
+          // Reset entered data
+          controller.addLocationController.locationData.category(null);
+          controller.addLocationController.locationData.position = null;
+          showPage("mapView");
+        },
+        backToSelectCategory: function() {
+          showPage("addLocationView");
+        }
+      }
+    };
+    
+    controller.mapController.initMap();
+
+    console.log("All done loading");
+
+    showPage("mapView")
+
+
+    //showPage("addLocationView")
+    //showPage("addLocationDetailsView");
+    //controller.addLocationController.locationData.category("nature");
+  })(jQuery);
+</script>
 
 </html>

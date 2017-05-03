@@ -64,11 +64,11 @@ var MapController = function(updateLocationGpsError, initLocationGpsError) {
       //   opened: ko.observable(false)
       // });
 
-      var pos = {
-        lat: position[0],
-        lng: position[1]
-      };
-      controller.addLocationController.locationData.position = pos;
+      // var pos = {
+      //   lat: position[0],
+      //   lng: position[1]
+      // };
+      controller.addLocationController.locationData.position = position;
 
       showPage("addLocationView");
     },
