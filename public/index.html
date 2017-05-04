@@ -53,7 +53,17 @@
 
   <script src="resources/js/controller/sidebar.js"></script>
   <script src="resources/js/controller/map.js"></script>
-
+<style>
+  .file-upload
+  {
+      opacity: 0;
+      width: 102px;
+      height: 35px;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+  }
+</style>
   <script type="text/html" id="sidebar-template">
 
     <div class="sidebar-wrapper">
@@ -204,7 +214,7 @@
                 <h2 style="margin-top: 5px">Add location</h2>
               </div>
               <div class="col-xs-2 col-sm-2" style="z-index:60;padding-right:0px">
-                <span class="material-icons" style="font-size: 3em;">done</span>
+                <span class="material-icons" style="font-size: 3em;" data-bind="click: addLocationController.savePosition">done</span>
             </div>
           </div>
         </div>
@@ -213,11 +223,11 @@
           <form>
             <div class="form-group form-group-lg label-floating">
               <label class="control-label" for="locationTitle">Title</label>
-              <input type="text" class="form-control" id="locationTitle">
+              <input type="text" class="form-control" id="locationTitle" data-bind="value: addLocationController.locationData.title">
             </div>
             <div class="form-group label-floating">
               <label class="control-label" for="locationDescription">Description</label>
-              <textarea class="form-control" id="locationDescription" rows="4"></textarea>
+              <textarea class="form-control" id="locationDescription" rows="4"  data-bind="value: addLocationController.locationData.description"></textarea>
             </div>
             <div class="row">
               <div class="col-sm-2 col-xs-2">
@@ -244,7 +254,7 @@
                 <div class="panel-body">
                   <div class="form-group label-floating">
                     <label class="control-label" for="url" style="margin-top:0px">Website</label>
-                    <input type="url" class="form-control" id="url">
+                    <input type="url" class="form-control" id="url" data-bind="value: addLocationController.locationData.website">
                   </div>
                 </div>
               </div>
@@ -265,25 +275,23 @@
               </div>
             </div>
             <div class="container-fluid">
+              <!-- TODO Add method for storing image in localstorage
+              http://stackoverflow.com/questions/31850732/save-a-file-image-to-localstorage-html
+              -->
               <div class="row">
+                <!-- ko foreach: addLocationController.locationData.images -->
                 <div class="thumbnail-3-no-margin photo-tile">
                   <div class="content">
+                    <!-- TODO add remove image button -->
+                    <!-- TODO add show larger image button -->
+                    <!-- TODO add image tag instead of span -->
                     <span class="material-icons">add_a_photo</span>
                   </div>
                 </div>
+                <!-- /ko -->
                 <div class="thumbnail-3-no-margin photo-tile">
                   <div class="content">
-                    <span class="material-icons">add_a_photo</span>
-                  </div>
-                </div>
-                <div class="thumbnail-3-no-margin photo-tile">
-                  <div class="content">
-                    <span class="material-icons">add_a_photo</span>
-                  </div>
-                </div>
-                <div class="thumbnail-3-no-margin photo-tile">
-                  <div class="content">
-                    <span class="material-icons">add_a_photo</span>
+                    <span class="material-icons"><input class="file-upload" type="file">add_a_photo</span>
                   </div>
                 </div>
               </div>
@@ -294,7 +302,7 @@
         <nav class="navbar navbar-inverse navbar-fixed-bottom">
           <div class="container-fluid">
             <div class="row">
-              <input class="btn btn-default col-xs-12 col-sm-12" type="button" value="New location" style="color:white" data-bind="click: addLocationController.backToMap">
+              <input class="btn btn-default col-xs-12 col-sm-12" type="button" value="New location" style="color:white" data-bind="click: addLocationController.savePosition">
             </div>
           </div>
         </nav>
@@ -375,7 +383,11 @@
           },
         ], //, 'nature', 'dining', 'building', 'animal', 'sport'
         locationData: {
-          category: ko.observable()
+          category: ko.observable(),
+          title: ko.observable(),
+          description: ko.observable(),
+          website: ko.observable(),
+          images: ko.observableArray([])
         },
         getCategoryIcon: function(category) {
           var result = "home";
@@ -419,19 +431,28 @@
               .css('background-image', 'url(' + imageUrl + ')')
               .css('height', height);
           }, 50)
+          controller.addLocationController.openPanelHandler.call(this);
+        },
+        savePosition: function(){
+          //TODO save position logic
+          console.log("Add functionality to save position");
+          controller.addLocationController.backToMap();
         },
         backToMap: function() {
+          showPage("mapView");
           // Reset entered data
+          controller.addLocationController.locationData.title(null);
+          controller.addLocationController.locationData.description(null);
+          controller.addLocationController.locationData.website(null);
           controller.addLocationController.locationData.category(null);
           controller.addLocationController.locationData.position = null;
-          showPage("mapView");
         },
         backToSelectCategory: function() {
           showPage("addLocationView");
         }
       }
     };
-    
+
     controller.mapController.initMap();
 
     console.log("All done loading");
