@@ -53,17 +53,16 @@
 
   <script src="resources/js/controller/sidebar.js"></script>
   <script src="resources/js/controller/map.js"></script>
-<style>
-  .file-upload
-  {
+  <style>
+    .file-upload {
       opacity: 0;
       width: 102px;
       height: 35px;
       position: absolute;
       top: 0px;
       left: 0px;
-  }
-</style>
+    }
+  </style>
   <script type="text/html" id="sidebar-template">
 
     <div class="sidebar-wrapper">
@@ -227,7 +226,7 @@
             </div>
             <div class="form-group label-floating">
               <label class="control-label" for="locationDescription">Description</label>
-              <textarea class="form-control" id="locationDescription" rows="4"  data-bind="value: addLocationController.locationData.description"></textarea>
+              <textarea class="form-control" id="locationDescription" rows="4" data-bind="value: addLocationController.locationData.description"></textarea>
             </div>
             <div class="row">
               <div class="col-sm-2 col-xs-2">
@@ -275,9 +274,6 @@
               </div>
             </div>
             <div class="container-fluid">
-              <!-- TODO Add method for storing image in localstorage
-              http://stackoverflow.com/questions/31850732/save-a-file-image-to-localstorage-html
-              -->
               <div class="row">
                 <!-- ko foreach: addLocationController.locationData.images -->
                 <div class="thumbnail-3-no-margin photo-tile">
@@ -285,13 +281,13 @@
                     <!-- TODO add remove image button -->
                     <!-- TODO add show larger image button -->
                     <!-- TODO add image tag instead of span -->
-                    <span class="material-icons">add_a_photo</span>
+                    <img data-bind="attr: { src: $data }" />
                   </div>
                 </div>
                 <!-- /ko -->
                 <div class="thumbnail-3-no-margin photo-tile">
                   <div class="content">
-                    <span class="material-icons"><input class="file-upload" type="file">add_a_photo</span>
+                    <span class="material-icons"><input class="file-upload" type="file" data-bind="event: { change: controller.addLocationController.addImage }" style="height:100%;width:100%;">add_a_photo</span>
                   </div>
                 </div>
               </div>
@@ -352,6 +348,7 @@
       controller.messageContent("GPS error: Initialization error; is the GPS enabled?");
     }
 
+    //TODO for all event handlers: add data parameter to get access to the controller
     controller = {
       mapController: MapController(updateLocationGpsError, initLocationGpsError),
       sidebarController: SidebarController(),
@@ -433,9 +430,12 @@
           }, 50)
           controller.addLocationController.openPanelHandler.call(this);
         },
-        savePosition: function(){
+        savePosition: function() {
           //TODO save position logic
           console.log("Add functionality to save position");
+          var location = ko.toJS(controller.addLocationController.locationData)
+          console.log(location)
+          //TODO show short popup that disappears automatically to inform user
           controller.addLocationController.backToMap();
         },
         backToMap: function() {
@@ -446,6 +446,37 @@
           controller.addLocationController.locationData.website(null);
           controller.addLocationController.locationData.category(null);
           controller.addLocationController.locationData.position = null;
+          controller.addLocationController.locationData.images([])
+        },
+        addImage: function(data, event) {
+          var file = event.target.files[0]; //sames as here
+          var reader = new FileReader();
+
+          reader.onloadend = function() {
+            var newImage = reader.result;
+            var imagesArray = controller.addLocationController.locationData.images();
+            var arrayLength = imagesArray.length;
+            for (var i = 0; i < arrayLength; i++) {
+              if(imagesArray[i] === newImage){
+                console.log("Image already uploaded");
+                //TODO show popup message to confirm double upload
+                return;
+              }
+            }
+            controller.addLocationController.locationData.images.push(newImage);
+            //TODO show short popup that disappears automatically to inform user
+
+
+          }
+
+          if (file) {
+            reader.readAsDataURL(file); //reads the data as a URL
+          } else {
+            //TODO show message to inform user
+            console.log("failed loading file")
+          }
+
+          event.target.value = "";
         },
         backToSelectCategory: function() {
           showPage("addLocationView");
