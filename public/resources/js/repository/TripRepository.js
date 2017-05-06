@@ -1,12 +1,14 @@
 var TripRepository = (function() {
 
+  var tripStore = localforage.createInstance("TripStore");
+
   function initialize() {
-    return localforage.getItem("tripList")
+    return tripStore.getItem("tripList")
       .then(function(data) {
         if (!!data) {
           return Promise.resolve(Message.LocalForageInitComplete);
         } else {
-          return localforage.setItem("tripList", [])
+          return tripStore.setItem("tripList", [])
             .then(function() {
               return Promise.resolve(Message.LocalForageInitComplete);
             })
@@ -15,16 +17,16 @@ var TripRepository = (function() {
   }
 
   function getTripsList() {
-    return localforage.getItem("tripList");
+    return tripStore.getItem("tripList");
   }
 
   function setTripsList(tripList) {
-    return localforage.setItem("tripList", tripList);
+    return tripStore.setItem("tripList", tripList);
   }
 
   function getTripDetails(tripId) {
     console.log("Retrieving trip")
-    return localforage.getItem(tripId)
+    return tripStore.getItem(tripId)
       .then(function(tripDetails) {
         console.log("Trip found: " + tripId);
         return Promise.resolve(Trip(tripDetails))
@@ -33,7 +35,7 @@ var TripRepository = (function() {
 
   function addTrip(tripId, tripDetails) {
     tripDetails.id = tripId;
-    var setItemPromise = localforage.setItem(tripId, tripDetails);
+    var setItemPromise = tripStore.setItem(tripId, tripDetails);
     var updateTripListPromise = getTripsList()
       .then(function(tripList) {
         if (tripList.indexOf(tripId) >= 0) {
