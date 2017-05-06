@@ -1,6 +1,6 @@
 var TripRepository = (function() {
 
-  var tripStore = localforage.createInstance("TripStore");
+  var tripStore = localforage.createInstance({name: "TripStore"});
 
   function initialize() {
     return tripStore.getItem("tripList")
