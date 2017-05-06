@@ -287,7 +287,7 @@
                 <!-- /ko -->
                 <div class="thumbnail-3-no-margin photo-tile">
                   <div class="content">
-                    <span class="material-icons"><input class="file-upload" type="file" data-bind="event: { change: controller.addLocationController.addImage }" style="height:100%;width:100%;">add_a_photo</span>
+                    <span class="material-icons"><input class="file-upload" type="file" accept="image/*" data-bind="event: { change: controller.addLocationController.addImage }" style="height:100%;width:100%;">add_a_photo</span>
                   </div>
                 </div>
               </div>
@@ -431,11 +431,12 @@
           controller.addLocationController.openPanelHandler.call(this);
         },
         savePosition: function() {
-          //TODO save position logic
+          // TODO add data validation + encoding (website valid address, texts are html encoded)
+          // TODO save position logic
           console.log("Add functionality to save position");
           var location = ko.toJS(controller.addLocationController.locationData)
           console.log(location)
-          //TODO show short popup that disappears automatically to inform user
+          // TODO show short popup that disappears automatically to inform user
           controller.addLocationController.backToMap();
         },
         backToMap: function() {
@@ -450,30 +451,39 @@
         },
         addImage: function(data, event) {
           var file = event.target.files[0]; //sames as here
-          var reader = new FileReader();
 
-          reader.onloadend = function() {
-            var newImage = reader.result;
-            var imagesArray = controller.addLocationController.locationData.images();
-            var arrayLength = imagesArray.length;
-            for (var i = 0; i < arrayLength; i++) {
-              if(imagesArray[i] === newImage){
-                console.log("Image already uploaded");
-                //TODO show popup message to confirm double upload
-                return;
-              }
+          if (file.type.match("image/*")) {
+            var reader = new FileReader();
+
+            reader.onerror = function() {
+              //TODO show message to inform user
+              console.log("failed loading file")
             }
-            controller.addLocationController.locationData.images.push(newImage);
-            //TODO show short popup that disappears automatically to inform user
 
+            reader.onloadend = function() {
+              var newImage = reader.result;
+              var imagesArray = controller.addLocationController.locationData.images();
+              var arrayLength = imagesArray.length;
+              for (var i = 0; i < arrayLength; i++) {
+                if (imagesArray[i] === newImage) {
+                  console.log("Image already uploaded");
+                  //TODO show popup message to confirm double upload
+                  return;
+                }
+              }
+              controller.addLocationController.locationData.images.push(newImage);
+              //TODO show short popup that disappears automatically to inform user
+            }
 
-          }
-
-          if (file) {
-            reader.readAsDataURL(file); //reads the data as a URL
+            if (file) {
+              reader.readAsDataURL(file); //reads the data as a URL
+            } else {
+              //TODO show message to inform user
+              console.log("failed loading file")
+            }
           } else {
             //TODO show message to inform user
-            console.log("failed loading file")
+            console.log("Not an image file, not uploading");
           }
 
           event.target.value = "";
