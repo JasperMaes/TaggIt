@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>TaggIt</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script src="vendors/jquery/jquery-2.1.0.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.5.0/localforage.min.js" integrity="sha256-kAq48olJYgx7dR+P9KbS+Q1OjM1vNGUSFDjQjcM0lKA=" crossorigin="anonymous"></script>
+
+  <script src="resources/js/Messages.js"></script>
+  <script src="resources/js/Trip.js"></script>
+  <script src="resources/js/repository/TripRepository.js"></script>
+</head>
+
+<body>
+  <script>
+    var tripDetails = {
+      label: "Trip 1",
+      maxId: 2,
+      locations: [{
+          id: 0,
+          label: "Location 1",
+          position: [50.939343499999995, 4.3371832]
+        },
+        {
+          id: 1,
+          label: "Location 2",
+          position: [50.93937, 4.3371932]
+        }
+      ]
+    }
+
+    var trip = Trip(tripDetails);
+    console.log(trip);
+    trip.add({
+      title: "TITLE location 0",
+      description: "DESCRIPTION location 0"
+    })
+    trip.add({
+      title: "TITLE location 1",
+      description: "DESCRIPTION location 1"
+    })
+    trip.add({
+      title: "TITLE location 2",
+      description: "DESCRIPTION location 2"
+    })
+    trip.add({
+      title: "TITLE location 3",
+      description: "DESCRIPTION location 3"
+    })
+    console.log(trip.getAll())
+    console.log(trip.get(0))
+
+    localforage.clear()
+    .then(function(){
+      console.log("Cleared, initializing")
+      return TripRepository.initialize();
+    })
+    .then(function(){
+      console.log("Initialized, setting item");
+      return TripRepository.addTrip("trip",tripDetails);
+    })
+    .then(function(){
+      console.log("Item set, retrieving it");
+      return TripRepository.getTripDetails("trip1")
+    })
+    .then(function(data){
+      console.log(data)
+    })
+
+
+  </script>
+</body>
+
+</html>
