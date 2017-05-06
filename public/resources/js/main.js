@@ -10,7 +10,22 @@ function showPage(pageName) {
 
   $("body").append(page);
   $("#" + pageName).addClass("active");
+
   ko.applyBindings(controller, page[0])
+}
+
+function updateLocationGpsError(error) {
+  GeoLocation.printError(error);
+  controller.mapController.buttonsVisible(false);
+  controller.mapController.mapVisible(false);
+  controller.mapController.filterbarVisible(false);
+  controller.messageContent("GPS error: Could not retrieve location");
+}
+
+function initLocationGpsError(error) {
+  console.log("initLocationGpsError");
+  GeoLocation.printError(error);
+  controller.messageContent("GPS error: Initialization error; is the GPS enabled?");
 }
 
 $(window).on('load', function() {
@@ -18,20 +33,6 @@ $(window).on('load', function() {
   // ==> Only useful when not changing pages since it is too slow to be visible before page changes
   $.material.options.ripples = ".withripple";
   $.material.init();
-
-  function updateLocationGpsError(error) {
-    GeoLocation.printError(error);
-    controller.mapController.buttonsVisible(false);
-    controller.mapController.mapVisible(false);
-    controller.mapController.filterbarVisible(false);
-    controller.messageContent("GPS error: Could not retrieve location");
-  }
-
-  function initLocationGpsError(error) {
-    console.log("initLocationGpsError");
-    GeoLocation.printError(error);
-    controller.messageContent("GPS error: Initialization error; is the GPS enabled?");
-  }
 
   //TODO for all event handlers: add data parameter to get access to the controller
   controller = {
