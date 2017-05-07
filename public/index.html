@@ -107,28 +107,15 @@
     <div class="sidebar-wrapper">
       <ul class="sidebar-nav">
         <li class="sidebar-brand">
-          <a href="#">Start Bootstrap</a>
+          <a class="h2" href="#">Taggit</a>
         </li>
-        <li>
-          <a href="#">Dashboard</a>
+        <!-- ko foreach: { data: tripViewModel.trips, as: 'trip' } -->
+        <li data-bind="css: {active: $root.preferencesController.isActive(trip.id)}, click: $root.preferencesController.selectTrip">
+          <a class="h4" href="#" data-bind="text: trip.label">Dashboard</a>
         </li>
+        <!-- /ko -->
         <li>
-          <a href="#">Shortcuts</a>
-        </li>
-        <li>
-          <a href="#">Overview</a>
-        </li>
-        <li>
-          <a href="#">Events</a>
-        </li>
-        <li>
-          <a href="#">About</a>
-        </li>
-        <li>
-          <a href="#">Services</a>
-        </li>
-        <li>
-          <a href="#" data-bind="click: openPreferencesHandler">Preferences</a>
+          <a class="h4" href="#" data-bind="click: openPreferencesHandler">Preferences</a>
         </li>
       </ul>
     </div>
@@ -358,11 +345,10 @@
                 <h3>Active trip</h3>
 
                 <ul class="nav nav-pills nav-stacked" data-bind="foreach: { data: $root.tripViewModel.trips, as: 'trip' }">
-                  <li data-bind="attr: {id: trip.id}, css: {active: $root.preferencesController.isActive(trip.id), inactive: !$root.preferencesController.isActive(trip.id) }, click: $root.preferencesController.selectTrip(trip.id)">
+                  <li data-bind="attr: {id: trip.id}, css: {active: $root.preferencesController.isActive(trip.id), inactive: !$root.preferencesController.isActive(trip.id) }, click: $root.preferencesController.selectTrip">
                     <a>
                       <span style="margin: 0px;" data-bind="text: trip.label"></span>
-                      <span class="glyphicon glyphicon-trash pull-right" style="font-size: 1.2em;" data-bind="click: $root.preferencesController.deleteTripHandler(trip.id), clickBubble: false"></span>
-
+                      <span class="glyphicon glyphicon-trash pull-right" style="font-size: 1.2em;" data-bind="click: $root.preferencesController.deleteTripHandler, clickBubble: false"></span>
                     </a>
                   </li>
                 </ul>

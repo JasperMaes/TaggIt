@@ -41,7 +41,7 @@ $(window).on('load', function() {
   tripViewModel.addRandomTrip = function() {
     console.log("Create random trip")
     var details = {
-      label: "Trip "+Math.floor(Math.random() * (100 - 10)) + 10,
+      label: "Trip " + Math.floor(Math.random() * (100 - 10)) + 10,
       maxId: 2,
       locations: [{
           id: 0,
@@ -60,24 +60,25 @@ $(window).on('load', function() {
   }
 
   tripViewModel.initialize()
-    .then(function(){
+    .then(function() {
       //TODO REMOVE THIS
       //tripViewModel.addRandomTrip()
       tripViewModel.selectTrip("trip2")
 
       // Subscribe to changes in the currently active trip to store the ID
       // This is needed to reload it again when the application starts again
-      tripViewModel.currentTrip.subscribe(function(newValue){
+      tripViewModel.currentTrip.subscribe(function(newValue) {
         console.log("Active trip changed to ", newValue)
-        if(!!newValue){
+        if (!!newValue) {
           localforage.setItem("lastActiveTrip", newValue.id)
         }
       })
 
       return localforage.getItem("lastActiveTrip");
     })
-    .then(function(lastActiveTrip){
-      if(!!lastActiveTrip){
+    .then(function(lastActiveTrip) {
+      //Restore last active trip from localforage
+      if (!!lastActiveTrip) {
         console.log("Read last active trip ", lastActiveTrip)
         tripViewModel.selectTrip(lastActiveTrip);
       }
@@ -99,8 +100,9 @@ $(window).on('load', function() {
 
       showPage("mapView")
     })
-    setTimeout(function(){
-    showPage("preferencesView")}, 400)
+  setTimeout(function() {
+    //showPage("preferencesView")
+  }, 400)
   //showPage("addLocationView")
   //showPage("addLocationDetailsView");
   //controller.addLocationController.locationData.category("nature");

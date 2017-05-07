@@ -9,11 +9,9 @@ var PreferencesController = function() {
       return (!!controller.tripViewModel.currentTrip() && (controller.tripViewModel.currentTrip().id == current));
     },
 
-    selectTrip: function(tripId) {
-      return function() {
-        console.log("Selecting trip: " + tripId)
-        controller.tripViewModel.selectTrip(tripId)
-      }
+    selectTrip: function() {
+        console.log("Selecting trip: " + this.id)
+        controller.tripViewModel.selectTrip(this.id)
     },
 
     newTripName: ko.observable(""),
@@ -29,11 +27,9 @@ var PreferencesController = function() {
       }
     },
 
-    deleteTripHandler: function(tripId) {
-      return function() {
-        console.log("Deleting trip: " + tripId)
-        controller.tripViewModel.removeTrip(tripId);
-      }
+    deleteTripHandler: function() {
+        console.log("Deleting trip: " + this.id)
+        controller.tripViewModel.removeTrip(this.id);
     },
 
   }
