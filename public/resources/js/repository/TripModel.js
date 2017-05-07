@@ -136,6 +136,14 @@ var TripModel = (function() {
       })
   }
 
+  function createEmptyTrip(tripLabel){
+    return {
+      label: tripLabel,
+      locations: [],
+      maxId: 0
+    }
+  }
+
   return {
     initialize: initialize,
     getTrips: getTripsList,
@@ -151,7 +159,8 @@ var TripModel = (function() {
     _setMaxTripId: function(newValue) {
       maxTripId = newValue
     },
-    _getTripIndex: getTripIndex
+    _getTripIndex: getTripIndex,
+    createEmptyTrip: createEmptyTrip
   }
 
 })()

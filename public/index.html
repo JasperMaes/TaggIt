@@ -333,6 +333,10 @@
     .list-group .list-group-separator:before {
       width: 100%
     }
+
+    .nav-pills>li.inactive>a, .nav-pills>li.inactive>a:hover, .nav-pills>li.inactive>a:focus{
+      background-color: #e4e4e4;
+    }
   </style>
 
   <script type="text/html" id="preferencesView-template">
@@ -353,10 +357,19 @@
               <div class="row">
                 <h3>Active trip</h3>
 
-                <ul class="nav nav-pills nav-stacked" style="max-width: 300px;" data-bind="foreach: { data: $root.tripViewModel.trips, as: 'trip' }">
-                  <li data-bind="attr: {id: trip.id}, css: {active: $root.preferencesController.isActive(trip.id) }, click: $root.preferencesController.selectTrip(trip.id)"><a data-bind="text: trip.label">Home</a></li>
-              </ul>
-
+                <ul class="nav nav-pills nav-stacked" data-bind="foreach: { data: $root.tripViewModel.trips, as: 'trip' }">
+                  <li data-bind="attr: {id: trip.id}, css: {active: $root.preferencesController.isActive(trip.id), inactive: !$root.preferencesController.isActive(trip.id) }, click: $root.preferencesController.selectTrip(trip.id)"><a data-bind="text: trip.label">Home</a></li>
+                </ul>
+            </div>
+            <div class="row">
+              <div class="form-group input-group" style="margin-top: 0px; padding-left: 15px;">
+                <input type="text" id="newTripName" class="form-control" data-bind="value: preferencesController.newTripName, valueUpdate:'afterkeydown'" placeholder="New trip name">
+                <div class="input-group-addon">
+                  <a class="btn btn-default btn-raised btn-sm btn-primary" style="margin: 0px" data-bind="click: preferencesController.addNewTripHandler, attr: {disabled: preferencesController.newTripName().length === 0}">
+                    <span class="glyphicon glyphicon-plus gi-1_5x"></span>
+                  </a>
+                </div>
+              </div>
             </div>
 
             <div class="row">

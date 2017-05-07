@@ -73,7 +73,8 @@ var TripViewModel = function() {
     addTrip: addTrip,
     selectTrip: selectTrip,
     removeTrip: removeTrip,
-    tripExists: tripExists
+    tripExists: tripExists,
+    createEmptyTrip: TripModel.createEmptyTrip
   }
 
 }
