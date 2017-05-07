@@ -27,7 +27,14 @@ var PreferencesController = function() {
         //TODO message to inform user that trip was added successfully
         controller.preferencesController.newTripName("");
       }
-    }
+    },
+
+    deleteTripHandler: function(tripId) {
+      return function() {
+        console.log("Deleting trip: " + tripId)
+        controller.tripViewModel.removeTrip(tripId);
+      }
+    },
 
   }
 

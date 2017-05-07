@@ -59,14 +59,28 @@ $(window).on('load', function() {
     tripViewModel.addTrip(details);
   }
 
-  localforage.clear()
-    .then(function() {
-      return tripViewModel.initialize();
-    })
+  tripViewModel.initialize()
     .then(function(){
       //TODO REMOVE THIS
       //tripViewModel.addRandomTrip()
       tripViewModel.selectTrip("trip2")
+
+      // Subscribe to changes in the currently active trip to store the ID
+      // This is needed to reload it again when the application starts again
+      tripViewModel.currentTrip.subscribe(function(newValue){
+        console.log("Active trip changed to ", newValue)
+        if(!!newValue){
+          localforage.setItem("lastActiveTrip", newValue.id)
+        }
+      })
+
+      return localforage.getItem("lastActiveTrip");
+    })
+    .then(function(lastActiveTrip){
+      if(!!lastActiveTrip){
+        console.log("Read last active trip ", lastActiveTrip)
+        tripViewModel.selectTrip(lastActiveTrip);
+      }
     })
     .then(function() {
       //TODO for all event handlers: add data parameter to get access to the controller

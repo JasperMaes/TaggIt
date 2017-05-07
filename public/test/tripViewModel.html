@@ -158,6 +158,37 @@
           })
       });
 
+      QUnit.test("Remove a trip", function(assert) {
+        var done = assert.async();
+        var vm = this.vm;
+        var tripId;
+        vm.addTrip(tripDetails)
+          .then(function(trip) {
+            tripId = trip.id;
+            return vm.removeTrip(tripId)
+          })
+          .then(function() {
+            return vm.tripExists(tripId);
+          })
+          .then(function(exists){
+            assert.notOk(exists, "The trip shouldn't exist anymore")
+            done();
+          })
+      });
+
+      //TODO Write test to verify that the right trip is activated when one is selected
+
+      QUnit.test("Remove a non-existent trip", function(assert) {
+        var done = assert.async();
+        var vm = this.vm;
+
+        vm.removeTrip("non-existent-trip")
+          .catch(function(message) {
+            assert.deepEqual(message, Message.UnknownTrip, "Message should indicate that the trip doesn't exist");
+            done();
+          })
+      });
+
       QUnit.test("Select an existing trip", function(assert) {
         var done = assert.async();
         var vm = this.vm;

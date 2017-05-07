@@ -52,7 +52,29 @@ var TripViewModel = function() {
   }
 
   function removeTrip(tripId) {
-    return TripModel.removeTrip(tripId);
+    if (tripExists(tripId)) {
+      var index = TripModel._getTripIndex(trips(), tripId);
+      var removedTrip;
+      return TripModel.removeTrip(tripId)
+        .then(function(trip) {
+          removedTrip = trip;
+          return refreshTripsList()
+        })
+        .then(function() {
+          var selectIndex = Math.min(index, trips().length-1);
+          if (!!activeTripId() && selectIndex >= 0) {
+            var newCurrentTripId = trips()[selectIndex].id
+            selectTrip(newCurrentTripId);
+          } else {
+            activeTripId(null);
+            activeTripDetails(null);
+          }
+          return Promise.resolve(removedTrip);
+        })
+
+    } else {
+      return Promise.reject(Message.UnknownTrip);
+    }
     // TODO verify whether the current trip needs to be updated
   }
 
