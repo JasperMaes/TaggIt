@@ -40,9 +40,15 @@
   <script src="resources/js/ko-leaflet.js"></script>
   <script src="https://cdn.rawgit.com/faulknercs/Knockstrap/v1.3.2/build/knockstrap.min.js" type="tet/javascript"></script>
 
+  <!-- LocalForage -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.5.0/localforage.min.js" integrity="sha256-kAq48olJYgx7dR+P9KbS+Q1OjM1vNGUSFDjQjcM0lKA=" crossorigin="anonymous"></script>
+
   <!-- Application code -->
+  <script src="resources/js/Messages.js"></script>
   <script src="resources/js/GeoLocation.js"></script>
-  <script src="resources/js/TripRepository.js"></script>
+  <script src="resources/js/Trip.js"></script>
+  <script src="resources/js/repository/TripModel.js"></script>
+  <script src="resources/js/ViewModel/TripViewModel.js"></script>
 
   <link rel="stylesheet" href="resources/css/page.css" />
   <link rel="stylesheet" href="resources/css/page-map.css" />
@@ -54,6 +60,7 @@
   <script src="resources/js/controller/sidebar.js"></script>
   <script src="resources/js/controller/map.js"></script>
   <script src="resources/js/controller/addLocation.js"></script>
+  <script src="resources/js/controller/preferences.js"></script>
 
   <script src="resources/js/main.js"></script>
 
@@ -63,8 +70,8 @@
       position: absolute;
       top: 0px;
       left: 0px;
-      height:100%;
-      width:100%;
+      height: 100%;
+      width: 100%;
     }
 
     #myImg {
@@ -84,12 +91,12 @@
     }
 
     .form-group.has-error .help-block.error-message {
-    display: block;
-}
+      display: block;
+    }
 
-.form-group .help-block.error-message {
-    display: none;
-}
+    .form-group .help-block.error-message {
+      display: none;
+    }
   </style>
 
 
@@ -121,7 +128,7 @@
           <a href="#">Services</a>
         </li>
         <li>
-          <a href="#">Contact</a>
+          <a href="#" data-bind="click: openPreferencesHandler">Preferences</a>
         </li>
       </ul>
     </div>
@@ -320,6 +327,48 @@
 
       </div>
     </div>
+  </script>
+
+  <style>
+    .list-group .list-group-separator:before {
+      width: 100%
+    }
+  </style>
+
+  <script type="text/html" id="preferencesView-template">
+    <div id="preferencesView" class="page">
+      <div class="page-content-wrapper">
+        <div id="header">
+          <div class="row">
+            <div class="col-xs-2 col-sm-1">
+              <span id="backbutton" class="material-icons material-input" style="z-index:3000; font-size: 3em" data-bind="click:preferencesController.backToMap">navigate_before</i>
+                </div>
+                <div class="col-xs-10 col-sm-11" style="z-index:60;padding-right:0px">
+                  <h2 style="margin-top: 5px">Preferences</h2>
+                </div>
+              </div>
+            </div>
+
+            <div class="container">
+              <div class="row">
+                <h3>Active trip</h3>
+
+                <ul class="nav nav-pills nav-stacked" style="max-width: 300px;" data-bind="foreach: { data: $root.tripViewModel.trips, as: 'trip' }">
+                  <li data-bind="attr: {id: trip.id}, css: {active: $root.preferencesController.isActive(trip.id) }, click: $root.preferencesController.selectTrip(trip.id)"><a data-bind="text: trip.label">Home</a></li>
+              </ul>
+
+            </div>
+
+            <div class="row">
+              <h3>Google Drive</h3>
+
+              <!-- TODO add buttons and explanation for Google Drive -->
+
+          </div>
+
+          </div>
+        </div>
+      </div>
   </script>
 
 </head>

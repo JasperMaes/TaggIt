@@ -28,26 +28,65 @@ function initLocationGpsError(error) {
   controller.messageContent("GPS error: Initialization error; is the GPS enabled?");
 }
 
+var tripViewModel;
+
 $(window).on('load', function() {
   // Use this class to add a ripple effect to a button
   // ==> Only useful when not changing pages since it is too slow to be visible before page changes
   $.material.options.ripples = ".withripple";
   $.material.init();
 
-  //TODO for all event handlers: add data parameter to get access to the controller
-  controller = {
-    mapController: MapController(updateLocationGpsError, initLocationGpsError),
-    sidebarController: SidebarController(),
-    messageContent: ko.observable(),
-    addLocationController: AddLocationController()
-  };
+  tripViewModel = TripViewModel();
 
-  controller.mapController.initMap();
+  tripViewModel.addRandomTrip = function() {
+    console.log("Create random trip")
+    var details = {
+      label: "Trip "+Math.floor(Math.random() * (100 - 10)) + 10,
+      maxId: 2,
+      locations: [{
+          id: 0,
+          title: "Location 1",
+          position: [50.939343499999995, 4.3371832]
+        },
+        {
+          id: 1,
+          title: "Location 2",
+          position: [50.93937, 4.3371932]
+        }
+      ]
+    }
 
-  console.log("All done loading");
+    tripViewModel.addTrip(details);
+  }
 
-  showPage("mapView")
+  localforage.clear()
+    .then(function() {
+      return tripViewModel.initialize();
+    })
+    .then(function(){
+      //TODO REMOVE THIS
+      //tripViewModel.addRandomTrip()
+      tripViewModel.selectTrip("trip2")
+    })
+    .then(function() {
+      //TODO for all event handlers: add data parameter to get access to the controller
+      controller = {
+        mapController: MapController(updateLocationGpsError, initLocationGpsError),
+        sidebarController: SidebarController(),
+        messageContent: ko.observable(),
+        addLocationController: AddLocationController(),
+        preferencesController: PreferencesController(),
+        tripViewModel: tripViewModel
+      };
 
+      controller.mapController.initMap();
+
+      console.log("All done loading");
+
+      showPage("mapView")
+    })
+    setTimeout(function(){
+    showPage("preferencesView")}, 400)
   //showPage("addLocationView")
   //showPage("addLocationDetailsView");
   //controller.addLocationController.locationData.category("nature");

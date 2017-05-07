@@ -54,7 +54,10 @@ var Trip = function(tripDetails) {
     get: getLocation,
     find: findLocation,
     add: addLocation,
-    remove: removeLocation
+    remove: removeLocation,
+    rawData: tripDetails,
+    label: tripDetails.label,
+    id: tripDetails.id
   }
 
 }

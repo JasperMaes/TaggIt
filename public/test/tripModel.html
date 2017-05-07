@@ -1,0 +1,309 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>TaggIt</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script src="../vendors/jquery/jquery-2.1.0.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.5.0/localforage.min.js" integrity="sha256-kAq48olJYgx7dR+P9KbS+Q1OjM1vNGUSFDjQjcM0lKA=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js" integrity="sha256-owX7sroiO/O1a7h3a4X29A1g3QgqdNvijRQ7V5TH45M=" crossorigin="anonymous"></script>
+
+  <script src="../resources/js/Messages.js"></script>
+  <script src="../resources/js/Trip.js"></script>
+  <script src="../resources/js/repository/TripModel.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qunit/2.3.2/qunit.css" integrity="sha256-DXCteHH/M9mXm+FLB1eFwe9YOwew/rLhSaswsiY7vNY=" crossorigin="anonymous" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qunit/2.3.2/qunit.js" integrity="sha256-vw5380CzcsZFVEt/GBDLeaS7lT7MsxSOz2fJqLjFilo=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script>
+    var tripDetails = {
+      label: "Trip 1",
+      maxId: 2,
+      locations: [{
+          id: 0,
+          title: "Location 1",
+          position: [50.939343499999995, 4.3371832]
+        },
+        {
+          id: 1,
+          title: "Location 2",
+          position: [50.93937, 4.3371932]
+        }
+      ]
+    }
+
+    var trip = Trip(tripDetails);
+    trip.add({
+      title: "TITLE location 0",
+      description: "DESCRIPTION location 0"
+    })
+    trip.add({
+      title: "TITLE location 1",
+      description: "DESCRIPTION location 1"
+    })
+    trip.add({
+      title: "TITLE location 2",
+      description: "DESCRIPTION location 2"
+    })
+    trip.add({
+      title: "TITLE location 3",
+      description: "DESCRIPTION location 3"
+    })
+
+    QUnit.module("TripModel operations", {
+      beforeEach: function() {
+        console.log("TripModel setup")
+        return TripModel._dataStore.clear().then(function() {
+          return TripModel.initialize();
+        }).then(function() {
+          console.log("TripModel setup complete")
+          return Promise.resolve(true);
+        })
+      }
+    }, function() {
+
+      QUnit.test("Test adding trip", function(assert) {
+        var done = assert.async();
+        var tripIdBefore = TripModel._getMaxTripId();
+        TripModel.addTrip(tripDetails)
+          .then(function(addedTrip) {
+            assert.deepEqual(addedTrip.rawData, tripDetails, "The added trip returned should be the same as the added one");
+            assert.equal(addedTrip.id, "trip"+tripIdBefore, "The id should be 'trip'+maxTripId")
+            assert.equal(TripModel._getMaxTripId(), tripIdBefore+1, "The maxTripId should have increased 1")
+            return TripModel.existsTrip(addedTrip.id)
+          })
+          .then(function(exists) {
+            console.log(exists)
+            assert.ok(exists, "The trip should exist")
+            done();
+          })
+          .catch(function() {
+            assert.ok(false, "Should not throw exception");
+            done()
+          })
+      });
+
+      QUnit.test("Test adding trip with same identifier should fail", function(assert) {
+        var done = assert.async();
+
+        TripModel.addTrip(tripDetails)
+          .then(function() {
+            TripModel._setMaxTripId(0)
+            return TripModel.addTrip(tripDetails)
+          })
+          .then(function() {
+            assert.ok(false, "The promise should not resolve but be rejected");
+            done();
+          })
+          .catch(function(errorMessage) {
+            assert.deepEqual(errorMessage, Message.TripExists, "The message that is returned should indicate that the trip identifier already exists");
+            done();
+          })
+      });
+
+      QUnit.test("Test retrieving trip", function(assert) {
+        var done = assert.async();
+        TripModel.addTrip(tripDetails)
+          .then(function(addedTrip) {
+            return TripModel.getTripDetails(addedTrip.id)
+          })
+          .then(function(retrievedTrip) {
+            assert.deepEqual(retrievedTrip.rawData, tripDetails, "The retrieved trip should be the same as the added one");
+            done();
+          })
+          .catch(function(message) {
+            console.log(message)
+            assert.ok(false, "Should not throw exception");
+            done()
+          })
+      });
+
+      QUnit.test("Test retrieving non-existent trip", function(assert) {
+        var done = assert.async();
+        TripModel.getTripDetails("non-existent-trip")
+          .then(function(retrievedTrip) {
+            assert.ok(false, "The promise should not resolve but be rejected");
+            done();
+          })
+          .catch(function(errorMessage) {
+            assert.deepEqual(errorMessage, Message.UnknownTrip, "The message that is returned should indicate that the trip identifier doesn't exist");
+            done();
+          })
+      });
+
+      QUnit.test("Test if tripList variable is returned by getTrips method", function(assert) {
+        var done = assert.async();
+        var addTripPromises = [TripModel.addTrip(tripDetails), TripModel.addTrip(tripDetails), TripModel.addTrip(tripDetails), TripModel.addTrip(tripDetails)];
+
+        Promise.all(addTripPromises).then(function() {
+            return Promise.all([TripModel.getTrips(), TripModel._dataStore.getItem("tripList")])
+              .then(function(results) {
+                assert.deepEqual(results[0], results[1], "The list from the datastore should be equal to the list returned by getTrips");
+                done();
+              })
+          })
+          .catch(function() {
+            assert.ok(false, "Should not throw exception");
+            done()
+          })
+      });
+
+      QUnit.test("Test if tripList variable is returned by getTrips method (empty)", function(assert) {
+        var done = assert.async();
+
+        Promise.all([TripModel.getTrips(), TripModel._dataStore.getItem("tripList")])
+          .then(function(results) {
+            assert.deepEqual(results[0], results[1], "The list from the datastore should be equal to the list returned by getTrips");
+            done();
+          })
+          .catch(function() {
+            assert.ok(false, "Should not throw exception");
+            done()
+          })
+      });
+
+      QUnit.test("Test if tripList variable is set by setTrips method", function(assert) {
+        var done = assert.async();
+        var testTripList = ["test1", "test2"];
+
+        TripModel.setTrips(testTripList)
+          .then(function() {
+            return TripModel._dataStore.getItem("tripList")
+          })
+          .then(function(dataStoreTripList) {
+            assert.deepEqual(dataStoreTripList, testTripList, "The list from the datastore should be equal to the list added earlier");
+            done();
+          })
+          .catch(function() {
+            assert.ok(false, "Should not throw exception");
+            done()
+          })
+      });
+
+      QUnit.test("Test existence of existing trip", function(assert) {
+        var done = assert.async();
+        TripModel.addTrip(tripDetails)
+          .then(function(addedTrip) {
+            return TripModel.existsTrip(addedTrip.id)
+          })
+          .then(function(exists) {
+            assert.ok(exists, "The result should be true since the trip exists");
+            done();
+          })
+          .catch(function() {
+            assert.ok(false, "Should not throw exception");
+            done()
+          })
+      });
+
+      QUnit.test("Test existence of non-existent trip", function(assert) {
+        var done = assert.async();
+        TripModel.existsTrip("non-existent-trip")
+          .then(function(exists) {
+            assert.notOk(exists, "The result should be false since the trip doesn't exist");
+            done();
+          })
+          .catch(function() {
+            assert.ok(false, "Should not throw exception");
+            done()
+          })
+      });
+
+      QUnit.test("Test removing existing trip", function(assert) {
+        var done = assert.async();
+        var tripId;
+        TripModel.addTrip(tripDetails)
+          .then(function(addedTrip) {
+            tripId = addedTrip.id;
+            return TripModel.removeTrip(tripId)
+          })
+          .then(function(message) {
+            assert.deepEqual(message, Message.TripRemoveSuccess, "The removal should be successful");
+            return TripModel.getTrips()
+          })
+          .then(function(tripsList) {
+            assert.equal(tripsList.indexOf(tripId), -1, "The removed trip should no longer be in the trips list")
+            return TripModel.getTripDetails(tripId)
+          })
+          .catch(function(errorMessage) {
+            assert.deepEqual(errorMessage, Message.UnknownTrip, "The message that is returned should indicate that the trip identifier doesn't exist");
+            done();
+          })
+      });
+
+      QUnit.test("Test removing non-existent trip", function(assert) {
+        var done = assert.async();
+        TripModel.removeTrip("non-existent-trip", tripDetails)
+          .then(function(errorMessage) {
+            assert.deepEqual(errorMessage, Message.UnknownTrip, "The message that is returned should indicate that the trip identifier doesn't exist");
+            done();
+          })
+          .catch(function() {
+            assert.ok(false, "Should not throw exception");
+            done()
+          })
+      });
+
+    });
+
+    QUnit.module("TripModel initialization", {
+        beforeEach: function() {
+          console.log("TripModel setup")
+          return TripModel._dataStore.clear()
+        }
+      },
+      function() {
+        QUnit.test("Test if tripList variable exists in LocalForage and is empty after initializing first time", function(assert) {
+          var done = assert.async();
+          TripModel.initialize()
+            .then(function(initResult) {
+              assert.deepEqual(initResult, Message.LocalForageInitComplete, "Message should indicate initialization completion")
+              return TripModel._dataStore.getItem("tripList")
+            })
+            .then(function(tripList) {
+              assert.deepEqual(tripList, [], "Without adding trips the tripList variable should be empty");
+              done();
+            })
+            .catch(function() {
+              assert.ok(false, "Should not throw exception");
+              done()
+            })
+        });
+
+        QUnit.test("Test if tripList variable exists in LocalForage and is not emptied out after initializing when there is data", function(assert) {
+          var done = assert.async();
+          var testTripList = ["test1", "test2"];
+          TripModel._dataStore.setItem("tripList", testTripList)
+            .then(function() {
+              return TripModel.initialize()
+            })
+            .then(function(initResult) {
+              assert.deepEqual(initResult, Message.LocalForageInitComplete, "Message should indicate initialization completion")
+              return TripModel._dataStore.getItem("tripList")
+            })
+            .then(function(tripList) {
+              assert.deepEqual(tripList, testTripList, "Without adding trips the tripList variable should be empty");
+              done();
+            })
+            .catch(function() {
+              assert.ok(false, "Should not throw exception");
+              done()
+            })
+        });
+      })
+
+    QUnit.done(function(details) {
+      console.log("Total: ", details.total, " Failed: ", details.failed, " Passed:", details.passed, " Runtime: ", details.runtime);
+    });
+  </script>
+</body>
+
+</html>

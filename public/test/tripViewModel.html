@@ -1,0 +1,277 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>TaggIt</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script src="../vendors/jquery/jquery-2.1.0.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.5.0/localforage.min.js" integrity="sha256-kAq48olJYgx7dR+P9KbS+Q1OjM1vNGUSFDjQjcM0lKA=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js" integrity="sha256-owX7sroiO/O1a7h3a4X29A1g3QgqdNvijRQ7V5TH45M=" crossorigin="anonymous"></script>
+
+  <script src="../resources/js/Messages.js"></script>
+  <script src="../resources/js/Trip.js"></script>
+  <script src="../resources/js/repository/TripModel.js"></script>
+  <script src="../resources/js/ViewModel/TripViewModel.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qunit/2.3.2/qunit.css" integrity="sha256-DXCteHH/M9mXm+FLB1eFwe9YOwew/rLhSaswsiY7vNY=" crossorigin="anonymous" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qunit/2.3.2/qunit.js" integrity="sha256-vw5380CzcsZFVEt/GBDLeaS7lT7MsxSOz2fJqLjFilo=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <ul data-bind="foreach: trips">
+    <li>
+      <p data-bind="text: $data, click: $root.selectTrip"></p>
+      <p data-bind="click: $root.removeTrip">delete</p>
+    </li>
+  </ul>
+  <button data-bind="click:addRandomTrip">Add trip</button>
+  <div data-bind="with: currentTrip">
+
+    <h1 data-bind="text: label"></h1>
+    <p data-bind="text: getAll().length + ' locations stored'">
+    </p>
+    <ul data-bind="foreach: getAll()">
+      <li>
+        <p data-bind="text: id + ' -> ' + title"></p>
+        <p data-bind=>
+          Delete
+        </p>
+      </li>
+    </ul>
+
+  </div>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script>
+    var tripDetails = {
+      label: "Trip 1",
+      maxId: 2,
+      locations: [{
+          id: 0,
+          title: "Location 1",
+          position: [50.939343499999995, 4.3371832]
+        },
+        {
+          id: 1,
+          title: "Location 2",
+          position: [50.93937, 4.3371932]
+        }
+      ]
+    }
+
+    var trip = Trip(tripDetails);
+    trip.add({
+      title: "TITLE location 0",
+      description: "DESCRIPTION location 0"
+    })
+    trip.add({
+      title: "TITLE location 1",
+      description: "DESCRIPTION location 1"
+    })
+    trip.add({
+      title: "TITLE location 2",
+      description: "DESCRIPTION location 2"
+    })
+    trip.add({
+      title: "TITLE location 3",
+      description: "DESCRIPTION location 3"
+    })
+
+    var maxId = 10;
+    QUnit.module("TripViewModel operations", {
+      beforeEach: function() {
+        var self = this;
+        console.log("TripModel setup")
+        return TripModel._dataStore.clear().then(function() {
+            return TripModel.initialize();
+          })
+          .then(function() {
+            console.log("TripModel setup complete, setting up TripViewModel")
+            self.vm = TripViewModel();
+
+            self.vm.addRandomTrip = function() {
+              console.log("Create random trip")
+              var id = maxId++;
+              var details = {
+                label: "Trip " + id,
+                maxId: 2,
+                locations: [{
+                    id: 0,
+                    title: "Location 1",
+                    position: [50.939343499999995, 4.3371832]
+                  },
+                  {
+                    id: 1,
+                    title: "Location 2",
+                    position: [50.93937, 4.3371932]
+                  }
+                ]
+              }
+            }
+
+            ko.applyBindings(self.vm);
+            return Promise.resolve(true);
+          })
+      },
+      afterEach: function() {
+        console.log("Removing bindings")
+        var element = $("body")[0];
+        ko.cleanNode(element);
+      }
+    }, function() {
+      QUnit.test("Add a trip", function(assert) {
+        var done = assert.async();
+        var vm = this.vm;
+        var currentTrip = vm.currentTrip();
+        vm.addTrip(tripDetails)
+          .then(function(trip) {
+            assert.deepEqual(trip.rawData, tripDetails, "Trip should be returned and equal to the added value")
+            assert.deepEqual(vm.currentTrip(), currentTrip, "Current trip should not be changed")
+            assert.ok(vm.tripExists(trip.id), "The new trip should be listed in the list of trips");
+            return TripModel.getTripDetails(trip.id)
+          })
+          .then(function(trip) {
+            assert.deepEqual(trip.rawData, tripDetails, "Trip in dataStore should be equal to the added value")
+            done();
+          })
+      });
+
+      QUnit.test("Re-add existing trip", function(assert) {
+        var done = assert.async();
+        var vm = this.vm;
+        var currentTrip = vm.currentTrip();
+        vm.addTrip(tripDetails)
+          .then(function() {
+            TripModel._setMaxTripId(0)
+            return vm.addTrip(tripDetails);
+          })
+          .catch(function(message) {
+            assert.deepEqual(message, Message.TripExists, "Message should indicate that the trip already exists")
+            assert.deepEqual(vm.currentTrip(), currentTrip, "Current trip should not be changed")
+            done();
+          })
+      });
+
+      QUnit.test("Select an existing trip", function(assert) {
+        var done = assert.async();
+        var vm = this.vm;
+        var currentTrip = vm.currentTrip();
+        vm.addTrip(tripDetails)
+          .then(function(trip) {
+            vm.selectTrip(trip.id);
+            setTimeout(function() {
+              assert.deepEqual(vm.currentTrip().rawData, tripDetails, "Active trip should contain trip details")
+              assert.notDeepEqual(vm.currentTrip(), currentTrip, "Active trip should not be identical to the original value")
+              done();
+            }, 300)
+          })
+      });
+
+      QUnit.test("Select a non-existing trip", function(assert) {
+        assert.deepEqual(this.vm.selectTrip("non-existent-trip"), Message.UnknownTrip, "Message should indicate that trip doesn't exist")
+      });
+
+      QUnit.test("Test existence of a non-existing trip", function(assert) {
+        assert.notOk(this.vm.tripExists("non-exitent-trip"), "Should be false since trip doesn't exists")
+      });
+
+      QUnit.test("Test existence of an existing trip", function(assert) {
+        var done = assert.async();
+        var vm = this.vm;
+        var currentTrip = vm.currentTrip();
+        vm.addTrip(tripDetails)
+          .then(function(trip) {
+            assert.ok(vm.tripExists(trip.id), "Should be true since trip exists")
+            done();
+          })
+      });
+    })
+
+    QUnit.module("TripViewModel initialization", {
+      beforeEach: function() {
+        var self = this;
+        console.log("TripModel setup")
+        return TripModel._dataStore.clear().then(function() {
+            return TripModel.initialize();
+          })
+          .then(function() {
+            console.log("TripModel setup complete, setting up TripViewModel")
+            self.vm = TripViewModel();
+
+            self.vm.addRandomTrip = function() {
+              console.log("Create random trip")
+              var id = maxId++;
+              var details = {
+                label: "Trip " + id,
+                maxId: 2,
+                locations: [{
+                    id: 0,
+                    title: "Location 1",
+                    position: [50.939343499999995, 4.3371832]
+                  },
+                  {
+                    id: 1,
+                    title: "Location 2",
+                    position: [50.93937, 4.3371932]
+                  }
+                ]
+              }
+            }
+
+            ko.applyBindings(self.vm);
+            return Promise.resolve(true);
+          })
+      },
+      afterEach: function() {
+        console.log("Removing bindings")
+        var element = $("body")[0];
+        ko.cleanNode(element);
+      }
+    }, function() {
+      QUnit.test("Test initialization (empty)", function(assert) {
+        var done = assert.async();
+        var vm = this.vm;
+
+        assert.deepEqual(vm.trips(), [], "Trips list should start out as empty before initialization")
+        assert.deepEqual(vm.currentTrip(), null, "Current trip should be empty")
+        vm.initialize()
+          .then(function(message) {
+            assert.deepEqual(message, Message.InitializationComplete, "The message should state that the initialization is complete");
+            assert.deepEqual(vm.trips(), [], "Trips list should be empty");
+            assert.deepEqual(vm.currentTrip(), null, "Current trip should be empty")
+            done();
+          })
+      });
+
+      QUnit.test("Test initialization", function(assert) {
+        var done = assert.async();
+        var vm = this.vm;
+
+        assert.deepEqual(vm.trips(), [], "Trips list should start out as empty before initialization")
+        assert.deepEqual(vm.currentTrip(), null, "Current trip should be empty")
+        TripModel.setTrips(["trip1"])
+          .then(function() {
+            return vm.initialize()
+          })
+          .then(function(message) {
+            assert.deepEqual(message, Message.InitializationComplete, "The message should state that the initialization is complete");
+            assert.deepEqual(vm.trips(), ["trip1"], "Trips list should be empty");
+            assert.deepEqual(vm.currentTrip(), null, "Current trip should be empty")
+            done();
+          })
+      });
+    })
+
+    QUnit.done(function(details) {
+      console.log("Total: ", details.total, " Failed: ", details.failed, " Passed:", details.passed, " Runtime: ", details.runtime);
+    });
+  </script>
+</body>
+
+</html>

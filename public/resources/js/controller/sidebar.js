@@ -9,9 +9,15 @@ var SidebarController = function() {
     isVisible(false);
   };
 
+  var openPreferencesHandler = function(){
+    showPage("preferencesView");
+    close();
+  }
+
   return {
     isVisible: isVisible,
     toggle: toggle,
-    close: close
+    close: close,
+    openPreferencesHandler: openPreferencesHandler
   };
 };
