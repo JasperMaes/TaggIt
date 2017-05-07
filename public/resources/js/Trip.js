@@ -55,7 +55,7 @@ var Trip = function(tripDetails) {
     find: findLocation,
     add: addLocation,
     remove: removeLocation,
-    rawData: tripDetails,
+    _rawData: tripDetails,
     label: tripDetails.label,
     id: tripDetails.id
   }

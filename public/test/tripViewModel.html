@@ -131,13 +131,13 @@
         var currentTrip = vm.currentTrip();
         vm.addTrip(tripDetails)
           .then(function(trip) {
-            assert.deepEqual(trip.rawData, tripDetails, "Trip should be returned and equal to the added value")
+            assert.deepEqual(trip._rawData, tripDetails, "Trip should be returned and equal to the added value")
             assert.deepEqual(vm.currentTrip(), currentTrip, "Current trip should not be changed")
             assert.ok(vm.tripExists(trip.id), "The new trip should be listed in the list of trips");
             return TripModel.getTripDetails(trip.id)
           })
           .then(function(trip) {
-            assert.deepEqual(trip.rawData, tripDetails, "Trip in dataStore should be equal to the added value")
+            assert.deepEqual(trip._rawData, tripDetails, "Trip in dataStore should be equal to the added value")
             done();
           })
       });
@@ -197,7 +197,7 @@
           .then(function(trip) {
             vm.selectTrip(trip.id);
             setTimeout(function() {
-              assert.deepEqual(vm.currentTrip().rawData, tripDetails, "Active trip should contain trip details")
+              assert.deepEqual(vm.currentTrip()._rawData, tripDetails, "Active trip should contain trip details")
               assert.notDeepEqual(vm.currentTrip(), currentTrip, "Active trip should not be identical to the original value")
               done();
             }, 300)

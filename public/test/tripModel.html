@@ -75,7 +75,7 @@
         var tripIdBefore = TripModel._getMaxTripId();
         TripModel.addTrip(tripDetails)
           .then(function(addedTrip) {
-            assert.deepEqual(addedTrip.rawData, tripDetails, "The added trip returned should be the same as the added one");
+            assert.deepEqual(addedTrip._rawData, tripDetails, "The added trip returned should be the same as the added one");
             assert.equal(addedTrip.id, "trip"+tripIdBefore, "The id should be 'trip'+maxTripId")
             assert.equal(TripModel._getMaxTripId(), tripIdBefore+1, "The maxTripId should have increased 1")
             return TripModel.existsTrip(addedTrip.id)
@@ -116,7 +116,7 @@
             return TripModel.getTripDetails(addedTrip.id)
           })
           .then(function(retrievedTrip) {
-            assert.deepEqual(retrievedTrip.rawData, tripDetails, "The retrieved trip should be the same as the added one");
+            assert.deepEqual(retrievedTrip._rawData, tripDetails, "The retrieved trip should be the same as the added one");
             done();
           })
           .catch(function(message) {
