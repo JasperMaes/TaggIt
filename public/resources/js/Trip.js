@@ -1,11 +1,22 @@
 var Trip = function(tripDetails) {
 
+  function convertObjectToKnockout(trip) {
+    var result = {};
+
+    result.id = trip.id;
+    result.label = ko.observable(trip.label);
+    result.maxId = trip.maxId;
+    result.locations = ko.observableArray(trip.locations)
+
+    return result;
+  }
+
   function getAllLocations() {
-    return tripDetails.locations;
+    return this.details.locations();
   }
 
   function getLocation(locationId) {
-    var result = null;
+    var result = Message.UnknownLocation;
     var locations = getAllLocations();
     var locationCount = locations.length;
     for (var i = 0; i < locationCount; i++) {
@@ -35,29 +46,43 @@ var Trip = function(tripDetails) {
   }
 
   function addLocation(locationDetails) {
-    locationDetails.id = tripDetails.maxId;
-    tripDetails.locations.push(locationDetails);
-    tripDetails.maxId++;
+    locationDetails.id = this.details.maxId;
+    this.details.locations.push(locationDetails);
+    this.details.maxId++;
+    return locationDetails.id;
   }
 
   function removeLocation(locationId) {
     var index = getLocationIndex(locationId);
     if (index > -1) {
-      return tripDetails.locations.splice(index, 1)[0];
+      var locations = this.details.locations();
+      var removedValue = locations.splice(index, 1)[0]
+      this.details.locations(locations);
+      return removedValue;
     } else {
-      return null;
+      return Message.UnknownLocation;
     }
   }
 
   return {
+    details: convertObjectToKnockout(tripDetails),
     getAll: getAllLocations,
     get: getLocation,
     find: findLocation,
     add: addLocation,
     remove: removeLocation,
-    _rawData: tripDetails,
-    label: tripDetails.label,
-    id: tripDetails.id
+    _getRawData: function(){
+      return ko.toJS(this.details)
+    },
+    getKoData: function(){
+      return this.details;
+    },
+    getLabel: function() {
+      return this.details.label();
+    },
+    getId: function() {
+      return this.details.id;
+    }
   }
 
 }
