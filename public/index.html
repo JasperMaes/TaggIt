@@ -97,6 +97,11 @@
     .form-group .help-block.error-message {
       display: none;
     }
+
+    .sidebar-subitem {
+      padding-left: 20px;
+      width: 100%;
+    }
   </style>
 
 
@@ -110,9 +115,19 @@
           <a class="h2" href="#">Taggit</a>
         </li>
         <!-- ko foreach: { data: tripViewModel.trips, as: 'trip' } -->
-        <li data-bind="css: {active: $root.preferencesController.isActive(trip.id)}, click: $root.preferencesController.selectTrip">
-          <a class="h4" href="#" data-bind="text: trip.label">Dashboard</a>
+        <!-- ko if: $root.preferencesController.isActive(trip.id) -->
+        <li class="active">
+          <div><a class="h4" href="#" data-bind="text: trip.label"></a></div>
+          <div class="sidebar-subitem" data-bind="click: $root.sidebarController.close"><a class="h5" href="#">Show map</a></div>
+          <div class="sidebar-subitem" data-bind="click: $root.mapController.addMarkerHandler"><a class="h5" href="#">Add location</a></div>
+          <div class="sidebar-subitem" data-bind="click: $root.sidebarController.close"><a class="h5" href="#">Locations list</a></div>
         </li>
+        <!-- /ko -->
+        <!-- ko ifnot: $root.preferencesController.isActive(trip.id) -->
+        <li data-bind="click: $root.preferencesController.selectTrip">
+          <a class="h4" href="#" data-bind="text: trip.label"></a></br>
+        </li>
+        <!-- /ko -->
         <!-- /ko -->
         <li>
           <a class="h4" href="#" data-bind="click: openPreferencesHandler">Preferences</a>
