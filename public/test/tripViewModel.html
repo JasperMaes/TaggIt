@@ -26,63 +26,66 @@
 <body>
   <ul data-bind="foreach: trips">
     <li>
-      <p data-bind="text: $data, click: $root.selectTrip"></p>
+      <p data-bind="text: $data.label, click: $root.selectTrip"></p>
       <p data-bind="click: $root.removeTrip">delete</p>
     </li>
   </ul>
   <button data-bind="click:addRandomTrip">Add trip</button>
-  <div data-bind="with: currentTrip">
+  <!--<div data-bind="with: currentTrip">
 
-    <h1 data-bind="text: label"></h1>
+    <h1 data-bind="text: getLabel()"></h1>
     <p data-bind="text: getAll().length + ' locations stored'">
     </p>
     <ul data-bind="foreach: getAll()">
       <li>
-        <p data-bind="text: id + ' -> ' + title"></p>
+        <p data-bind="text: id"></p>
         <p data-bind=>
           Delete
         </p>
       </li>
     </ul>
 
-  </div>
+  </div> -->
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
   <script>
-    var tripDetails = {
-      label: "Trip 1",
-      maxId: 2,
-      locations: [{
-          id: 0,
-          title: "Location 1",
-          position: [50.939343499999995, 4.3371832]
-        },
-        {
-          id: 1,
-          title: "Location 2",
-          position: [50.93937, 4.3371932]
-        }
-      ]
+    var getTripDetails = function(id) {
+      return {
+        id: id,
+        label: "Trip "+Math.random(),
+        maxId: 2,
+        locations: [{
+            id: 0,
+            title: "Location 1",
+            position: [50.939343499999995, 4.3371832]
+          },
+          {
+            id: 1,
+            title: "Location 2",
+            position: [50.93937, 4.3371932]
+          }
+        ]
+      }
     }
-
-    var trip = Trip(tripDetails);
-    trip.add({
-      title: "TITLE location 0",
-      description: "DESCRIPTION location 0"
-    })
-    trip.add({
-      title: "TITLE location 1",
-      description: "DESCRIPTION location 1"
-    })
-    trip.add({
-      title: "TITLE location 2",
-      description: "DESCRIPTION location 2"
-    })
-    trip.add({
-      title: "TITLE location 3",
-      description: "DESCRIPTION location 3"
-    })
-
+    /*
+        var trip = Trip(tripDetails);
+        trip.add({
+          title: "TITLE location 0",
+          description: "DESCRIPTION location 0"
+        })
+        trip.add({
+          title: "TITLE location 1",
+          description: "DESCRIPTION location 1"
+        })
+        trip.add({
+          title: "TITLE location 2",
+          description: "DESCRIPTION location 2"
+        })
+        trip.add({
+          title: "TITLE location 3",
+          description: "DESCRIPTION location 3"
+        })
+    */
     var maxId = 10;
     QUnit.module("TripViewModel operations", {
       beforeEach: function() {
@@ -125,19 +128,21 @@
         ko.cleanNode(element);
       }
     }, function() {
+      
       QUnit.test("Add a trip", function(assert) {
         var done = assert.async();
         var vm = this.vm;
         var currentTrip = vm.currentTrip();
+        var tripDetails = getTripDetails();
         vm.addTrip(tripDetails)
           .then(function(trip) {
-            assert.deepEqual(trip._rawData, tripDetails, "Trip should be returned and equal to the added value")
+            assert.deepEqual(trip._getRawData(), tripDetails, "Trip should be returned and equal to the added value")
             assert.deepEqual(vm.currentTrip(), currentTrip, "Current trip should not be changed")
-            assert.ok(vm.tripExists(trip.id), "The new trip should be listed in the list of trips");
-            return TripModel.getTripDetails(trip.id)
+            assert.ok(vm.tripExists(trip.getId()), "The new trip should be listed in the list of trips");
+            return TripModel.getTripDetails(trip.getId())
           })
           .then(function(trip) {
-            assert.deepEqual(trip._rawData, tripDetails, "Trip in dataStore should be equal to the added value")
+            assert.deepEqual(trip._getRawData(), tripDetails, "Trip in dataStore should be equal to the added value")
             done();
           })
       });
@@ -146,6 +151,7 @@
         var done = assert.async();
         var vm = this.vm;
         var currentTrip = vm.currentTrip();
+        var tripDetails = getTripDetails();
         vm.addTrip(tripDetails)
           .then(function() {
             TripModel._setMaxTripId(0)
@@ -162,15 +168,16 @@
         var done = assert.async();
         var vm = this.vm;
         var tripId;
+        var tripDetails = getTripDetails();
         vm.addTrip(tripDetails)
           .then(function(trip) {
-            tripId = trip.id;
+            tripId = trip.getId();
             return vm.removeTrip(tripId)
           })
           .then(function() {
             return vm.tripExists(tripId);
           })
-          .then(function(exists){
+          .then(function(exists) {
             assert.notOk(exists, "The trip shouldn't exist anymore")
             done();
           })
@@ -193,11 +200,12 @@
         var done = assert.async();
         var vm = this.vm;
         var currentTrip = vm.currentTrip();
+        var tripDetails = getTripDetails();
         vm.addTrip(tripDetails)
           .then(function(trip) {
-            vm.selectTrip(trip.id);
+            vm.selectTrip(trip.getId());
             setTimeout(function() {
-              assert.deepEqual(vm.currentTrip()._rawData, tripDetails, "Active trip should contain trip details")
+              assert.deepEqual(vm.currentTrip()._getRawData(), tripDetails, "Active trip should contain trip details")
               assert.notDeepEqual(vm.currentTrip(), currentTrip, "Active trip should not be identical to the original value")
               done();
             }, 300)
@@ -216,12 +224,56 @@
         var done = assert.async();
         var vm = this.vm;
         var currentTrip = vm.currentTrip();
+        var tripDetails = getTripDetails();
         vm.addTrip(tripDetails)
           .then(function(trip) {
-            assert.ok(vm.tripExists(trip.id), "Should be true since trip exists")
+            assert.ok(vm.tripExists(trip.getId()), "Should be true since trip exists")
             done();
           })
       });
+
+      QUnit.todo("Test add multiple and impact on current trip id", function(assert) {
+        var done = assert.async();
+        var vm = this.vm;
+
+        vm._currentTripId.subscribe(function(){console.log("New active trip id")})
+        //vm.currentTrip.subscribe(function(){console.log("New active trip")})
+        var trip1;
+        var trip2;
+        vm.addTrip(getTripDetails())
+          .then(function(trip) {
+            trip1 = trip;
+            console.log("Added trip 1")
+            return vm.trips();
+          })
+          .then(function(trips) {
+            vm.selectTrip(trips[0].id)
+            setTimeout(function() {
+              console.log("Current trip id", vm._currentTripId())
+              //console.log("Current trip", vm.currentTrip().getId())
+
+              vm.addTrip(getTripDetails())
+              .then(function(trip){
+                trip2 = trip
+                console.log("Added trip 2")
+                console.log("Current trip id", vm._currentTripId())
+                //console.log("Current trip", vm.currentTrip().getId())
+
+                console.log(trip1.tripId)
+                console.log(trip2.tripId)
+
+                console.log(trip1.getId())
+                console.log(trip2.getId())
+
+
+
+                done();
+              })
+
+            }, 500)
+          })
+      })
+
     })
 
     QUnit.module("TripViewModel initialization", {
@@ -299,9 +351,21 @@
       });
     })
 
+    // TODO Write test for update
+
     QUnit.done(function(details) {
       console.log("Total: ", details.total, " Failed: ", details.failed, " Passed:", details.passed, " Runtime: ", details.runtime);
     });
+
+
+var tripA = Trip(getTripDetails(0));
+var tripB = Trip(getTripDetails(1));
+console.log(tripA.tripId)
+console.log(tripB.tripId)
+
+console.log(tripA.getId())
+console.log(tripB.getId())
+
   </script>
 </body>
 

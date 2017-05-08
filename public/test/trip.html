@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>TaggIt</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script src="../vendors/jquery/jquery-2.1.0.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.5.0/localforage.min.js" integrity="sha256-kAq48olJYgx7dR+P9KbS+Q1OjM1vNGUSFDjQjcM0lKA=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js" integrity="sha256-owX7sroiO/O1a7h3a4X29A1g3QgqdNvijRQ7V5TH45M=" crossorigin="anonymous"></script>
+
+  <script src="../resources/js/Messages.js"></script>
+  <script src="../resources/js/Trip.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qunit/2.3.2/qunit.css" integrity="sha256-DXCteHH/M9mXm+FLB1eFwe9YOwew/rLhSaswsiY7vNY=" crossorigin="anonymous" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qunit/2.3.2/qunit.js" integrity="sha256-vw5380CzcsZFVEt/GBDLeaS7lT7MsxSOz2fJqLjFilo=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script>
+    function getTripDetails() {
+      return {
+        id: "trip0",
+        label: "Trip 1",
+        maxId: 2,
+        locations: [{
+            id: 0,
+            title: "Location 1",
+            position: [50.939343499999995, 4.3371832]
+          },
+          {
+            id: 1,
+            title: "Location 2",
+            position: [50.93937, 4.3371932]
+          }
+        ]
+      }
+    }
+
+    QUnit.module("Trip operations", {
+      beforeEach: function() {}
+    }, function() {
+
+      QUnit.test("Test constructing", function(assert) {
+        var tripDetails = getTripDetails();
+        var trip = Trip(tripDetails);
+        assert.equal(trip.getId(), tripDetails.id, "Trip ID must correspond to original ID")
+        assert.equal(trip.getLabel(), tripDetails.label, "Trip label must correspond to original label")
+        assert.deepEqual(trip.getAll(), tripDetails.locations, "Trip locations must correspond to original locations")
+        assert.deepEqual(trip._getRawData(), tripDetails, "Trip raw data must be equal to original input")
+      });
+
+      QUnit.test("Test adding location", function(assert) {
+        var tripDetails = getTripDetails();
+        var trip = Trip(tripDetails);
+        var maxIdBefore = trip._getRawData().maxId;
+        var location = {
+          title: "TITLE location 0",
+          description: "DESCRIPTION location 0"
+        }
+        var locationId = trip.add(location)
+        var maxIdAfter = trip._getRawData().maxId
+        assert.equal(maxIdAfter, maxIdBefore + 1, "Max id must be 1 bigger than before")
+        assert.equal(locationId, maxIdBefore, "Location id has to be returned and be equal to before value")
+      });
+
+      QUnit.test("Test getting location", function(assert) {
+        var tripDetails = getTripDetails();
+        var trip = Trip(tripDetails);
+        assert.equal(trip.get(tripDetails.locations[0].id), tripDetails.locations[0], "Getting location returns correct value")
+      });
+
+      QUnit.test("Test getting all locations", function(assert) {
+        var tripDetails = getTripDetails();
+        var trip = Trip(tripDetails);
+        assert.equal(trip.getAll(), tripDetails.locations, "Getting locations returns correct value")
+      });
+
+      QUnit.test("Test getting non-existent location", function(assert) {
+        var tripDetails = getTripDetails();
+        var trip = Trip(tripDetails);
+        assert.equal(trip.get(10), Message.UnknownLocation, "Getting non-existent location returns correct message")
+      });
+
+      QUnit.test("Test removing existing location", function(assert) {
+        var tripDetails = getTripDetails();
+        var trip = Trip(tripDetails);
+        var location = {
+          title: "TITLE location 0",
+          description: "DESCRIPTION location 0"
+        }
+        var locationId = trip.add(location)
+        var removed = trip.remove(locationId)
+        assert.deepEqual(removed, location, "Remove returns removed location")
+        assert.deepEqual(trip.get(locationId), Message.UnknownLocation, "After remove, location cannot be found anymore")
+      });
+
+      QUnit.test("Test removing non-existent location", function(assert) {
+        var tripDetails = getTripDetails();
+        var trip = Trip(tripDetails);
+        var removed = trip.remove(10)
+        assert.deepEqual(removed, Message.UnknownLocation, "Remove non-existent location returns message")
+      });
+
+      QUnit.todo("Test finding location", function(assert) {
+        assert.ok(false, "Needs implementation")
+      })
+
+    })
+
+    QUnit.done(function(details) {
+      console.log("Total: ", details.total, " Failed: ", details.failed, " Passed:", details.passed, " Runtime: ", details.runtime);
+    });
+  </script>
+</body>
+
+</html>

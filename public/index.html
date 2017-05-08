@@ -4,7 +4,7 @@
 <head>
   <title>TaggIt</title>
 
-  <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
   <script src="vendors/jquery/jquery-2.1.0.js"></script>
 
@@ -128,7 +128,7 @@
       </a>
     </div>
     <div id="btn-add-location" class="btn-group" data-bind="visible: mapController.buttonsVisible, click: mapController.addMarkerHandler">
-      <a class="btn btn-primary btn-fab btn-raised">
+      <a class="btn btn-primary btn-fab btn-raised" data-bind="css: { disabled: !tripViewModel.currentTrip() }">
         <i class="material-icons">add_location</i>
       </a>
     </div>

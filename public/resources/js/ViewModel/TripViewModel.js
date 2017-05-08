@@ -2,7 +2,12 @@ var TripViewModel = function() {
 
   var trips = ko.observableArray([]);
   var activeTripId = ko.observable(null);
-  var activeTripDetails = ko.observable(null);
+  var activeTripDetails = function(value){
+    console.log("setting value",value)
+    var val = value;
+    return {getId:function(){return val.getId()}}
+  }
+  activeTripDetails = ko.observable(null);
 
   ko.computed(function() {
     var tripId = activeTripId();
@@ -14,20 +19,27 @@ var TripViewModel = function() {
           activeTripDetails(tripDetails)
         });
     } else {
+      console.log("Empty active trip details")
       activeTripDetails(null);
     }
   })
 
-  function addTrip(id, tripDetails) {
-    // TODO implement add trip in the viewModel
-    // Creates ID for trip by itself
+  activeTripDetails.subscribe(function(newValue) {
+    console.log("Saving changes to TripModel")
+    if(!!newValue){//Don't update when no trip is selected
+      TripModel.updateTrip(newValue)
+    }
+  })
 
-    return TripModel.addTrip(id, tripDetails)
+  function addTrip(tripDetails) {
+    var addedTrip;
+    return TripModel.addTrip(tripDetails)
       .then(function(trip) {
+        addedTrip = trip;
         return refreshTripsList()
-          .then(function() {
-            return Promise.resolve(trip);
-          })
+      })
+      .then(function() {
+        return Promise.resolve(addedTrip);
       })
   }
 
@@ -61,7 +73,7 @@ var TripViewModel = function() {
           return refreshTripsList()
         })
         .then(function() {
-          var selectIndex = Math.min(index, trips().length-1);
+          var selectIndex = Math.min(index, trips().length - 1);
           if (!!activeTripId() && selectIndex >= 0) {
             var newCurrentTripId = trips()[selectIndex].id
             selectTrip(newCurrentTripId);
@@ -75,7 +87,6 @@ var TripViewModel = function() {
     } else {
       return Promise.reject(Message.UnknownTrip);
     }
-    // TODO verify whether the current trip needs to be updated
   }
 
   function initialize() {
@@ -92,6 +103,7 @@ var TripViewModel = function() {
     initialize: initialize,
     trips: trips,
     currentTrip: activeTripDetails,
+    _currentTripId: activeTripId,
     addTrip: addTrip,
     selectTrip: selectTrip,
     removeTrip: removeTrip,

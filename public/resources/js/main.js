@@ -70,7 +70,9 @@ $(window).on('load', function() {
       tripViewModel.currentTrip.subscribe(function(newValue) {
         console.log("Active trip changed to ", newValue)
         if (!!newValue) {
-          localforage.setItem("lastActiveTrip", newValue.id)
+          localforage.setItem("lastActiveTrip", newValue.getId())
+        } else {
+          localforage.removeItem("lastActiveTrip")
         }
       })
 
@@ -86,19 +88,31 @@ $(window).on('load', function() {
     .then(function() {
       //TODO for all event handlers: add data parameter to get access to the controller
       controller = {
-        mapController: MapController(updateLocationGpsError, initLocationGpsError),
+        mapController: MapController(updateLocationGpsError, initLocationGpsError, tripViewModel),
         sidebarController: SidebarController(),
         messageContent: ko.observable(),
         addLocationController: AddLocationController(),
         preferencesController: PreferencesController(),
-        tripViewModel: tripViewModel
+        tripViewModel: tripViewModel,
+        clearAll: function(){
+          Promise.all([TripModel._dataStore.clear(), localforage.clear()])
+          .then(function(){
+            console.log("All cleared")
+            location.reload()
+          })
+        }
       };
 
       controller.mapController.initMap();
 
+      if (tripViewModel.trips().length > 0) {
+        showPage("mapView")
+      } else {
+        showPage("preferencesView")
+      }
+
       console.log("All done loading");
 
-      showPage("mapView")
     })
   setTimeout(function() {
     //showPage("preferencesView")

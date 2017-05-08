@@ -15,9 +15,17 @@ var Message = {
     id: "UnknownTrip",
     message: "There is no trip associated to this identifier."
   },
+  UnknownLocation: {
+    id: "UnknownLocation",
+    message: "There is no location associated to this identifier."
+  },
   TripRemoveSuccess: {
     id: "TripRemoveSuccess",
     message: "The trip was successfully removed."
+  },
+  TripUpdateSuccess: {
+    id: "TripUpdateSuccess",
+    message: "The trip was successfully updated."
   },
   InitializationComplete: {
     id: "InitializationComplete",

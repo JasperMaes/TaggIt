@@ -75,10 +75,10 @@
         var tripIdBefore = TripModel._getMaxTripId();
         TripModel.addTrip(tripDetails)
           .then(function(addedTrip) {
-            assert.deepEqual(addedTrip._rawData, tripDetails, "The added trip returned should be the same as the added one");
-            assert.equal(addedTrip.id, "trip"+tripIdBefore, "The id should be 'trip'+maxTripId")
-            assert.equal(TripModel._getMaxTripId(), tripIdBefore+1, "The maxTripId should have increased 1")
-            return TripModel.existsTrip(addedTrip.id)
+            assert.deepEqual(addedTrip._getRawData(), tripDetails, "The added trip returned should be the same as the added one");
+            assert.equal(addedTrip.getId(), "trip" + tripIdBefore, "The id should be 'trip'+maxTripId")
+            assert.equal(TripModel._getMaxTripId(), tripIdBefore + 1, "The maxTripId should have increased 1")
+            return TripModel.existsTrip(addedTrip.getId())
           })
           .then(function(exists) {
             console.log(exists)
@@ -113,10 +113,10 @@
         var done = assert.async();
         TripModel.addTrip(tripDetails)
           .then(function(addedTrip) {
-            return TripModel.getTripDetails(addedTrip.id)
+            return TripModel.getTripDetails(addedTrip.getId())
           })
           .then(function(retrievedTrip) {
-            assert.deepEqual(retrievedTrip._rawData, tripDetails, "The retrieved trip should be the same as the added one");
+            assert.deepEqual(retrievedTrip._getRawData(), tripDetails, "The retrieved trip should be the same as the added one");
             done();
           })
           .catch(function(message) {
@@ -192,7 +192,7 @@
         var done = assert.async();
         TripModel.addTrip(tripDetails)
           .then(function(addedTrip) {
-            return TripModel.existsTrip(addedTrip.id)
+            return TripModel.existsTrip(addedTrip.getId())
           })
           .then(function(exists) {
             assert.ok(exists, "The result should be true since the trip exists");
@@ -222,7 +222,7 @@
         var tripId;
         TripModel.addTrip(tripDetails)
           .then(function(addedTrip) {
-            tripId = addedTrip.id;
+            tripId = addedTrip.getId();
             return TripModel.removeTrip(tripId)
           })
           .then(function(message) {
@@ -249,6 +249,37 @@
           .catch(function() {
             assert.ok(false, "Should not throw exception");
             done()
+          })
+      });
+
+      QUnit.test("Test updating non-existent trip", function(assert) {
+        var done = assert.async();
+        TripModel.updateTrip(Trip(tripDetails))
+          .catch(function(message) {
+            assert.deepEqual(message, Message.UnknownTrip, "The message that is returned should indicate that the trip was not found");
+            done()
+          })
+      });
+
+      QUnit.test("Test updating trip", function(assert) {
+        var done = assert.async();
+        TripModel.addTrip(tripDetails)
+          .then(function(trip) {
+            trip.getKoData().label("New label")
+            return TripModel.updateTrip(trip)
+          })
+          .then(function(message) {
+            assert.deepEqual(message, Message.TripUpdateSuccess, "The message that is returned should indicate that the trip was updated");
+            return TripModel.getTripDetails(trip.getId())
+          })
+          .then(function(trip) {
+            assert.equal(trip.getLabel(), "New label", "Updated label is returned")
+            done();
+          })
+          .catch(function(message) {
+            console.log(message)
+            assert.ok(false, "Should not throw exception");
+            done();
           })
       });
 

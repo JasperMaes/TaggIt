@@ -1,6 +1,8 @@
-var MapController = function(updateLocationGpsError, initLocationGpsError) {
+var MapController = function(updateLocationGpsError, initLocationGpsError, tripViewModel) {
 
   var watchId;
+
+  var buttonsVisible = ko.observable(false);
 
   var mapController = {
     center: [ko.observable(50.81057), ko.observable(4.93622)],
@@ -8,6 +10,11 @@ var MapController = function(updateLocationGpsError, initLocationGpsError) {
     markers: ko.observableArray([]),
     mapOptions: {
       zoomControl: false
+    },
+    printMarkers: function(){
+      controller.mapController.markers().forEach(function(marker){
+        console.log(marker.center[0](), ",", marker.center[1]())
+      })
     },
     events: {
       dragstart: function(evt) {
@@ -30,7 +37,7 @@ var MapController = function(updateLocationGpsError, initLocationGpsError) {
       radius: ko.observable(0)
     },
     mapVisible: ko.observable(false),
-    buttonsVisible: ko.observable(false),
+    buttonsVisible: buttonsVisible,
     filterbarVisible: ko.observable(false),
     bounds: ko.observable(),
     isInitialized: ko.observable(false),
@@ -58,16 +65,6 @@ var MapController = function(updateLocationGpsError, initLocationGpsError) {
     },
 
     addMarker: function(position) {
-      // this.markers.push({
-      //   center: [ko.observable(position[0]), ko.observable(position[1])],
-      //   draggable: false,
-      //   opened: ko.observable(false)
-      // });
-
-      // var pos = {
-      //   lat: position[0],
-      //   lng: position[1]
-      // };
       controller.addLocationController.locationData.position = position;
 
       showPage("addLocationView");
@@ -134,6 +131,24 @@ var MapController = function(updateLocationGpsError, initLocationGpsError) {
       });
     }
   };
+
+  //TODO CONTINUE WITH SEARCHING WHY NOT CORRECTLY UPDATING
+  ko.computed(function() {
+    var result = [];
+    console.log("Updating markers on map")
+    var trip = tripViewModel.currentTrip();
+    if (!!trip) {
+      console.log("trip is ok", trip.getKoData().locations().length)
+      trip.getKoData().locations().forEach(function(location) {
+        result.push({
+          center: [ko.observable(location.position[0]), ko.observable(location.position[1])],
+          draggable: false,
+          opened: ko.observable(false)
+        })
+      })
+    }
+    mapController.markers(result);
+  })
 
   return mapController;
 };

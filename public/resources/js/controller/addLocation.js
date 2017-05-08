@@ -24,7 +24,7 @@ var AddLocationController = function(){
         name: 'sport',
         icon: 'directions_bike'
       },
-    ], //, 'nature', 'dining', 'building', 'animal', 'sport'
+    ],
     locationData: {
       category: ko.observable(),
       title: ko.observable(),
@@ -78,10 +78,14 @@ var AddLocationController = function(){
     },
     savePosition: function() {
       // TODO add data validation + encoding (website valid address, texts are html encoded)
-      // TODO save position logic
       console.log("Add functionality to save position");
       var location = ko.toJS(controller.addLocationController.locationData)
       console.log(location)
+
+      var trip = controller.tripViewModel.currentTrip();
+      trip.add(location);
+      controller.tripViewModel.currentTrip(trip)
+
       // TODO show short popup that disappears automatically to inform user
       controller.addLocationController.backToMap();
     },

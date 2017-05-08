@@ -144,6 +144,20 @@ var TripModel = (function() {
     }
   }
 
+  function updateTrip(trip){
+    return existsTrip(trip.getId())
+    .then(function (exists){
+      if(exists){
+        return tripStore.setItem(trip.getId(), trip._getRawData())
+        .then(function(){
+          return Promise.resolve(Message.TripUpdateSuccess);
+        })
+      } else {
+        return Promise.reject(Message.UnknownTrip);
+      }
+    })
+  }
+
   return {
     initialize: initialize,
     getTrips: getTripsList,
@@ -160,7 +174,8 @@ var TripModel = (function() {
       maxTripId = newValue
     },
     _getTripIndex: getTripIndex,
-    createEmptyTrip: createEmptyTrip
+    createEmptyTrip: createEmptyTrip,
+    updateTrip: updateTrip
   }
 
 })()

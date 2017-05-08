@@ -6,7 +6,8 @@ var PreferencesController = function() {
     },
 
     isActive: function(current) {
-      return (!!controller.tripViewModel.currentTrip() && (controller.tripViewModel.currentTrip().id == current));
+      var result = (!!controller.tripViewModel.currentTrip() && (controller.tripViewModel.currentTrip().getId() === current));
+      return result;
     },
 
     selectTrip: function() {
@@ -16,12 +17,14 @@ var PreferencesController = function() {
 
     newTripName: ko.observable(""),
 
+    //TODO find out why the active trip changes to the new trip when a new trip is added
     addNewTripHandler: function(controller) {
       var tripLabel = controller.preferencesController.newTripName();
       if (tripLabel) {
         var trip = controller.tripViewModel.createEmptyTrip(tripLabel);
         console.log("Add new trip ", tripLabel);
-        controller.tripViewModel.addTrip(trip);
+        controller.tripViewModel.addTrip(trip)
+        //TODO select added trip if it is the only one
         //TODO message to inform user that trip was added successfully
         controller.preferencesController.newTripName("");
       }
