@@ -103,6 +103,10 @@
       padding-left: 20px;
       width: 100%;
     }
+
+    .material-icons.disabled {
+      color: lightgray;
+    }
   </style>
 
 
@@ -442,16 +446,21 @@
           <div class="locationList-item">
             <div class="row">
               <div class="col-sm-12 col-xs-12">
-                <p class="h1" data-bind="text: location.title || 'Unknown label'"></p>
+                <p class="h3" data-bind="text: location.title || '<No name>'"></p>
               </div>
               <div class="col-sm-7 col-xs-7">
-                <p class="h4" style="color: gray" data-bind="text: location.createTime"></p>
+                <p class="h5" style="color: gray" data-bind="text: location.createTime"></p>
               </div>
               <div class="icon-group col-sm-5 col-xs-5">
                 <div class="pull-right">
                   <span class="material-icons" style="font-size: 2em;vertical-align: bottom;" data-bind="text: $root.addLocationController.getCategoryIcon(location.category)"></span>
                   <span class="material-icons" style="font-size: 2em;vertical-align: bottom;" data-bind="click:$root.locationListController.openMapPreviewHandler">place</span>
+                  <!-- ko if: !!location.website -->
                   <span class="material-icons" style="font-size: 2em;vertical-align: bottom;" data-bind="click:$root.locationListController.openWebsite">language</span>
+                  <!-- /ko -->
+                  <!-- ko ifnot: !!location.website -->
+                  <span class="material-icons disabled" style="font-size: 2em;vertical-align: bottom;">language</span>
+                  <!-- /ko -->
                 </div>
               </div>
             </div>
