@@ -233,9 +233,44 @@
     </div>
   </script>
 
+  <style>
+    .imagePreview {
+      width: 100vw;
+      height: 100vh;
+      background-color: black;
+      background-size: contain;
+      background-repeat-x: no-repeat;
+      background-repeat-y: no-repeat;
+      background-position-x: center;
+      background-position-y: center;
+    }
+
+    .imagePreview .material-icons {
+      color: white;
+    }
+  </style>
+
   <script type="text/html" id="addLocationDetailsView-template">
     <div id="addLocationDetailsView" class="page">
-      <div class="page-content-wrapper">
+      <div id="imagePreview" class="imagePreview" data-bind="visible: !!addLocationController.previewImage().url, style: { backgroundImage: addLocationController.previewImage().url}">
+<div class="page-content-wrapper">
+
+        <div id="header">
+          <div class="row">
+            <div class="col-xs-2 col-sm-1">
+              <span id="backbutton" class="material-icons" style="z-index:3000; font-size: 3em" data-bind="click:addLocationController.backToLocationDetails">navigate_before</i>
+                </div>
+                <div class="col-xs-offset-8 col-sm-offset-9 col-xs-2 col-sm-2" style="z-index:60;padding-right:0px">
+                  <span class="material-icons" style="font-size: 3em;" data-bind="click: addLocationController.deleteSelectedImage">delete</span>
+            </div>
+          </div>
+        </div>
+
+        </div>
+
+      </div>
+      <div class="page-content-wrapper" data-bind="visible: !addLocationController.previewImage().url">
+
         <div id="header">
           <div class="row">
             <div class="col-xs-2 col-sm-1">
@@ -314,7 +349,7 @@
                     <!-- TODO add remove image button -->
                     <!-- TODO add show larger image button -->
                     <!-- TODO add image tag instead of span -->
-                    <img data-bind="attr: { src: $data }" />
+                    <img data-bind="attr: { src: $data }, click: $root.addLocationController.openImage" />
                   </div>
                 </div>
                 <!-- /ko -->
