@@ -94,6 +94,7 @@ $(window).on('load', function() {
         addLocationController: AddLocationController(),
         preferencesController: PreferencesController(),
         locationListController: LocationListController(),
+        viewLocationController: ViewLocationController(),
         tripViewModel: tripViewModel,
         clearAll: function(){
           Promise.all([TripModel._dataStore.clear(), localforage.clear()])

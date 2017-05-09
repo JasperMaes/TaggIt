@@ -62,6 +62,7 @@
   <script src="resources/js/controller/addLocation.js"></script>
   <script src="resources/js/controller/preferences.js"></script>
   <script src="resources/js/controller/locationList.js"></script>
+  <script src="resources/js/controller/viewLocation.js"></script>
 
   <script src="resources/js/main.js"></script>
 
@@ -410,6 +411,11 @@
       border-left-width: 0;
       border-right-width: 0;
     }
+
+    div.locationList .material-icons {
+      font-size: 2em;
+      vertical-align: bottom;
+    }
   </style>
 
   <script type="text/html" id="locationsListView-template">
@@ -446,20 +452,20 @@
           <div class="locationList-item">
             <div class="row">
               <div class="col-sm-12 col-xs-12">
-                <p class="h3" data-bind="text: location.title || '<No name>'"></p>
+                <p class="h3" data-bind="text: location.title || '<No name>', click: $root.locationListController.viewLocation"></p>
               </div>
               <div class="col-sm-7 col-xs-7">
-                <p class="h5" style="color: gray" data-bind="text: location.createTime"></p>
+                <p class="h5" style="color: gray" data-bind="text: location.createTime, click: $root.locationListController.viewLocation"></p>
               </div>
               <div class="icon-group col-sm-5 col-xs-5">
                 <div class="pull-right">
-                  <span class="material-icons" style="font-size: 2em;vertical-align: bottom;" data-bind="text: $root.addLocationController.getCategoryIcon(location.category)"></span>
-                  <span class="material-icons" style="font-size: 2em;vertical-align: bottom;" data-bind="click:$root.locationListController.openMapPreviewHandler">place</span>
+                  <span class="material-icons" data-bind="text: $root.addLocationController.getCategoryIcon(location.category)"></span>
+                  <span class="material-icons" data-bind="click:$root.locationListController.openMapPreviewHandler">place</span>
                   <!-- ko if: !!location.website -->
-                  <span class="material-icons" style="font-size: 2em;vertical-align: bottom;" data-bind="click:$root.locationListController.openWebsite">language</span>
+                  <span class="material-icons" data-bind="click:$root.locationListController.openWebsite, clickBubble: false">language</span>
                   <!-- /ko -->
                   <!-- ko ifnot: !!location.website -->
-                  <span class="material-icons disabled" style="font-size: 2em;vertical-align: bottom;">language</span>
+                  <span class="material-icons disabled">language</span>
                   <!-- /ko -->
                 </div>
               </div>
@@ -480,6 +486,104 @@
 
       </div>
 
+    </div>
+  </script>
+
+  <script type="text/html" id="viewLocationView-template">
+    <div id="viewLocationView" class="page">
+      <div class="page-content-wrapper">
+        <div id="header">
+          <div class="row">
+            <div class="col-xs-2 col-sm-1">
+              <span id="backbutton" class="material-icons" style="z-index:3000; font-size: 3em" data-bind="click:viewLocationController.backToLocationListView">navigate_before</i>
+                </div>
+                <div class="col-xs-8 col-sm-9" style="z-index:60;padding-right:0px">
+                  <h2 style="margin-top: 5px">View location</h2>
+                </div>
+                <div class="col-xs-2 col-sm-2" style="z-index:60;padding-right:0px">
+                  <span class="material-icons" style="font-size: 2.5em;margin-top:3px" data-bind="click: viewLocationController.editLocation">mode_edit</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <form>
+            <div class="form-group form-group-lg label-floating">
+              <label class="control-label" for="locationTitle">Title</label>
+              <input type="text" class="form-control" id="locationTitle" data-bind="value: viewLocationController.locationData().title">
+            </div>
+            <div class="form-group label-floating">
+              <label class="control-label" for="locationDescription">Description</label>
+              <textarea class="form-control" id="locationDescription" rows="4" data-bind="text: viewLocationController.locationData().description"></textarea>
+            </div>
+            <div class="form-group form-group-lg label-floating">
+              <label class="control-label" for="locationCreationDate">Created on</label>
+              <input type="text" class="form-control" id="locationCreationDate" data-bind="value: viewLocationController.locationData().createTime">
+            </div>
+            <div class="row">
+              <div class="col-sm-2 col-xs-2">
+                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".mapPreview" data-bind="click:viewLocationController.openMapPreviewHandler">place</span>
+              </div>
+              <div class="col-sm-2 col-xs-2">
+                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#changeCategoryCollapse" data-bind="text: addLocationController.getCategoryIcon(viewLocationController.locationData().category)"></span>
+              </div>
+              <div class="col-sm-2 col-xs-2">
+                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#websiteCollapse" data-bind="click: viewLocationController.openPanelHandler, css: { disabled: !viewLocationController.locationData().website}">language</span>
+              </div>
+            </div>
+            <div class="mapPreview collapse">
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <div id="frame">
+                    <img class="mapMarker" src="http://localhost:3000/vendors/leaflet/images/marker-icon.png" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="websiteCollapse" class="collapse">
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <div class="form-group label-floating">
+                    <label class="control-label" for="url" style="margin-top:0px">Website</label>
+                    <input type="url" class="form-control" id="url" data-bind="value: viewLocationController.locationData().website">
+                    <span class="help-block error-message">Please enter a valid web address</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="changeCategoryCollapse" class="collapse">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="panel panel-default">
+                    <div class="panel-body" data-bind="foreach: addLocationController.categories, as category">
+                      <div class="thumbnail-3" data-bind="css: { selected: $root.viewLocationController.locationData().category == name }">
+                        <div class="content">
+                          <span class="material-icons" data-bind="text:icon"></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="container-fluid">
+              <div class="row">
+                <!-- ko foreach: viewLocationController.locationData().images -->
+                <div class="thumbnail-3-no-margin photo-tile">
+                  <div class="content">
+                    <!-- TODO add remove image button -->
+                    <!-- TODO add show larger image button -->
+                    <!-- TODO add image tag instead of span -->
+                    <img data-bind="attr: { src: $data }" />
+                  </div>
+                </div>
+                <!-- /ko -->
+              </div>
+            </div>
+          </form>
+        </div>
+
+      </div>
     </div>
   </script>
 
