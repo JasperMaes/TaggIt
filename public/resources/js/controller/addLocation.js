@@ -62,9 +62,10 @@ var AddLocationController = function(){
         $($(this).data("target")).collapse("hide");
       });
     },
-    openMapPreviewHandler: function() {
-      setTimeout(function() { //Needs a little timeout to have the correct width of the panel
-        var panel = $("#mapPreview div.panel-body");
+    openMapPreviewHandler: function(controller, event) {
+      $(event.target).parents(".row").next().collapse("toggle")
+      setTimeout(function(event) { //Needs a little timeout to have the correct width of the panel
+        var panel = $(event.target).parents(".row").next().find("div.panel-body");
         var width = panel.width();
         var height = 0.75 * width;
         var lat = controller.addLocationController.locationData.position[0];
@@ -73,13 +74,19 @@ var AddLocationController = function(){
         panel.find("#frame")
           .css('background-image', 'url(' + imageUrl + ')')
           .css('height', height);
-      }, 50)
+      }, 50, event)
       controller.addLocationController.openPanelHandler.call(this);
     },
     savePosition: function() {
       // TODO add data validation + encoding (website valid address, texts are html encoded)
       console.log("Add functionality to save position");
       var location = ko.toJS(controller.addLocationController.locationData)
+      var currentdate = new Date();
+      location.createTime = currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/"
+                + currentdate.getFullYear() + " "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes();
       console.log(location)
 
       var trip = controller.tripViewModel.currentTrip();

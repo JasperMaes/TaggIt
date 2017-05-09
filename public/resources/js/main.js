@@ -93,6 +93,7 @@ $(window).on('load', function() {
         messageContent: ko.observable(),
         addLocationController: AddLocationController(),
         preferencesController: PreferencesController(),
+        locationListController: LocationListController(),
         tripViewModel: tripViewModel,
         clearAll: function(){
           Promise.all([TripModel._dataStore.clear(), localforage.clear()])
@@ -110,6 +111,8 @@ $(window).on('load', function() {
       } else {
         showPage("preferencesView")
       }
+
+        showPage("locationsListView");//TODO REMOVE THIS
 
       console.log("All done loading");
 

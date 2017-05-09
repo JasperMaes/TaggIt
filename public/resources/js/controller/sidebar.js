@@ -14,10 +14,16 @@ var SidebarController = function() {
     close();
   }
 
+  var viewLocations = function(){
+    showPage("locationsListView");
+    close();
+  }
+
   return {
     isVisible: isVisible,
     toggle: toggle,
     close: close,
-    openPreferencesHandler: openPreferencesHandler
+    openPreferencesHandler: openPreferencesHandler,
+    viewLocations: viewLocations
   };
 };
