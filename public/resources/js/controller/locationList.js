@@ -10,7 +10,6 @@ var LocationListController = function(){
         $(event.target).parents(".row").next(".mapPreview").collapse("toggle")
         setTimeout(function(location, event) { //Needs a little timeout to have the correct width of the panel
           var panel = $(event.target).parents(".row").next(".mapPreview").find("div.panel-body");
-          console.log(panel)
           var width = panel.width();
           var height = 0.75 * width;
           console.log(location)
@@ -20,11 +19,13 @@ var LocationListController = function(){
           panel.find("#frame")
             .css('background-image', 'url(' + imageUrl + ')')
             .css('height', height);
-
-            console.log(imageUrl)
         }, 500, data, event)
         controller.locationListController.openPanelHandler.call(this);
     },
+    openWebsite: function(data){
+      console.log(data)
+      window.open(data.website, "_blank");
+    }
 
   }
 
