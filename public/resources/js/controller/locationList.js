@@ -18,6 +18,9 @@ var LocationListController = function(){
           panel.find("#frame")
             .css('background-image', 'url(' + imageUrl + ')')
             .css('height', height);
+          panel.find(".mapMarker")
+            .css("left", Math.floor( width  / 2 ) - 12 ) // minus the width of the marker
+            .css("top" , Math.floor( height / 2 ) - 41 ) // minus the height of the marker
         }, 500, data, event)
         controller.locationListController.openPanelHandler.call(this);
     },
