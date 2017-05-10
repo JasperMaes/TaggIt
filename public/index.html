@@ -63,6 +63,7 @@
   <script src="resources/js/controller/preferences.js"></script>
   <script src="resources/js/controller/locationList.js"></script>
   <script src="resources/js/controller/viewLocation.js"></script>
+  <script src="resources/js/controller/mapPreview.js"></script>
 
   <script src="resources/js/main.js"></script>
 
@@ -88,7 +89,7 @@
       padding: 0;
     }
 
-    #frame {
+    .frame {
       height: 200px;
     }
 
@@ -250,6 +251,18 @@
     }
   </style>
 
+<script type="text/html" id="mapPreviewTemplate">
+  <div class="mapPreview collapse">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="frame">
+          <img class="mapMarker" src="/vendors/leaflet/images/marker-icon.png" />
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
   <script type="text/html" id="addLocationDetailsView-template">
     <div id="addLocationDetailsView" class="page">
       <div id="imagePreview" class="imagePreview" data-bind="visible: !!addLocationController.previewImage().url, style: { backgroundImage: addLocationController.previewImage().url}">
@@ -297,7 +310,7 @@
             </div>
             <div class="row">
               <div class="col-sm-2 col-xs-2">
-                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".mapPreview" data-bind="click:addLocationController.openMapPreviewHandler">place</span>
+                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".mapPreview" data-bind="click:addLocationController.mapPreviewController.openMapPreviewHandler">place</span>
               </div>
               <div class="col-sm-2 col-xs-2">
                 <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#changeCategoryCollapse" data-bind="text: addLocationController.getCategoryIcon(addLocationController.locationData.category()), click: addLocationController.openPanelHandler"></span>

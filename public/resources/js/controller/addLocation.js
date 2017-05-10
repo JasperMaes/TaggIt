@@ -1,4 +1,23 @@
 var AddLocationController = function(){
+  function openPanelHandler() {
+    var $this = $(this);
+    $("[data-collapse-group='myDivs']:not([data-target='" + $this.data("target") + "'])").each(function() {
+      $($(this).data("target")).collapse("hide");
+    });
+  };
+
+  var locationData = {
+    category: ko.observable(),
+    title: ko.observable(),
+    description: ko.observable(),
+    website: ko.observable(),
+    images: ko.observableArray([])
+  };
+
+  function getMapPreviewPanel(event){
+    return $(event.target).parents(".row").next()
+  }
+
   var addLocationController = {
     categories: [{
         name: 'landscape',
@@ -25,13 +44,7 @@ var AddLocationController = function(){
         icon: 'directions_bike'
       },
     ],
-    locationData: {
-      category: ko.observable(),
-      title: ko.observable(),
-      description: ko.observable(),
-      website: ko.observable(),
-      images: ko.observableArray([])
-    },
+    locationData: locationData,
     getCategoryIcon: function(category) {
       var result = "home";
       controller.addLocationController.categories.forEach(function(value) {
@@ -56,30 +69,7 @@ var AddLocationController = function(){
         $("#changeCategoryCollapse").collapse('toggle');
       };
     },
-    openPanelHandler: function() {
-      var $this = $(this);
-      $("[data-collapse-group='myDivs']:not([data-target='" + $this.data("target") + "'])").each(function() {
-        $($(this).data("target")).collapse("hide");
-      });
-    },
-    openMapPreviewHandler: function(controller, event) {
-      $(event.target).parents(".row").next().collapse("toggle")
-      setTimeout(function(event) { //Needs a little timeout to have the correct width of the panel
-        var panel = $(event.target).parents(".row").next().find("div.panel-body");
-        var width = panel.width();
-        var height = 0.75 * width;
-        var lat = controller.addLocationController.locationData.position[0];
-        var lng = controller.addLocationController.locationData.position[1];
-        var imageUrl = "http://staticmap.openstreetmap.de/staticmap.php?center=" + lat + "," + lng + "&zoom=16&size=" + width + "x" + height + "&maptype=mapnik"
-        panel.find("#frame")
-          .css('background-image', 'url(' + imageUrl + ')')
-          .css('height', height);
-        panel.find(".mapMarker")
-          .css("left", Math.floor( width  / 2 ) - 12 ) // minus the width of the marker
-          .css("top" , Math.floor( height / 2 ) - 41 ) // minus the height of the marker
-      }, 50, event)
-      controller.addLocationController.openPanelHandler.call(this);
-    },
+    mapPreviewController: MapPreviewController(openPanelHandler, locationData, getMapPreviewPanel),
     savePosition: function() {
       // TODO add data validation + encoding (website valid address, texts are html encoded)
       console.log("Add functionality to save position");
