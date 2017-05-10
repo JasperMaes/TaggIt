@@ -492,7 +492,7 @@
               <div class="icon-group col-sm-5 col-xs-5">
                 <div class="pull-right">
                   <span class="material-icons" data-bind="text: $root.addLocationController.getCategoryIcon(location.category)"></span>
-                  <span class="material-icons" data-bind="click:$root.locationListController.openMapPreviewHandler">place</span>
+                  <span class="material-icons" data-bind="click:$root.locationListController.mapPreviewControllers()[$index()].openMapPreviewHandler">place</span>
                   <!-- ko if: !!location.website -->
                   <span class="material-icons" data-bind="click:$root.locationListController.openWebsite, clickBubble: false">language</span>
                   <!-- /ko -->
@@ -503,15 +503,8 @@
               </div>
             </div>
 
-            <div class="mapPreview collapse">
-              <div class="panel panel-default">
-                <div class="panel-body">
-                  <div id="frame">
-                    <img class="mapMarker" src="http://localhost:3000/vendors/leaflet/images/marker-icon.png" />
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div class="mapPreview collapse" data-bind="template: { name: 'mapPreviewTemplate', data: $root.locationListController.mapPreviewControllers()[$index()] }"></div>
+
           </div>
         </div>
         <!-- /ko -->
