@@ -13,56 +13,14 @@ var AddLocationController = function(){
   }
 
   var addLocationController = {
-    categories: [{
-        name: 'landscape',
-        icon: 'terrain'
-      },
-      {
-        name: 'nature',
-        icon: 'nature'
-      },
-      {
-        name: 'dining',
-        icon: 'local_dining'
-      },
-      {
-        name: 'building',
-        icon: 'account_balance'
-      },
-      {
-        name: 'animal',
-        icon: 'pets'
-      },
-      {
-        name: 'sport',
-        icon: 'directions_bike'
-      },
-    ],
     locationData: locationData,
-    getCategoryIcon: function(category) {
-      var result = "home";
-      controller.addLocationController.categories.forEach(function(value) {
-        if (value.name === category) {
-          result = value.icon;
-        }
-      });
-      if (result === "home") {
-        console.error("Unknown category, no icon defined");
-      }
-      return result;
-    },
     selectCategory: function(category) {
       return function() {
         controller.addLocationController.locationData.category(category);
         showPage("addLocationDetailsView");
       };
     },
-    selectCategoryClosePanel: function(category) {
-      return function() {
-        controller.addLocationController.locationData.category(category);
-        $("#changeCategoryCollapse").collapse('toggle');
-      };
-    },
+    
     mapPreviewController: MapPreviewController(locationData, getMapPreviewPanel),
     savePosition: function() {
       // TODO add data validation + encoding (website valid address, texts are html encoded)

@@ -44,6 +44,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.5.0/localforage.min.js" integrity="sha256-kAq48olJYgx7dR+P9KbS+Q1OjM1vNGUSFDjQjcM0lKA=" crossorigin="anonymous"></script>
 
   <!-- Application code -->
+  <script src="resources/js/Parameters.js"></script>
+  <script src="resources/js/Util.js"></script>
   <script src="resources/js/Messages.js"></script>
   <script src="resources/js/GeoLocation.js"></script>
   <script src="resources/js/Trip.js"></script>
@@ -222,7 +224,7 @@
               </div>
             </div>
 
-            <div class="row" data-bind="foreach: addLocationController.categories, as category">
+            <div class="row" data-bind="foreach: Parameters.categories, as category">
               <div class="thumbnail" data-bind="css: { selected: $root.addLocationController.locationData.category() == name }">
                 <div class="content" data-bind="click:$root.addLocationController.selectCategory(name)">
                   <span class="material-icons" data-bind="text:icon"></span>
@@ -268,6 +270,22 @@
         <label class="control-label" for="url" style="margin-top:0px">Website</label>
         <input type="url" class="form-control" id="url" data-bind="value: website">
         <span class="help-block error-message">Please enter a valid web address</span>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script type="text/html" id="categoryCollapseTemplate">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="panel panel-default">
+        <div class="panel-body" data-bind="foreach: Parameters.categories, as category">
+          <div class="thumbnail-3" data-bind="css: { selected: ko.unwrap(ko.unwrap($parent.locationData).category) == name }">
+            <div class="content" data-bind="click: $parent.selectCategoryClosePanel(name)">
+              <span class="material-icons" data-bind="text:icon"></span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -320,34 +338,18 @@
             </div>
             <div class="row">
                 <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".mapPreview" data-bind="click:addLocationController.mapPreviewController.openMapPreviewHandler">place</span>
-                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#changeCategoryCollapse" data-bind="text: addLocationController.getCategoryIcon(addLocationController.locationData.category()), click:addLocationController.mapPreviewController.openPanelHandler"></span>
+                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".changeCategoryCollapse" data-bind="text: Util.getCategoryIcon(addLocationController.locationData.category()), click:addLocationController.mapPreviewController.openPanelHandler"></span>
                 <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".websiteCollapse" data-bind="click:addLocationController.mapPreviewController.openPanelHandler">language</span>
             </div>
             <div class="mapPreview collapse" data-bind="template: { name: 'mapPreviewTemplate', data: addLocationController.mapPreviewController }"></div>
             <div class="websiteCollapse collapse" data-bind="template: { name: 'websiteCollapseTemplate', data: addLocationController.locationData }"></div>
-            <div id="changeCategoryCollapse" class="collapse">
-              <div class="container-fluid">
-                <div class="row">
-                  <div class="panel panel-default">
-                    <div class="panel-body" data-bind="foreach: addLocationController.categories, as category">
-                      <div class="thumbnail-3" data-bind="css: { selected: $root.addLocationController.locationData.category() == name }">
-                        <div class="content" data-bind="click:$root.addLocationController.selectCategoryClosePanel(name)">
-                          <span class="material-icons" data-bind="text:icon"></span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div class="changeCategoryCollapse collapse" data-bind="template: { name: 'categoryCollapseTemplate', data: addLocationController.mapPreviewController }"></div>
+
             <div class="container-fluid">
               <div class="row">
                 <!-- ko foreach: addLocationController.locationData.images -->
                 <div class="thumbnail-3-no-margin photo-tile">
                   <div class="content">
-                    <!-- TODO add remove image button -->
-                    <!-- TODO add show larger image button -->
-                    <!-- TODO add image tag instead of span -->
                     <img data-bind="attr: { src: $data }, click: $root.addLocationController.openImage" />
                   </div>
                 </div>
@@ -493,7 +495,7 @@
               </div>
               <div class="icon-group col-sm-5 col-xs-5">
                 <div class="pull-right">
-                  <span class="material-icons" data-bind="text: $root.addLocationController.getCategoryIcon(location.category)"></span>
+                  <span class="material-icons" data-bind="text: Util.getCategoryIcon(location.category)"></span>
                   <span class="material-icons" data-bind="click:$root.locationListController.mapPreviewControllers()[$index()].openMapPreviewHandler">place</span>
                   <!-- ko if: !!location.website -->
                   <span class="material-icons" data-bind="click:$root.locationListController.openWebsite, clickBubble: false">language</span>
@@ -549,27 +551,13 @@
             </div>
             <div class="row">
                 <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".mapPreview" data-bind="click:viewLocationController.mapPreviewController.openMapPreviewHandler">place</span>
-                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#changeCategoryCollapse" data-bind="text: addLocationController.getCategoryIcon(viewLocationController.locationData().category), click:viewLocationController.mapPreviewController.openPanelHandler"></span>
+                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".changeCategoryCollapse" data-bind="text: Util.getCategoryIcon(viewLocationController.locationData().category), click:viewLocationController.mapPreviewController.openPanelHandler"></span>
                 <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".websiteCollapse" data-bind="click:viewLocationController.mapPreviewController.openPanelHandler, css: { disabled: !viewLocationController.locationData().website}">language</span>
             </div>
             <div class="mapPreview collapse" data-bind="template: { name: 'mapPreviewTemplate', data: viewLocationController.mapPreviewController }"></div>
             <div class="websiteCollapse collapse" data-bind="template: { name: 'websiteCollapseTemplate', data: viewLocationController.locationData }"></div>
+            <div class="changeCategoryCollapse collapse" data-bind="template: { name: 'categoryCollapseTemplate', data: viewLocationController.mapPreviewController }"></div>
 
-            <div id="changeCategoryCollapse" class="collapse">
-              <div class="container-fluid">
-                <div class="row">
-                  <div class="panel panel-default">
-                    <div class="panel-body" data-bind="foreach: addLocationController.categories, as category">
-                      <div class="thumbnail-3" data-bind="css: { selected: $root.viewLocationController.locationData().category == name }">
-                        <div class="content">
-                          <span class="material-icons" data-bind="text:icon"></span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
             <div class="container-fluid">
               <div class="row">
                 <!-- ko foreach: viewLocationController.locationData().images -->

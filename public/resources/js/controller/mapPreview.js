@@ -8,8 +8,16 @@ var MapPreviewController = function(locationData, getPanel) {
     });
   }
 
+  function selectCategoryClosePanel(category) {
+    return function(controller, event) {
+      locationData.category(category);
+      $(event.target).closest(".changeCategoryCollapse").collapse("toggle")
+    };
+  }
+
   return {
     locationData: locationData,
+    selectCategoryClosePanel: selectCategoryClosePanel,
     openPanelHandler: openPanelHandler,
     openMapPreviewHandler: function(controller, event) {
       var panel = getPanel(event);
