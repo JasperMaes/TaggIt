@@ -9,10 +9,11 @@ var MapPreviewController = function(locationData, getPanel) {
   }
 
   return {
+    locationData: locationData,
     openPanelHandler: openPanelHandler,
     openMapPreviewHandler: function(controller, event) {
       var panel = getPanel(event);
-
+      console.log(ko.unwrap(locationData))
       panel.collapse("toggle")
       setTimeout(function(event, panel) { //Needs a little timeout to have the correct width of the panel
         var width = panel.width();

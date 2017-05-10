@@ -261,6 +261,18 @@
     </div>
 </script>
 
+<script type="text/html" id="websiteCollapseTemplate">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="form-group label-floating">
+        <label class="control-label" for="url" style="margin-top:0px">Website</label>
+        <input type="url" class="form-control" id="url" data-bind="value: website">
+        <span class="help-block error-message">Please enter a valid web address</span>
+      </div>
+    </div>
+  </div>
+</script>
+
   <script type="text/html" id="addLocationDetailsView-template">
     <div id="addLocationDetailsView" class="page">
       <div id="imagePreview" class="imagePreview" data-bind="visible: !!addLocationController.previewImage().url, style: { backgroundImage: addLocationController.previewImage().url}">
@@ -309,20 +321,10 @@
             <div class="row">
                 <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".mapPreview" data-bind="click:addLocationController.mapPreviewController.openMapPreviewHandler">place</span>
                 <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#changeCategoryCollapse" data-bind="text: addLocationController.getCategoryIcon(addLocationController.locationData.category()), click:addLocationController.mapPreviewController.openPanelHandler"></span>
-                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#websiteCollapse" data-bind="click:addLocationController.mapPreviewController.openPanelHandler">language</span>
+                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".websiteCollapse" data-bind="click:addLocationController.mapPreviewController.openPanelHandler">language</span>
             </div>
             <div class="mapPreview collapse" data-bind="template: { name: 'mapPreviewTemplate', data: addLocationController.mapPreviewController }"></div>
-            <div id="websiteCollapse" class="collapse">
-              <div class="panel panel-default">
-                <div class="panel-body">
-                  <div class="form-group label-floating">
-                    <label class="control-label" for="url" style="margin-top:0px">Website</label>
-                    <input type="url" class="form-control" id="url" data-bind="value: addLocationController.locationData.website">
-                    <span class="help-block error-message">Please enter a valid web address</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div class="websiteCollapse collapse" data-bind="template: { name: 'websiteCollapseTemplate', data: addLocationController.locationData }"></div>
             <div id="changeCategoryCollapse" class="collapse">
               <div class="container-fluid">
                 <div class="row">
@@ -548,20 +550,11 @@
             <div class="row">
                 <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".mapPreview" data-bind="click:viewLocationController.mapPreviewController.openMapPreviewHandler">place</span>
                 <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#changeCategoryCollapse" data-bind="text: addLocationController.getCategoryIcon(viewLocationController.locationData().category), click:viewLocationController.mapPreviewController.openPanelHandler"></span>
-                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#websiteCollapse" data-bind="click:viewLocationController.mapPreviewController.openPanelHandler, css: { disabled: !viewLocationController.locationData().website}">language</span>
+                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".websiteCollapse" data-bind="click:viewLocationController.mapPreviewController.openPanelHandler, css: { disabled: !viewLocationController.locationData().website}">language</span>
             </div>
-            <div class="mapPreview collapse" data-bind="template: { name: 'mapPreviewTemplate', data: addLocationController.mapPreviewController }"></div>
-            <div id="websiteCollapse" class="collapse">
-              <div class="panel panel-default">
-                <div class="panel-body">
-                  <div class="form-group label-floating">
-                    <label class="control-label" for="url" style="margin-top:0px">Website</label>
-                    <input type="url" class="form-control" id="url" data-bind="value: viewLocationController.locationData().website">
-                    <span class="help-block error-message">Please enter a valid web address</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div class="mapPreview collapse" data-bind="template: { name: 'mapPreviewTemplate', data: viewLocationController.mapPreviewController }"></div>
+            <div class="websiteCollapse collapse" data-bind="template: { name: 'websiteCollapseTemplate', data: viewLocationController.locationData }"></div>
+
             <div id="changeCategoryCollapse" class="collapse">
               <div class="container-fluid">
                 <div class="row">
@@ -582,9 +575,6 @@
                 <!-- ko foreach: viewLocationController.locationData().images -->
                 <div class="thumbnail-3-no-margin photo-tile">
                   <div class="content">
-                    <!-- TODO add remove image button -->
-                    <!-- TODO add show larger image button -->
-                    <!-- TODO add image tag instead of span -->
                     <img data-bind="attr: { src: $data }" />
                   </div>
                 </div>
