@@ -307,20 +307,11 @@
               <textarea class="form-control" id="locationDescription" rows="4" data-bind="value: addLocationController.locationData.description"></textarea>
             </div>
             <div class="row">
-              <div class="col-sm-2 col-xs-2">
                 <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".mapPreview" data-bind="click:addLocationController.mapPreviewController.openMapPreviewHandler">place</span>
-              </div>
-              <div class="col-sm-2 col-xs-2">
-                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#changeCategoryCollapse" data-bind="text: addLocationController.getCategoryIcon(addLocationController.locationData.category()), click: addLocationController.openPanelHandler"></span>
-              </div>
-              <div class="col-sm-2 col-xs-2">
-                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#websiteCollapse" data-bind="click: addLocationController.openPanelHandler">language</span>
-              </div>
+                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#changeCategoryCollapse" data-bind="text: addLocationController.getCategoryIcon(addLocationController.locationData.category()), click:addLocationController.openPanelHandler"></span>
+                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#websiteCollapse" data-bind="click:addLocationController.openPanelHandler">language</span>
             </div>
-            <div class="mapPreview collapse" data-bind="template: { name: 'mapPreviewTemplate', data: addLocationController.mapPreviewController }">
-
-            </div>
-            
+            <div class="mapPreview collapse" data-bind="template: { name: 'mapPreviewTemplate', data: addLocationController.mapPreviewController }"></div>
             <div id="websiteCollapse" class="collapse">
               <div class="panel panel-default">
                 <div class="panel-body">

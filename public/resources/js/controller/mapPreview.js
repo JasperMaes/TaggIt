@@ -18,8 +18,8 @@ var MapPreviewController = function(openPanelHandler, locationData, getPanel) {
           .css("left", Math.floor(width / 2) - 12) // minus the width of the marker
           .css("top", Math.floor(height / 2) - 41) // minus the height of the marker
       }, 50, event, panel.find("div.panel-body"))
-
-      openPanelHandler.call(this);
+      
+      openPanelHandler.call(event.target);
     },
 
   };

@@ -15,7 +15,7 @@ var AddLocationController = function(){
   };
 
   function getMapPreviewPanel(event){
-    return $(event.target).parents(".row").next()
+    return $(event.target).parent().siblings(".mapPreview")
   }
 
   var addLocationController = {
@@ -69,6 +69,7 @@ var AddLocationController = function(){
         $("#changeCategoryCollapse").collapse('toggle');
       };
     },
+    openPanelHandler: openPanelHandler,
     mapPreviewController: MapPreviewController(openPanelHandler, locationData, getMapPreviewPanel),
     savePosition: function() {
       // TODO add data validation + encoding (website valid address, texts are html encoded)
