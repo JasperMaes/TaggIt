@@ -252,7 +252,6 @@
   </style>
 
 <script type="text/html" id="mapPreviewTemplate">
-  <div class="mapPreview collapse">
     <div class="panel panel-default">
       <div class="panel-body">
         <div class="frame">
@@ -260,7 +259,6 @@
         </div>
       </div>
     </div>
-  </div>
 </script>
 
   <script type="text/html" id="addLocationDetailsView-template">
@@ -319,15 +317,10 @@
                 <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#websiteCollapse" data-bind="click: addLocationController.openPanelHandler">language</span>
               </div>
             </div>
-            <div class="mapPreview collapse">
-              <div class="panel panel-default">
-                <div class="panel-body">
-                  <div id="frame">
-                    <img class="mapMarker" src="http://localhost:3000/vendors/leaflet/images/marker-icon.png" />
-                  </div>
-                </div>
-              </div>
+            <div class="mapPreview collapse" data-bind="template: { name: 'mapPreviewTemplate', data: addLocationController.mapPreviewController }">
+
             </div>
+            
             <div id="websiteCollapse" class="collapse">
               <div class="panel panel-default">
                 <div class="panel-body">
