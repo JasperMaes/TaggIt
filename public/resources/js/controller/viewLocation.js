@@ -1,31 +1,21 @@
 var ViewLocationController = function(){
-  var locationListController = {
-    locationData: ko.observable(),
-    openPanelHandler: function() {
-      var $this = $(this);
-      $("[data-collapse-group='myDivs']:not([data-target='" + $this.data("target") + "'])").each(function() {
-        $($(this).data("target")).collapse("hide");
-      });
-    },
-    openMapPreviewHandler: function(controller, event) {
-        $(event.target).parents(".row").next(".mapPreview").collapse("toggle")
-        setTimeout(function(location, event) { //Needs a little timeout to have the correct width of the panel
-          var panel = $(event.target).parents(".row").next(".mapPreview").find("div.panel-body");
-          var width = panel.width();
-          var height = 0.75 * width;
-          console.log(location)
-          var lat = location.position[0];
-          var lng = location.position[1];
-          var imageUrl = "http://staticmap.openstreetmap.de/staticmap.php?center=" + lat + "," + lng + "&zoom=16&size=" + width + "x" + height + "&maptype=mapnik"
-          panel.find("#frame")
-            .css('background-image', 'url(' + imageUrl + ')')
-            .css('height', height);
-          panel.find(".mapMarker")
-            .css("left", Math.floor( width  / 2 ) - 12 ) // minus the width of the marker
-            .css("top" , Math.floor( height / 2 ) - 41 ) // minus the height of the marker
-        }, 500, controller.viewLocationController.locationData(), event)
-        controller.viewLocationController.openPanelHandler.call(this);
-    },
+  var locationData = ko.observable();
+
+  function openPanelHandler() {
+    var $this = $(this);
+    $("[data-collapse-group='myDivs']:not([data-target='" + $this.data("target") + "'])").each(function() {
+      $($(this).data("target")).collapse("hide");
+    });
+  }
+
+  function getMapPreviewPanel(event){
+    return $(event.target).parent().siblings(".mapPreview")
+  }
+
+  var viewLocationController = {
+    locationData: locationData,
+    openPanelHandler: openPanelHandler,
+    mapPreviewController: MapPreviewController(openPanelHandler, locationData, getMapPreviewPanel),
     openWebsite: function(data){
       console.log(data)
       window.open(data.website, "_blank");
@@ -39,5 +29,5 @@ var ViewLocationController = function(){
 
   }
 
-  return locationListController;
+  return viewLocationController;
 }

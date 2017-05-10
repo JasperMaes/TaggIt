@@ -553,25 +553,11 @@
               <input type="text" class="form-control" id="locationCreationDate" data-bind="value: viewLocationController.locationData().createTime">
             </div>
             <div class="row">
-              <div class="col-sm-2 col-xs-2">
-                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".mapPreview" data-bind="click:viewLocationController.openMapPreviewHandler">place</span>
-              </div>
-              <div class="col-sm-2 col-xs-2">
-                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#changeCategoryCollapse" data-bind="text: addLocationController.getCategoryIcon(viewLocationController.locationData().category)"></span>
-              </div>
-              <div class="col-sm-2 col-xs-2">
-                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#websiteCollapse" data-bind="click: viewLocationController.openPanelHandler, css: { disabled: !viewLocationController.locationData().website}">language</span>
-              </div>
+                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".mapPreview" data-bind="click:viewLocationController.mapPreviewController.openMapPreviewHandler">place</span>
+                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#changeCategoryCollapse" data-bind="text: addLocationController.getCategoryIcon(viewLocationController.locationData().category), click:viewLocationController.openPanelHandler"></span>
+                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#websiteCollapse" data-bind="click:viewLocationController.openPanelHandler, css: { disabled: !viewLocationController.locationData().website}">language</span>
             </div>
-            <div class="mapPreview collapse">
-              <div class="panel panel-default">
-                <div class="panel-body">
-                  <div id="frame">
-                    <img class="mapMarker" src="http://localhost:3000/vendors/leaflet/images/marker-icon.png" />
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div class="mapPreview collapse" data-bind="template: { name: 'mapPreviewTemplate', data: addLocationController.mapPreviewController }"></div>
             <div id="websiteCollapse" class="collapse">
               <div class="panel panel-default">
                 <div class="panel-body">
