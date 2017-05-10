@@ -308,8 +308,8 @@
             </div>
             <div class="row">
                 <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".mapPreview" data-bind="click:addLocationController.mapPreviewController.openMapPreviewHandler">place</span>
-                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#changeCategoryCollapse" data-bind="text: addLocationController.getCategoryIcon(addLocationController.locationData.category()), click:addLocationController.openPanelHandler"></span>
-                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#websiteCollapse" data-bind="click:addLocationController.openPanelHandler">language</span>
+                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#changeCategoryCollapse" data-bind="text: addLocationController.getCategoryIcon(addLocationController.locationData.category()), click:addLocationController.mapPreviewController.openPanelHandler"></span>
+                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#websiteCollapse" data-bind="click:addLocationController.mapPreviewController.openPanelHandler">language</span>
             </div>
             <div class="mapPreview collapse" data-bind="template: { name: 'mapPreviewTemplate', data: addLocationController.mapPreviewController }"></div>
             <div id="websiteCollapse" class="collapse">
@@ -547,8 +547,8 @@
             </div>
             <div class="row">
                 <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".mapPreview" data-bind="click:viewLocationController.mapPreviewController.openMapPreviewHandler">place</span>
-                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#changeCategoryCollapse" data-bind="text: addLocationController.getCategoryIcon(viewLocationController.locationData().category), click:viewLocationController.openPanelHandler"></span>
-                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#websiteCollapse" data-bind="click:viewLocationController.openPanelHandler, css: { disabled: !viewLocationController.locationData().website}">language</span>
+                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#changeCategoryCollapse" data-bind="text: addLocationController.getCategoryIcon(viewLocationController.locationData().category), click:viewLocationController.mapPreviewController.openPanelHandler"></span>
+                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target="#websiteCollapse" data-bind="click:viewLocationController.mapPreviewController.openPanelHandler, css: { disabled: !viewLocationController.locationData().website}">language</span>
             </div>
             <div class="mapPreview collapse" data-bind="template: { name: 'mapPreviewTemplate', data: addLocationController.mapPreviewController }"></div>
             <div id="websiteCollapse" class="collapse">

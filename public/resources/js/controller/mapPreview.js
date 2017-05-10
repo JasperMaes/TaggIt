@@ -1,6 +1,15 @@
-var MapPreviewController = function(openPanelHandler, locationData, getPanel) {
+var MapPreviewController = function(locationData, getPanel) {
+
+  function openPanelHandler() {
+    console.log("GOOD ONE")
+    var $this = $(this);
+    $("[data-collapse-group='myDivs']:not([data-target='" + $this.data("target") + "'])").each(function() {
+      $($(this).data("target")).collapse("hide");
+    });
+  }
 
   return {
+    openPanelHandler: openPanelHandler,
     openMapPreviewHandler: function(controller, event) {
       var panel = getPanel(event);
 

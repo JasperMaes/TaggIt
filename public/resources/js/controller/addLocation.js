@@ -1,10 +1,4 @@
 var AddLocationController = function(){
-  function openPanelHandler() {
-    var $this = $(this);
-    $("[data-collapse-group='myDivs']:not([data-target='" + $this.data("target") + "'])").each(function() {
-      $($(this).data("target")).collapse("hide");
-    });
-  };
 
   var locationData = {
     category: ko.observable(),
@@ -69,8 +63,7 @@ var AddLocationController = function(){
         $("#changeCategoryCollapse").collapse('toggle');
       };
     },
-    openPanelHandler: openPanelHandler,
-    mapPreviewController: MapPreviewController(openPanelHandler, locationData, getMapPreviewPanel),
+    mapPreviewController: MapPreviewController(locationData, getMapPreviewPanel),
     savePosition: function() {
       // TODO add data validation + encoding (website valid address, texts are html encoded)
       console.log("Add functionality to save position");
