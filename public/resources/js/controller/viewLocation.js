@@ -17,8 +17,8 @@ var ViewLocationController = function(){
     backToLocationListView: function(){
       showPage("locationsListView");
     },
-    editLocation: function(controller){
-      console.log("Edit location", controller.viewLocationController.locationData())
+    editLocation: function(){
+      console.log("Edit location", locationData())
     },
     openImage: function(data, event){
       var index = locationData().images.indexOf(data)
