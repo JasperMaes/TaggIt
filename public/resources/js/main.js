@@ -65,14 +65,13 @@ $(window).on('load', function() {
       }
     })
     .then(function() {
-      //TODO for all event handlers: add data parameter to get access to the controller
-
       var viewLocationController = ViewLocationController();
-      var addLocationController = AddLocationController(tripViewModel)
-      var preferencesController = PreferencesController(tripViewModel)
+      var addLocationController = AddLocationController(tripViewModel);
+      var preferencesController = PreferencesController(tripViewModel);
+      var mapController = MapController(updateLocationGpsError, initLocationGpsError, tripViewModel, addLocationController);
 
       controller = {
-        mapController: MapController(updateLocationGpsError, initLocationGpsError, tripViewModel, addLocationController),
+        mapController: mapController,
         sidebarController: SidebarController(),
         messageContent: ko.observable(),
         addLocationController: addLocationController,
@@ -89,7 +88,7 @@ $(window).on('load', function() {
         }
       };
 
-      controller.mapController.initMap();
+      mapController.initMap();
 
       if (tripViewModel.trips().length > 0) {
         showPage("mapView")
