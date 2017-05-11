@@ -61,6 +61,7 @@
 
   <script src="resources/js/controller/sidebar.js"></script>
   <script src="resources/js/controller/map.js"></script>
+  <script src="resources/js/controller/imagePreview.js"></script>
   <script src="resources/js/controller/addLocation.js"></script>
   <script src="resources/js/controller/preferences.js"></script>
   <script src="resources/js/controller/locationList.js"></script>
@@ -291,26 +292,27 @@
   </div>
 </script>
 
-  <script type="text/html" id="addLocationDetailsView-template">
-    <div id="addLocationDetailsView" class="page">
-      <div id="imagePreview" class="imagePreview" data-bind="visible: !!addLocationController.previewImage().url, style: { backgroundImage: addLocationController.previewImage().url}">
-<div class="page-content-wrapper">
-
-        <div id="header">
-          <div class="row">
-            <div class="col-xs-2 col-sm-1">
-              <span id="backbutton" class="material-icons" style="z-index:3000; font-size: 3em" data-bind="click:addLocationController.backToLocationDetails">navigate_before</i>
-                </div>
-                <div class="col-xs-offset-8 col-sm-offset-9 col-xs-2 col-sm-2" style="z-index:60;padding-right:0px">
-                  <span class="material-icons" style="font-size: 3em;" data-bind="click: addLocationController.deleteSelectedImage">delete</span>
-            </div>
+<script type="text/html" id="imagePreview-template">
+  <div class="imagePreview" data-bind="visible: hasImage, style: { backgroundImage: url}">
+    <div class="page-content-wrapper">
+      <div id="header">
+        <div class="row">
+          <div class="col-xs-2 col-sm-1">
+            <span id="backbutton" class="material-icons" style="z-index:3000; font-size: 3em" data-bind="click:backButtonHandler">navigate_before</i>
+              </div>
+              <div class="col-xs-offset-8 col-sm-offset-9 col-xs-2 col-sm-2" style="z-index:60;padding-right:0px">
+                <span class="material-icons" style="font-size: 3em;" data-bind="click: deleteButtonHandler, visible: canDelete">delete</span>
           </div>
         </div>
-
-        </div>
-
       </div>
-      <div class="page-content-wrapper" data-bind="visible: !addLocationController.previewImage().url">
+    </div>
+  </div>
+</script>
+
+  <script type="text/html" id="addLocationDetailsView-template">
+    <div id="addLocationDetailsView" class="page">
+      <div data-bind="template: { name: 'imagePreview-template', data: addLocationController.imagePreview }"></div>
+      <div class="page-content-wrapper" data-bind="visible: !addLocationController.imagePreview.hasImage()">
 
         <div id="header">
           <div class="row">
@@ -520,7 +522,9 @@
 
   <script type="text/html" id="viewLocationView-template">
     <div id="viewLocationView" class="page">
-      <div class="page-content-wrapper">
+      <div data-bind="template: { name: 'imagePreview-template', data: viewLocationController.imagePreview }"></div>
+
+      <div class="page-content-wrapper"  data-bind="visible: !viewLocationController.imagePreview.hasImage()">
         <div id="header">
           <div class="row">
             <div class="col-xs-2 col-sm-1">
@@ -561,9 +565,9 @@
             <div class="container-fluid">
               <div class="row">
                 <!-- ko foreach: viewLocationController.locationData().images -->
-                <div class="thumbnail-3-no-margin photo-tile">
+                <div class="thumbnail-3-no-margin photo-tile" >
                   <div class="content">
-                    <img data-bind="attr: { src: $data }" />
+                    <img data-bind="attr: { src: $data }, click: $root.viewLocationController.openImage"/>
                   </div>
                 </div>
                 <!-- /ko -->

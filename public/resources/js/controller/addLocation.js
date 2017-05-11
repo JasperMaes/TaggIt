@@ -12,6 +12,8 @@ var AddLocationController = function(){
     return $(event.target).parent().siblings(".mapPreview")
   }
 
+  var imagePreviewController = ImagePreviewController(locationData);
+
   var addLocationController = {
     locationData: locationData,
     selectCategory: function(category) {
@@ -20,7 +22,7 @@ var AddLocationController = function(){
         showPage("addLocationDetailsView");
       };
     },
-    
+
     mapPreviewController: MapPreviewController(locationData, getMapPreviewPanel),
     savePosition: function() {
       // TODO add data validation + encoding (website valid address, texts are html encoded)
@@ -93,25 +95,11 @@ var AddLocationController = function(){
     backToSelectCategory: function() {
       showPage("addLocationView");
     },
-    backToLocationDetails: function() {
-      controller.addLocationController.previewImage({})
-      //showPage("addLocationDetailsView");
-    },
-    deleteSelectedImage: function(){
-      var array = controller.addLocationController.locationData.images();
-      var index = controller.addLocationController.previewImage().index;
-      console.log("Delete image with index ", index);
-      array.splice(index, 1);
-      controller.addLocationController.locationData.images(array);
-      controller.addLocationController.backToLocationDetails();
-    },
-    previewImage: ko.observable({}),
+    imagePreview: imagePreviewController,
     openImage: function(data, event){
       console.log("Edit image")
       var index = controller.addLocationController.locationData.images().indexOf(data)
-      console.log(index)
-      controller.addLocationController.previewImage({index: index, url:"url("+data+")"})
-
+      imagePreviewController.imageIndex(index);
     }
   }
 
