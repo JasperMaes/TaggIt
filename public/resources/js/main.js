@@ -37,6 +37,7 @@ $(window).on('load', function() {
   $.material.init();
 
   tripViewModel = TripViewModel();
+  var viewLocationController = ViewLocationController()
 
   tripViewModel.initialize()
     .then(function() {
@@ -72,8 +73,8 @@ $(window).on('load', function() {
         messageContent: ko.observable(),
         addLocationController: AddLocationController(tripViewModel),
         preferencesController: PreferencesController(),
-        locationListController: LocationListController(),
-        viewLocationController: ViewLocationController(),
+        locationListController: LocationListController(tripViewModel, viewLocationController),
+        viewLocationController: viewLocationController,
         tripViewModel: tripViewModel,
         clearAll: function(){
           Promise.all([TripModel._dataStore.clear(), localforage.clear()])
