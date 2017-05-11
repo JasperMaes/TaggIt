@@ -69,13 +69,14 @@ $(window).on('load', function() {
 
       var viewLocationController = ViewLocationController();
       var addLocationController = AddLocationController(tripViewModel)
+      var preferencesController = PreferencesController(tripViewModel)
 
       controller = {
         mapController: MapController(updateLocationGpsError, initLocationGpsError, tripViewModel, addLocationController),
         sidebarController: SidebarController(),
         messageContent: ko.observable(),
         addLocationController: addLocationController,
-        preferencesController: PreferencesController(),
+        preferencesController: preferencesController,
         locationListController: LocationListController(tripViewModel, viewLocationController),
         viewLocationController: viewLocationController,
         tripViewModel: tripViewModel,
