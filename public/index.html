@@ -520,6 +520,12 @@
     </div>
   </script>
 
+  <style>
+    .form-group.is-focused .form-control:disabled {
+      background-image: none;
+    }
+  </style>
+
   <script type="text/html" id="viewLocationView-template">
     <div id="viewLocationView" class="page">
       <div data-bind="template: { name: 'imagePreview-template', data: viewLocationController.imagePreview }"></div>
@@ -541,17 +547,17 @@
 
         <div class="container">
           <form>
-            <div class="form-group form-group-lg label-floating">
+            <div class="form-group form-group-lg label-floating is-focused">
               <label class="control-label" for="locationTitle">Title</label>
-              <input type="text" class="form-control" id="locationTitle" data-bind="value: viewLocationController.locationData().title">
+              <input disabled type="text" class="form-control" id="locationTitle" data-bind="value: viewLocationController.locationData().title">
             </div>
-            <div class="form-group label-floating">
+            <div class="form-group label-floating is-focused">
               <label class="control-label" for="locationDescription">Description</label>
-              <textarea class="form-control" id="locationDescription" rows="4" data-bind="text: viewLocationController.locationData().description"></textarea>
+              <textarea disabled class="form-control" id="locationDescription" rows="4" data-bind="text: viewLocationController.locationData().description"></textarea>
             </div>
-            <div class="form-group form-group-lg label-floating">
+            <div class="form-group form-group-lg label-floating is-focused">
               <label class="control-label" for="locationCreationDate">Created on</label>
-              <input type="text" class="form-control" id="locationCreationDate" data-bind="value: viewLocationController.locationData().createTime">
+              <input disabled type="text" class="form-control" id="locationCreationDate" data-bind="value: viewLocationController.locationData().createTime">
             </div>
             <div class="row">
                 <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".mapPreview" data-bind="click:viewLocationController.mapPreviewController.openMapPreviewHandler">place</span>
