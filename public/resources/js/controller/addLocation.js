@@ -25,8 +25,6 @@ var AddLocationController = function(){
 
     mapPreviewController: MapPreviewController(locationData, getMapPreviewPanel),
     savePosition: function() {
-      // TODO add data validation + encoding (website valid address, texts are html encoded)
-      console.log("Add functionality to save position");
       var location = ko.toJS(controller.addLocationController.locationData)
       var currentdate = new Date();
       location.createTime = currentdate.getDate() + "/"
@@ -34,7 +32,6 @@ var AddLocationController = function(){
                 + currentdate.getFullYear() + " "
                 + currentdate.getHours() + ":"
                 + currentdate.getMinutes();
-      console.log(location)
 
       var trip = controller.tripViewModel.currentTrip();
       trip.add(location);

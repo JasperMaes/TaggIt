@@ -11,6 +11,7 @@ var MapController = function(updateLocationGpsError, initLocationGpsError, tripV
     mapOptions: {
       zoomControl: false
     },
+    //TODO REMOVE THIS
     printMarkers: function(){
       controller.mapController.markers().forEach(function(marker){
         console.log(marker.center[0](), ",", marker.center[1]())

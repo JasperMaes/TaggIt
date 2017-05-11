@@ -3,7 +3,6 @@ var TripViewModel = function() {
   var trips = ko.observableArray([]);
   var activeTripId = ko.observable(null);
   var activeTripDetails = function(value){
-    console.log("setting value",value)
     var val = value;
     return {getId:function(){return val.getId()}}
   }
@@ -11,21 +10,17 @@ var TripViewModel = function() {
 
   ko.computed(function() {
     var tripId = activeTripId();
-    console.log("LOAD trip details: " + tripId)
     if (!!tripId) {
       TripModel.getTripDetails(tripId)
         .then(function(tripDetails) {
-          console.log("Got values, set trip details")
           activeTripDetails(tripDetails)
         });
     } else {
-      console.log("Empty active trip details")
       activeTripDetails(null);
     }
   })
 
   activeTripDetails.subscribe(function(newValue) {
-    console.log("Saving changes to TripModel")
     if(!!newValue){//Don't update when no trip is selected
       TripModel.updateTrip(newValue)
     }

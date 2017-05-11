@@ -1,7 +1,6 @@
 var MapPreviewController = function(locationData, getPanel) {
 
   function openPanelHandler() {
-    console.log("GOOD ONE")
     var $this = $(this);
     $("[data-collapse-group='myDivs']:not([data-target='" + $this.data("target") + "'])").each(function() {
       $($(this).data("target")).collapse("hide");
@@ -21,7 +20,6 @@ var MapPreviewController = function(locationData, getPanel) {
     openPanelHandler: openPanelHandler,
     openMapPreviewHandler: function(controller, event) {
       var panel = getPanel(event);
-      console.log(ko.unwrap(locationData))
       panel.collapse("toggle")
       setTimeout(function(event, panel) { //Needs a little timeout to have the correct width of the panel
         var width = panel.width();

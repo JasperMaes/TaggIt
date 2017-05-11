@@ -200,7 +200,6 @@
             }
             // http://stackoverflow.com/questions/14149551/subscribe-to-observable-array-for-new-or-removed-entry-only
             var subscr = markers.subscribe(function(changes) {
-              console.log("KO-LEAFLET detected markers change")
                 each(changes, function(c) {
                     if (c.status === "added") {
                         markersList[c.index] = new Marker(c.value, map);

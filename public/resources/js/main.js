@@ -38,27 +38,6 @@ $(window).on('load', function() {
 
   tripViewModel = TripViewModel();
 
-  tripViewModel.addRandomTrip = function() {
-    console.log("Create random trip")
-    var details = {
-      label: "Trip " + Math.floor(Math.random() * (100 - 10)) + 10,
-      maxId: 2,
-      locations: [{
-          id: 0,
-          title: "Location 1",
-          position: [50.939343499999995, 4.3371832]
-        },
-        {
-          id: 1,
-          title: "Location 2",
-          position: [50.93937, 4.3371932]
-        }
-      ]
-    }
-
-    tripViewModel.addTrip(details);
-  }
-
   tripViewModel.initialize()
     .then(function() {
       //TODO REMOVE THIS

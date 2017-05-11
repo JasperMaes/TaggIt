@@ -19,7 +19,6 @@ var LocationListController = function() {
   var locationListController = {
     mapPreviewControllers: mapPreviewControllers,
     openWebsite: function(data) {
-      console.log(data)
       window.open(data.website, "_blank");
     },
     viewLocation: function(data, event) {

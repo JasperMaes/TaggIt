@@ -32,7 +32,7 @@ var ImagePreviewController = function(locationData, options) {
   function deleteButtonHandler() {
     var array = ko.unwrap(images);
     var index = imageIndex();
-    console.log("Delete image with index ", index);
+    
     array.splice(index, 1);
     images(array);
     backButtonHandler();

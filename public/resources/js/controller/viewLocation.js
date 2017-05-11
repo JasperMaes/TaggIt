@@ -21,7 +21,6 @@ var ViewLocationController = function(){
       console.log("Edit location", controller.viewLocationController.locationData())
     },
     openImage: function(data, event){
-      console.log("Edit image")
       var index = locationData().images.indexOf(data)
       imagePreviewController.imageIndex(index);
     }
