@@ -37,7 +37,6 @@ $(window).on('load', function() {
   $.material.init();
 
   tripViewModel = TripViewModel();
-  var viewLocationController = ViewLocationController()
 
   tripViewModel.initialize()
     .then(function() {
@@ -67,11 +66,15 @@ $(window).on('load', function() {
     })
     .then(function() {
       //TODO for all event handlers: add data parameter to get access to the controller
+
+      var viewLocationController = ViewLocationController();
+      var addLocationController = AddLocationController(tripViewModel)
+
       controller = {
-        mapController: MapController(updateLocationGpsError, initLocationGpsError, tripViewModel),
+        mapController: MapController(updateLocationGpsError, initLocationGpsError, tripViewModel, addLocationController),
         sidebarController: SidebarController(),
         messageContent: ko.observable(),
-        addLocationController: AddLocationController(tripViewModel),
+        addLocationController: addLocationController,
         preferencesController: PreferencesController(),
         locationListController: LocationListController(tripViewModel, viewLocationController),
         viewLocationController: viewLocationController,

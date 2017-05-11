@@ -31,14 +31,13 @@ var ImagePreviewController = function(locationData, options) {
 
   /* WARNING: Delete only works if the images variable is an observable */
   function deleteButtonHandler() {
-    if (!ko.isObservable(ko.unwrap(locationData).images)) {
+    var imagesObservable = ko.unwrap(locationData).images;
+    if (!ko.isObservable(imagesObservable)) {
       console.error("Images array is not in an observable; not deleting image");
       return;
     }
-
-    var array = ko.unwrap(images);
-    array.splice(imageIndex(), 1);
-    ko.unwrap(locationData).images(array)
+    
+    imagesObservable.splice(imageIndex(), 1);
 
     backButtonHandler();
   }

@@ -1,19 +1,102 @@
-var MapController = function(updateLocationGpsError, initLocationGpsError, tripViewModel) {
+var MapController = function(updateLocationGpsError, initLocationGpsError, tripViewModel, addLocationController) {
 
   var watchId;
 
   var buttonsVisible = ko.observable(false);
 
-  var mapController = {
+  var centerMarker = {
     center: [ko.observable(50.81057), ko.observable(4.93622)],
-    zoom: ko.observable(16),
-    markers: ko.observableArray([]),
+    draggable: false,
+    icon: L.icon.pulse({
+      iconSize: [18, 18],
+      color: '#2196F3'
+    })
+  }
+
+  var markers = ko.observableArray([]);
+
+  function addMarker(position) {
+    addLocationController.locationData.position = position;
+
+    showPage("addLocationView");
+  }
+
+  function updateCenterMarker(options) {
+    centerMarker.center[0](options.lat);
+    centerMarker.center[1](options.lng);
+    centerCircle.radius((options.accuracy || 0) * 2);
+  }
+
+  function updateCenter(args) {
+    var options = args || {};
+    center[0](options.lat);
+    center[1](options.lng);
+    if (!!options.zoom) {
+      zoom(options.zoom);
+    }
+    updateCenterMarker(options);
+  }
+
+  var center = [ko.observable(50.81057), ko.observable(4.93622)]
+
+  var zoom = ko.observable(16);
+
+  var centerCircle = {
+    radius: ko.observable(0)
+  }
+
+  function initMap() {
+    GeoLocation.get().then(function(position) {
+      var pos = [position.coords.latitude, position.coords.longitude];
+      var accuracy = position.coords.accuracy;
+      console.log("Got actual position");
+      var centerOptions = {
+        lat: pos[0],
+        lng: pos[1],
+        zoom: 16,
+        accuracy: (accuracy > 100 && accuracy < 400) ? accuracy : 0
+      };
+      updateCenter(centerOptions);
+      buttonsVisible(true);
+      mapVisible(true);
+      filterbarVisible(true);
+      isInitialized(true);
+      watchId = GeoLocation.watch(updateMyLocationMarker, updateLocationGpsError);
+    }).catch(function(error) {
+      initLocationGpsError(error);
+      window.setTimeout(initMap, 1000);
+    });
+  }
+
+  function updateMyLocationMarker(position) {
+    var accuracy = position.coords.accuracy;
+    var centerOptions = {
+      lat: position.coords.latitude,
+      lng: position.coords.longitude,
+      accuracy: (accuracy > 100 && accuracy < 400) ? accuracy : 0
+    };
+    updateCenter(centerOptions);
+
+    buttonsVisible(true);
+    mapVisible(true);
+    filterbarVisible(true);
+  }
+
+  var mapVisible = ko.observable(false);
+  var filterbarVisible = ko.observable(false);
+  var isInitialized = ko.observable(false);
+  var bounds = ko.observable();
+
+  var mapController = {
+    center: center,
+    markers: markers,
+    zoom: zoom,
     mapOptions: {
       zoomControl: false
     },
     //TODO REMOVE THIS
-    printMarkers: function(){
-      controller.mapController.markers().forEach(function(marker){
+    printMarkers: function() {
+      markers().forEach(function(marker) {
         console.log(marker.center[0](), ",", marker.center[1]())
       })
     },
@@ -26,114 +109,50 @@ var MapController = function(updateLocationGpsError, initLocationGpsError, tripV
         }
       }
     },
-    centerMarker: {
-      center: [ko.observable(50.81057), ko.observable(4.93622)],
-      draggable: false,
-      icon: L.icon.pulse({
-        iconSize: [18, 18],
-        color: '#2196F3'
-      })
-    },
-    centerCircle: {
-      radius: ko.observable(0)
-    },
-    mapVisible: ko.observable(false),
+    centerMarker: centerMarker,
+    centerCircle: centerCircle,
+    mapVisible: mapVisible,
     buttonsVisible: buttonsVisible,
-    filterbarVisible: ko.observable(false),
-    bounds: ko.observable(),
-    isInitialized: ko.observable(false),
+    filterbarVisible: filterbarVisible,
+    bounds: bounds,
+    isInitialized: isInitialized,
 
     addMarkerHandler: function() {
-      var lat = mapController.centerMarker.center[0]();
-      var lng = mapController.centerMarker.center[1]();
+      var lat = centerMarker.center[0]();
+      var lng = centerMarker.center[1]();
 
-      mapController.addMarker([lat, lng]);
+      addMarker([lat, lng]);
     },
 
     centerMapHandler: function() {
       // Update the location immediately with the current position of the center marker
       // It will also be updated when the watch method calls the callback but this can have some delay
       // Setting the postition immediately avoids this delay
-      mapController.updateCenter({
-        lat: mapController.centerMarker.center[0](),
-        lng: mapController.centerMarker.center[1]()
+      updateCenter({
+        lat: centerMarker.center[0](),
+        lng: centerMarker.center[1]()
       });
       if (watchId > 0) {
         GeoLocation.clearWatch(watchId);
         watchId = -1;
       }
-      watchId = GeoLocation.watch(mapController.updateMyLocationMarker, updateLocationGpsError);
+      watchId = GeoLocation.watch(updateMyLocationMarker, updateLocationGpsError);
     },
 
-    addMarker: function(position) {
-      controller.addLocationController.locationData.position = position;
-
-      showPage("addLocationView");
-    },
+    addMarker: addMarker,
 
     removeMarker: function(i) {
-      this.markers.splice(i, 1);
+      markers.splice(i, 1);
     },
+    updateCenter: updateCenter,
 
-    updateCenter: function(args) {
-      var options = args || {};
-      this.center[0](options.lat);
-      this.center[1](options.lng);
-      if (!!options.zoom) {
-        this.updateZoom(options.zoom);
-      }
-      this.updateCenterMarker(options);
-    },
+    updateZoom: zoom,
+    updateCenterMarker: updateCenterMarker,
+    updateMyLocationMarker: updateMyLocationMarker,
 
-    updateZoom: function(zoom) {
-      this.zoom(zoom);
-    },
-
-    updateCenterMarker: function(options) {
-      this.centerMarker.center[0](options.lat);
-      this.centerMarker.center[1](options.lng);
-      this.centerCircle.radius((options.accuracy || 0) * 2);
-    },
-
-    updateMyLocationMarker: function(position) {
-      var accuracy = position.coords.accuracy;
-      var centerOptions = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-        accuracy: (accuracy > 100 && accuracy < 400) ? accuracy : 0
-      };
-      mapController.updateCenter(centerOptions);
-
-      mapController.buttonsVisible(true);
-      mapController.mapVisible(true);
-      mapController.filterbarVisible(true);
-    },
-
-    initMap: function() {
-      GeoLocation.get().then(function(position) {
-        var pos = [position.coords.latitude, position.coords.longitude];
-        var accuracy = position.coords.accuracy;
-        console.log("Got actual position");
-        var centerOptions = {
-          lat: pos[0],
-          lng: pos[1],
-          zoom: 16,
-          accuracy: (accuracy > 100 && accuracy < 400) ? accuracy : 0
-        };
-        this.updateCenter(centerOptions);
-        this.buttonsVisible(true);
-        this.mapVisible(true);
-        this.filterbarVisible(true);
-        this.isInitialized(true);
-        watchId = GeoLocation.watch(this.updateMyLocationMarker, updateLocationGpsError);
-      }.bind(this)).catch(function(error) {
-        initLocationGpsError(error);
-        window.setTimeout(this.initMap, 1000);
-      });
-    }
+    initMap: initMap
   };
 
-  //TODO CONTINUE WITH SEARCHING WHY NOT CORRECTLY UPDATING
   ko.computed(function() {
     var result = [];
     console.log("Updating markers on map")
@@ -148,7 +167,7 @@ var MapController = function(updateLocationGpsError, initLocationGpsError, tripV
         })
       })
     }
-    mapController.markers(result);
+    markers(result);
   })
 
   return mapController;
