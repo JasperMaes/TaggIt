@@ -6,7 +6,7 @@ var ImagePreviewController = function(locationData, options) {
 
   options = $.extend({}, defaultOptions, options)
 
-  var images = ko.pureComputed(function(){
+  var images = ko.pureComputed(function() {
     return ko.unwrap(ko.unwrap(locationData).images)
   })
 
@@ -29,12 +29,17 @@ var ImagePreviewController = function(locationData, options) {
     imageIndex(null)
   }
 
+  /* WARNING: Delete only works if the images variable is an observable */
   function deleteButtonHandler() {
+    if (!ko.isObservable(ko.unwrap(locationData).images)) {
+      console.error("Images array is not in an observable; not deleting image");
+      return;
+    }
+
     var array = ko.unwrap(images);
-    var index = imageIndex();
-    
-    array.splice(index, 1);
-    images(array);
+    array.splice(imageIndex(), 1);
+    ko.unwrap(locationData).images(array)
+
     backButtonHandler();
   }
 

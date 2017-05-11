@@ -1,4 +1,4 @@
-var AddLocationController = function(){
+var AddLocationController = function(tripViewModel){
 
   var locationData = {
     category: ko.observable(),
@@ -14,18 +14,27 @@ var AddLocationController = function(){
 
   var imagePreviewController = ImagePreviewController(locationData);
 
+  function backToMap() {
+    showPage("mapView");
+    // Reset entered data
+    locationData.title(null);
+    locationData.description(null);
+    locationData.website(null);
+    locationData.category(null);
+    locationData.position = null;
+    locationData.images([])
+  }
+
   var addLocationController = {
     locationData: locationData,
-    selectCategory: function(category) {
-      return function() {
-        controller.addLocationController.locationData.category(category);
-        showPage("addLocationDetailsView");
-      };
+    selectCategory: function(category, event) {
+      locationData.category(category.name);
+      showPage("addLocationDetailsView");
     },
 
     mapPreviewController: MapPreviewController(locationData, getMapPreviewPanel),
     savePosition: function() {
-      var location = ko.toJS(controller.addLocationController.locationData)
+      var location = ko.toJS(locationData)
       var currentdate = new Date();
       location.createTime = currentdate.getDate() + "/"
                 + (currentdate.getMonth()+1)  + "/"
@@ -33,23 +42,14 @@ var AddLocationController = function(){
                 + currentdate.getHours() + ":"
                 + currentdate.getMinutes();
 
-      var trip = controller.tripViewModel.currentTrip();
+      var trip = tripViewModel.currentTrip();
       trip.add(location);
-      controller.tripViewModel.currentTrip(trip)
+      tripViewModel.currentTrip(trip)
 
       // TODO show short popup that disappears automatically to inform user
-      controller.addLocationController.backToMap();
+      backToMap();
     },
-    backToMap: function() {
-      showPage("mapView");
-      // Reset entered data
-      controller.addLocationController.locationData.title(null);
-      controller.addLocationController.locationData.description(null);
-      controller.addLocationController.locationData.website(null);
-      controller.addLocationController.locationData.category(null);
-      controller.addLocationController.locationData.position = null;
-      controller.addLocationController.locationData.images([])
-    },
+    backToMap: backToMap,
     addImage: function(data, event) {
       var file = event.target.files[0]; //sames as here
 
@@ -63,7 +63,7 @@ var AddLocationController = function(){
 
         reader.onloadend = function() {
           var newImage = reader.result;
-          var imagesArray = controller.addLocationController.locationData.images();
+          var imagesArray = locationData.images();
           var arrayLength = imagesArray.length;
           for (var i = 0; i < arrayLength; i++) {
             if (imagesArray[i] === newImage) {
@@ -72,7 +72,7 @@ var AddLocationController = function(){
               return;
             }
           }
-          controller.addLocationController.locationData.images.push(newImage);
+          locationData.images.push(newImage);
           //TODO show short popup that disappears automatically to inform user
         }
 
@@ -95,7 +95,7 @@ var AddLocationController = function(){
     imagePreview: imagePreviewController,
     openImage: function(data, event){
       console.log("Edit image")
-      var index = controller.addLocationController.locationData.images().indexOf(data)
+      var index = locationData.images().indexOf(data)
       imagePreviewController.imageIndex(index);
     }
   }
