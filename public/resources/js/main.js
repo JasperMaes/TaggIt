@@ -70,7 +70,7 @@ $(window).on('load', function() {
         mapController: MapController(updateLocationGpsError, initLocationGpsError, tripViewModel),
         sidebarController: SidebarController(),
         messageContent: ko.observable(),
-        addLocationController: AddLocationController(),
+        addLocationController: AddLocationController(tripViewModel),
         preferencesController: PreferencesController(),
         locationListController: LocationListController(),
         viewLocationController: ViewLocationController(),
@@ -92,15 +92,7 @@ $(window).on('load', function() {
         showPage("preferencesView")
       }
 
-        showPage("locationsListView");//TODO REMOVE THIS
-
       console.log("All done loading");
 
     })
-  setTimeout(function() {
-    //showPage("preferencesView")
-  }, 400)
-  //showPage("addLocationView")
-  //showPage("addLocationDetailsView");
-  //controller.addLocationController.locationData.category("nature");
 })
