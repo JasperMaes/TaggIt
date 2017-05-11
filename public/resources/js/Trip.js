@@ -11,8 +11,10 @@ var Trip = function(tripDetails) {
     return result;
   }
 
+var details = convertObjectToKnockout(tripDetails);
+
   function getAllLocations() {
-    return this.details.locations();
+    return details.locations();
   }
 
   function getLocation(locationId) {
@@ -41,8 +43,19 @@ var Trip = function(tripDetails) {
     return index;
   }
 
+  function compareObjectParameters(parameters){
+    return function(object){
+      var objectMatches = Object.keys(parameters).every(function(key, index, array){
+        var objectValue = object[key];
+        var paramValue = parameters[key]
+        return (paramValue === undefined) || (objectValue.match(paramValue));
+      })
+      return objectMatches;
+    }
+  }
+
   function findLocation(searchParameters) {
-    //TODO implement searching for locations in a trip
+    return $.grep(getAllLocations(), compareObjectParameters(searchParameters));
   }
 
   function addLocation(locationDetails) {
@@ -65,12 +78,13 @@ var Trip = function(tripDetails) {
   }
 
   return {
-    details: convertObjectToKnockout(tripDetails),
+    details: details,
     getAll: getAllLocations,
     get: getLocation,
     find: findLocation,
     add: addLocation,
     remove: removeLocation,
+    find: findLocation,
     _getRawData: function(){
       return ko.toJS(this.details)
     },
