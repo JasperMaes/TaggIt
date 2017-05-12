@@ -6,11 +6,11 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
-  <script src="vendors/jquery/jquery-2.1.0.js"></script>
+  <script type="text/javascript" src="vendors/jquery/jquery-2.1.0.js"></script>
 
   <!-- Bootstrap -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="vendors/bootstrap/bootstrap.min.css">
+  <script type="text/javascript" src="vendors/bootstrap/bootstrap.min.js"></script>
 
   <!-- Bootstrap material design -->
   <!-- https://cdn.rawgit.com/FezVrasta/bootstrap-material-design/gh-pages-v3/bootstrap-elements.html -->
@@ -18,39 +18,39 @@
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700">
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/css/bootstrap-material-design.min.css" integrity="sha256-j3CLSRG31GkOu6kaeLh7XsRgL2YNvRl9aOtXoAYt320=" crossorigin="anonymous" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/css/ripples.min.css" integrity="sha256-+Og2qJI9qzvKYwhGo/LYXg0FzE1BhEQfDsUSjKXQ3Bg=" crossorigin="anonymous" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/js/material.min.js" integrity="sha256-uZbIqasulk7Y9yEwknbeQ0FpF3aUhtPwuggbpvQaI8Y=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/js/ripples.min.js" integrity="sha256-TY/EO/++Ug/P+fSBjaqlmtuphCBKwlP7TOnS+SGnN8g=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="vendors/bootstrap-material/bootstrap-material-design.min.css" />
+  <link rel="stylesheet" href="vendors/bootstrap-material/ripples.min.css" />
+  <script type="text/javascript" src="vendors/bootstrap-material/material.min.js"></script>
+  <script type="text/javascript" src="vendors/bootstrap-material/ripples.min.js"></script>
 
   <!-- Leaflet (http://leafletjs.com/) -->
   <link rel="stylesheet" href="vendors/leaflet/leaflet.css" />
-  <script src="vendors/leaflet/leaflet.js"></script>
+  <script src="vendors/leaflet/leaflet.js" type="text/javascript"></script>
 
   <!-- Leaflet pulsating icon (https://github.com/mapshakers/leaflet-icon-pulse) -->
   <link rel="stylesheet" href="vendors/LeafletPulsingIcon/L.Icon.Pulse.min.css" />
-  <script src="vendors/LeafletPulsingIcon/L.Icon.Pulse.min.js"></script>
+  <script src="vendors/LeafletPulsingIcon/L.Icon.Pulse.min.js" type="text/javascript"></script>
 
   <!-- Knockout.js -->
   <!--
         Try out knockout ==> Binding for Leaflet: https://github.com/giabos/ko-leaflet/blob/master/ko-leaflet.js
         Maybe needed for Bootstrap as well: https://faulknercs.github.io/Knockstrap/
      -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js" integrity="sha256-owX7sroiO/O1a7h3a4X29A1g3QgqdNvijRQ7V5TH45M=" crossorigin="anonymous"></script>
+  <script src="vendors/knockout/knockout-min.js"></script>
   <script src="resources/js/ko-leaflet.js"></script>
-  <script src="https://cdn.rawgit.com/faulknercs/Knockstrap/v1.3.2/build/knockstrap.min.js" type="tet/javascript"></script>
+  <script src="https://cdn.rawgit.com/faulknercs/Knockstrap/v1.3.2/build/knockstrap.min.js" type="text/javascript"></script>
 
   <!-- LocalForage -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.5.0/localforage.min.js" integrity="sha256-kAq48olJYgx7dR+P9KbS+Q1OjM1vNGUSFDjQjcM0lKA=" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="vendors/localforage/localforage.min.js"></script>
 
   <!-- Application code -->
-  <script src="resources/js/Parameters.js"></script>
-  <script src="resources/js/Util.js"></script>
-  <script src="resources/js/Messages.js"></script>
-  <script src="resources/js/GeoLocation.js"></script>
-  <script src="resources/js/Trip.js"></script>
-  <script src="resources/js/repository/TripModel.js"></script>
-  <script src="resources/js/ViewModel/TripViewModel.js"></script>
+  <script type="text/javascript" src="resources/js/Parameters.js"></script>
+  <script type="text/javascript" src="resources/js/Util.js"></script>
+  <script type="text/javascript" src="resources/js/Messages.js"></script>
+  <script type="text/javascript" src="resources/js/GeoLocation.js"></script>
+  <script type="text/javascript" src="resources/js/Trip.js"></script>
+  <script type="text/javascript" src="resources/js/repository/TripModel.js"></script>
+  <script type="text/javascript" src="resources/js/ViewModel/TripViewModel.js"></script>
 
   <link rel="stylesheet" href="resources/css/page.css" />
   <link rel="stylesheet" href="resources/css/page-map.css" />
@@ -59,16 +59,16 @@
   <link rel="stylesheet" href="resources/css/loadingSpinner.css" />
   <link rel="stylesheet" href="resources/css/glyphicon-util.css" />
 
-  <script src="resources/js/controller/sidebar.js"></script>
-  <script src="resources/js/controller/map.js"></script>
-  <script src="resources/js/controller/imagePreview.js"></script>
-  <script src="resources/js/controller/addLocation.js"></script>
-  <script src="resources/js/controller/preferences.js"></script>
-  <script src="resources/js/controller/locationList.js"></script>
-  <script src="resources/js/controller/viewLocation.js"></script>
-  <script src="resources/js/controller/mapPreview.js"></script>
+  <script type="text/javascript" src="resources/js/controller/sidebar.js"></script>
+  <script type="text/javascript" src="resources/js/controller/map.js"></script>
+  <script type="text/javascript" src="resources/js/controller/imagePreview.js"></script>
+  <script type="text/javascript" src="resources/js/controller/addLocation.js"></script>
+  <script type="text/javascript" src="resources/js/controller/preferences.js"></script>
+  <script type="text/javascript" src="resources/js/controller/locationList.js"></script>
+  <script type="text/javascript" src="resources/js/controller/viewLocation.js"></script>
+  <script type="text/javascript" src="resources/js/controller/mapPreview.js"></script>
 
-  <script src="resources/js/main.js"></script>
+  <script type="text/javascript" src="resources/js/main.js"></script>
 
   <style>
     .file-upload {
