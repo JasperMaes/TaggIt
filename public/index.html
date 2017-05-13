@@ -367,7 +367,7 @@
           </div>
         </div>
 
-        <div class="container">
+        <div class="container" style="margin-bottom:75px;">
           <form>
             <div class="form-group form-group-lg label-floating">
               <label class="control-label" for="locationTitle">Title</label>
@@ -587,12 +587,13 @@
           </div>
         </div>
         <!-- ko if: (tripViewModel.currentTrip().getAllFiltered().length === 0) -->
-        <div style="text-align: center; font-style: italic;margin-top: 35%">
+        <div style="text-align: center; font-style: italic;margin-top: 35vh;">
           <p>
             There are no locations registered for this trip.</br>
             Get out there and add some!
+            </p>
             <input class="btn btn-raised btn-primary" data-bind="click:locationListController.backToMap" value="Let's go!"></input>
-          </p>
+
         </div>
         <!-- /ko -->
 

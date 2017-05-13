@@ -3,7 +3,7 @@
   "short_name": "Taggit",
   "start_url": ".",
   "display": "standalone",
-  "orientation": ["portrait"],
+  "orientation": "portrait",
   "background_color": "#fff",
   "description": "An application to record where you've been",
   "icons": [{
