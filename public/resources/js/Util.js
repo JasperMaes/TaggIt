@@ -11,13 +11,17 @@ function getCategoryIcon(category) {
   return result;
 }
 
-function getDateTimeString(currentDate){
+function getDateTimeString(currentDate) {
   currentDate = currentDate || new Date();
-  return currentDate.getDate() + "/"
-            + (currentDate.getMonth()+1)  + "/"
-            + currentDate.getFullYear() + " "
-            + currentDate.getHours() + ":"
-            + currentDate.getMinutes();
+  if (typeof currentDate === "string") {
+    return currentDate;
+  } else {
+    return currentDate.getDate() + "/" +
+      (currentDate.getMonth() + 1) + "/" +
+      currentDate.getFullYear() + " " +
+      currentDate.getHours() + ":" +
+      currentDate.getMinutes();
+  }
 }
 
 var Util = {

@@ -31,7 +31,7 @@ var AddLocationController = function(tripViewModel){
 
   function savePosition() {
     var location = ko.toJS(locationData);
-    location.createTime = Util.getDateTimeString();
+    location.createTime = new Date();
     location.editTime = null;
 
     var trip = tripViewModel.currentTrip();

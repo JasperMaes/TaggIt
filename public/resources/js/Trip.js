@@ -6,7 +6,9 @@ var Trip = function(tripDetails) {
     result.id = trip.id;
     result.label = ko.observable(trip.label);
     result.maxId = trip.maxId;
-    result.locations = ko.observableArray(trip.locations)
+    result.locations = ko.observableArray(trip.locations);
+    result.createTime = trip.createTime;
+    result.editTime = trip.editTime;
 
     return result;
   }
@@ -79,6 +81,7 @@ var Trip = function(tripDetails) {
     locationDetails.id = this.details.maxId;
     this.details.locations.push(locationDetails);
     this.details.maxId++;
+    this.details.editTime = new Date();
     return locationDetails.id;
   }
 
@@ -88,6 +91,7 @@ var Trip = function(tripDetails) {
       var locations = this.details.locations();
       var removedValue = locations.splice(index, 1)[0]
       this.details.locations(locations);
+      this.details.editTime = new Date();
       return removedValue;
     } else {
       return Message.UnknownLocation;
@@ -99,6 +103,7 @@ var Trip = function(tripDetails) {
     var index = getLocationIndex(updatedLocation.id, locations)
     locations[index] = updatedLocation;
     this.details.locations(locations);
+    this.details.editTime = new Date();
   }
 
   return {

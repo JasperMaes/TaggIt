@@ -140,7 +140,9 @@ var TripModel = (function() {
     return {
       label: tripLabel,
       locations: [],
-      maxId: 0
+      maxId: 0,
+      createTime: new Date(),
+      editTime: null
     }
   }
 

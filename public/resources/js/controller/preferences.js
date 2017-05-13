@@ -20,11 +20,12 @@ var PreferencesController = function(tripViewModel) {
     },
 
     newTripName: newTripName,
-    
+
     addNewTripHandler: function(controller) {
       var tripLabel = newTripName();
       if (tripLabel) {
         var trip = tripViewModel.createEmptyTrip(tripLabel);
+        trip.createTime = new Date();
         console.log("Add new trip ", tripLabel);
         tripViewModel.addTrip(trip)
         //TODO select added trip if it is the only one

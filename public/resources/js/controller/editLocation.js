@@ -96,7 +96,7 @@ var EditLocationController = function(tripViewModel) {
     mapPreviewController: MapPreviewController(locationData, function() {}),
     backToViewLocation: backToViewLocation,
     saveEditsBackToView: function(controller) {
-      locationData.editTime = Util.getDateTimeString();
+      locationData.editTime = new Date();
       var locationDataJS = ko.toJS(locationData)
       controller.viewLocationController.locationData(locationDataJS);
 

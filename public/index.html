@@ -564,7 +564,7 @@
                 <p class="h3" data-bind="text: location.title || '<No name>', click: $root.locationListController.viewLocation"></p>
               </div>
               <div class="col-sm-7 col-xs-7">
-                <p class="h5" style="color: gray" data-bind="text: !!location.editTime ? location.editTime : location.createTime, click: $root.locationListController.viewLocation"></p>
+                <p class="h5" style="color: gray" data-bind="text: Util.getDateTimeString(!!location.editTime ? location.editTime : location.createTime), click: $root.locationListController.viewLocation"></p>
               </div>
               <div class="icon-group col-sm-5 col-xs-5">
                 <div class="pull-right">
@@ -638,7 +638,7 @@
             </div>
             <div class="form-group form-group-lg label-floating is-focused">
               <label class="control-label" for="locationCreationDate">Created on</label>
-              <input disabled type="text" class="form-control" id="locationCreationDate" data-bind="value: viewLocationController.locationData().createTime">
+              <input disabled type="text" class="form-control" id="locationCreationDate" data-bind="value: Util.getDateTimeString(viewLocationController.locationData().createTime)">
             </div>
             <div class="form-group form-group-lg label-floating is-focused">
               <label class="control-label" for="locationEditDate">Last edited on</label>
