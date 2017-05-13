@@ -16,11 +16,21 @@ var LocationListController = function(tripViewModel, viewLocationController) {
     return controllers;
   })
 
+  var searchTerm = ko.observable("");
+
+  function search() {
+    tripViewModel.currentTrip().filter({
+      title: searchTerm()
+    });
+  }
+
   return {
     mapPreviewControllers: mapPreviewControllers,
     openWebsite: function(data) {
       window.open(data.website, "_blank");
     },
+    searchTerm: searchTerm,
+    search: search,
     viewLocation: function(data, event) {
       viewLocationController.locationData(data);
       showPage("viewLocationView");

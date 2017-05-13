@@ -11,11 +11,40 @@ var Trip = function(tripDetails) {
     return result;
   }
 
-var details = convertObjectToKnockout(tripDetails);
+  var details = convertObjectToKnockout(tripDetails);
+
+  var filter = ko.observable({});
+
+  function findLocation(searchParameters) {
+    return applyFilter(searchParameters, getAllLocations());
+  }
+
+  function compareObjectParameters(parameters) {
+    return function(object) {
+      var objectMatches = Object.keys(parameters).every(function(key, index, array) {
+        if (object.hasOwnProperty(key)) {
+          var objectValue = object[key];
+          var paramValue = parameters[key];
+          return (objectValue !== null) && (objectValue !== undefined) && (objectValue.toUpperCase().match(paramValue.toUpperCase()));
+        } else {
+          return true;
+        }
+      })
+      return objectMatches;
+    }
+  }
+
+  function applyFilter(searchParameters, locations) {
+    return $.grep(locations, compareObjectParameters(searchParameters));
+  }
 
   function getAllLocations() {
     return details.locations();
   }
+
+  var getAllFilteredLocations = ko.pureComputed(function() {
+    return applyFilter(filter(), getAllLocations())
+  });
 
   function getLocation(locationId) {
     var result = Message.UnknownLocation;
@@ -43,21 +72,6 @@ var details = convertObjectToKnockout(tripDetails);
     return index;
   }
 
-  function compareObjectParameters(parameters){
-    return function(object){
-      var objectMatches = Object.keys(parameters).every(function(key, index, array){
-        var objectValue = object[key];
-        var paramValue = parameters[key]
-        return (paramValue === undefined) || (objectValue.match(paramValue));
-      })
-      return objectMatches;
-    }
-  }
-
-  function findLocation(searchParameters) {
-    return $.grep(getAllLocations(), compareObjectParameters(searchParameters));
-  }
-
   function addLocation(locationDetails) {
     locationDetails.id = this.details.maxId;
     this.details.locations.push(locationDetails);
@@ -76,25 +90,28 @@ var details = convertObjectToKnockout(tripDetails);
       return Message.UnknownLocation;
     }
   }
-  
-  function updateLocation(updatedLocation){
+
+  function updateLocation(updatedLocation) {
     var locations = this.details.locations();
     locations[updatedLocation.id] = updatedLocation;
     this.details.locations(locations);
   }
 
   return {
+    filter: filter,
     details: details,
     getAll: getAllLocations,
+    getAllFiltered: getAllFilteredLocations,
     get: getLocation,
     find: findLocation,
     add: addLocation,
     remove: removeLocation,
     find: findLocation,
-    _getRawData: function(){
+    update: updateLocation,
+    _getRawData: function() {
       return ko.toJS(this.details)
     },
-    getKoData: function(){
+    getKoData: function() {
       return this.details;
     },
     getLabel: function() {

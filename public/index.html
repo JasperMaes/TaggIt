@@ -486,7 +486,7 @@
 
         </div>
         <!-- ko if: !!tripViewModel.currentTrip() -->
-        <div class="container locationList" data-bind="foreach: {data: tripViewModel.currentTrip().getAll(), as: 'location'}">
+        <div class="container locationList" data-bind="foreach: {data: tripViewModel.currentTrip().getAllFiltered(), as: 'location'}">
 
           <div class="locationList-item">
             <div class="row">
@@ -591,22 +591,22 @@
     <div id="editLocationDetailsView" class="page">
       <div data-bind="template: { name: 'imagePreview-template', data: editLocationController.imagePreview }"></div>
 
-<div data-bind="visible: editLocationController.openMapEdit()">
-  <div class="container" id="header">
-    <div class="row">
-      <div class="col-xs-2 col-sm-1" style="z-index:60">
-        <span id="backbutton" class="material-icons" style="z-index:3000; font-size: 3em" data-bind="click: editLocationController.closeMapEditHandler">navigate_before</i>
+      <div data-bind="visible: editLocationController.openMapEdit()">
+        <div class="container" id="header">
+          <div class="row">
+            <div class="col-xs-2 col-sm-1" style="z-index:60">
+              <span id="backbutton" class="material-icons" style="z-index:3000; font-size: 3em" data-bind="click: editLocationController.closeMapEditHandler">navigate_before</i>
+                </div>
+                <div class="col-xs-8 col-sm-9" style="z-index:60;padding-right:0px">
+                  <h2 style="margin-top: 5px">Move the marker</h2>
+                </div>
+                <div class="col-xs-2 col-sm-2" style="z-index:60;padding-right:0px">
+                  <span class="material-icons" style="font-size: 3em;" data-bind="click: editLocationController.saveMapEditHandler">done</span>
+            </div>
           </div>
-          <div class="col-xs-8 col-sm-9" style="z-index:60;padding-right:0px">
-            <h2 style="margin-top: 5px">Move the marker</h2>
-          </div>
-          <div class="col-xs-2 col-sm-2" style="z-index:60;padding-right:0px">
-            <span class="material-icons" style="font-size: 3em;" data-bind="click: editLocationController.saveMapEditHandler">done</span>
+          <div data-bind="leafletMap: editLocationController.mapController" class="map"></div>
+        </div>
       </div>
-    </div>
-    <div data-bind="leafletMap: editLocationController.mapController" class="map"></div>
-  </div>
-</div>
 
       <div class="page-content-wrapper" data-bind="visible: (!editLocationController.imagePreview.hasImage() && !editLocationController.openMapEdit())">
 
