@@ -3,11 +3,11 @@
   "short_name": "Taggit",
   "start_url": ".",
   "display": "standalone",
-  "orientation": "landscape",
+  "orientation": "portrait",
   "background_color": "#fff",
   "description": "An application to record where you've been",
   "icons": [{
-    "src": "resources/icon.ico",
+    "src": "resources/images/icon.ico",
     "sizes": "16x16 24x24 32x32 48x48 64x48 72x72 96x96 128x128 256x256"
   }],
 }
