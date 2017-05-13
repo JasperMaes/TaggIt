@@ -11,6 +11,16 @@ function getCategoryIcon(category) {
   return result;
 }
 
+function getDateTimeString(currentDate){
+  currentDate = currentDate || new Date();
+  return currentDate.getDate() + "/"
+            + (currentDate.getMonth()+1)  + "/"
+            + currentDate.getFullYear() + " "
+            + currentDate.getHours() + ":"
+            + currentDate.getMinutes();
+}
+
 var Util = {
-  getCategoryIcon: getCategoryIcon
+  getCategoryIcon: getCategoryIcon,
+  getDateTimeString: getDateTimeString
 }

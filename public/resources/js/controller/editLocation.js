@@ -8,7 +8,8 @@ var EditLocationController = function(tripViewModel) {
     website: ko.observable(),
     images: ko.observableArray([]),
     position: ko.observableArray([]),
-    createTime: null
+    createTime: null,
+    editTime: null
   };
 
   function setLocationData(data) {
@@ -20,6 +21,7 @@ var EditLocationController = function(tripViewModel) {
     locationData.images(data.images);
     locationData.position(data.position);
     locationData.createTime = data.createTime;
+    locationData.editTime = data.editTime;
   }
 
   var imagePreviewController = ImagePreviewController(locationData);
@@ -94,10 +96,12 @@ var EditLocationController = function(tripViewModel) {
     mapPreviewController: MapPreviewController(locationData, function() {}),
     backToViewLocation: backToViewLocation,
     saveEditsBackToView: function(controller) {
-      controller.viewLocationController.locationData(ko.toJS(locationData));
+      locationData.editTime = Util.getDateTimeString();
+      var locationDataJS = ko.toJS(locationData)
+      controller.viewLocationController.locationData(locationDataJS);
 
       var trip = tripViewModel.currentTrip();
-      trip.update(ko.toJS(locationData));
+      trip.update(locationDataJS);
       tripViewModel.currentTrip(trip)
 
       backToViewLocation();

@@ -62,9 +62,9 @@ var Trip = function(tripDetails) {
     return result;
   }
 
-  function getLocationIndex(locationId) {
+  function getLocationIndex(locationId, locations) {
+    locations = locations || getAllLocations();
     var index = -1;
-    var locations = getAllLocations();
     var locationCount = locations.length;
     for (var i = 0; i < locationCount; i++) {
       if (locations[i].id === locationId) {
@@ -96,7 +96,9 @@ var Trip = function(tripDetails) {
 
   function updateLocation(updatedLocation) {
     var locations = this.details.locations();
-    locations[updatedLocation.id] = updatedLocation;
+    var index = getLocationIndex(updatedLocation.id, locations)
+    console.log(index, " vs ", updatedLocation.id)
+    locations[index] = updatedLocation;
     this.details.locations(locations);
   }
 
