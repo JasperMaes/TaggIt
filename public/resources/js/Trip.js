@@ -46,8 +46,6 @@ var Trip = function(tripDetails) {
 
   var getAllFilteredLocations = ko.computed(function() {
     var result = applyFilter(filter(), details.locations());
-    console.log("returning filtered locations ", filter())
-    console.log(result);
     return result;
   });
 

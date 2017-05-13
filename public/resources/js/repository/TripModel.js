@@ -75,17 +75,14 @@ var TripModel = (function() {
   }
 
   function getTripDetails(tripId) {
-    console.log("Retrieving trip")
     return existsTrip(tripId)
       .then(function(exists) {
         if (exists) {
           return tripStore.getItem(tripId)
             .then(function(tripDetails) {
-              console.log("Trip found: " + tripId);
               return Promise.resolve(Trip(tripDetails))
             })
         } else {
-          console.log("Non-existent trip: " + tripId);
           return Promise.reject(Message.UnknownTrip)
         }
       })
@@ -96,7 +93,6 @@ var TripModel = (function() {
     return existsTrip(tripId)
       .then(function(exists) {
         if (exists) {
-          console.log("Trip already exists, not saving it");
           return Promise.reject(Message.TripExists);
         } else {
           tripDetails.id = tripId;
