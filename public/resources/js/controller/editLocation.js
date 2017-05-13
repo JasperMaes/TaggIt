@@ -41,6 +41,16 @@ var EditLocationController = function(tripViewModel) {
     clearForm();
   }
 
+  function deleteLocation(){
+    var result = confirm("Want to delete?");
+    if (result) {
+      var trip = tripViewModel.currentTrip();
+      trip.remove(locationData.id);
+      tripViewModel.currentTrip(trip)
+      showPage("locationsListView");
+    }
+  }
+
   var openMapEdit = ko.observable(false)
   var invalidateSize = ko.observable(true)
 
@@ -137,7 +147,8 @@ var EditLocationController = function(tripViewModel) {
       var index = locationData.images().indexOf(data)
       imagePreviewController.imageIndex(index);
     },
-    setLocationData: setLocationData
+    setLocationData: setLocationData,
+    deleteLocation: deleteLocation
   }
 
   return editLocationController;

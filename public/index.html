@@ -495,19 +495,21 @@
         <div id="header">
           <div class="row">
             <div class="col-xs-2 col-sm-1">
-              <span id="backbutton" class="material-icons material-input" style="z-index:3000; font-size: 3em" data-bind="click:locationListController.backToMap">navigate_before</spanbeau>
-                </div>
-                <div class="col-xs-10 col-sm-11" style="z-index:60;padding-right:0px">
-                  <h2 style="margin-top: 5px">My locations</h2>
-                </div>
-              </div>
+              <span id="backbutton" class="material-icons material-input" style="z-index:3000; font-size: 3em" data-bind="click:locationListController.backToMap">navigate_before</span>
             </div>
+            <div class="col-xs-10 col-sm-11" style="z-index:60;padding-right:0px">
+              <h2 style="margin-top: 5px">My locations</h2>
+            </div>
+          </div>
+        </div>
 
+        <!-- ko if: !!tripViewModel.currentTrip() -->
+        <!-- ko if: (tripViewModel.currentTrip().getAllFiltered().length > 0) -->
         <div class="container">
           <div class="row">
 
             <div class="col-xs-9 col-sm-9 form-group" style="margin-top:0px;padding-right:0px">
-              <input type="text" class="form-control" placeholder="Search..." data-bind="value: locationListController.filterViewModel.searchTerm, attr: {disabled: locationListController.filterViewModel.isAdvancedFilterOpen()}"/>
+              <input type="text" class="form-control" placeholder="Search..." data-bind="value: locationListController.filterViewModel.searchTerm, attr: {disabled: locationListController.filterViewModel.isAdvancedFilterOpen()}" />
             </div>
             <div class="col-xs-3 col-sm-3" style="padding-right:0px">
               <span class="glyphicon glyphicon-search navbar-btn btn btn-default gi-1_5x material-input" data-bind="click: locationListController.filterViewModel.search" style="padding: 0px 10px 0px 0px;"></span>
@@ -515,6 +517,7 @@
             </div>
 
           </div>
+
 
           <div id="filterOptions" class="row collapse">
             <div class="col-xs-12 col-sm-12" style="z-index:60;background: rgba(255,255,255,0.7);border-radius: 10px;">
@@ -531,7 +534,7 @@
                   <label class="control-label col-xs-4 col-sm-4" for="categorySelect">Category:</label>
                   <div class="col-xs-8 col-sm-8">
                     <select class="form-control material-input" id="categorySelect" data-bind="options: Parameters.categories, optionsText:'label', optionsValue:'name', valueAllowUnset: true, optionsCaption: '', value: mapController.filterViewModel.categoryTerm">
-                    </select>
+                            </select>
                   </div>
                 </div>
 
@@ -546,9 +549,9 @@
 
             </div>
           </div>
-
         </div>
-        <!-- ko if: !!tripViewModel.currentTrip() -->
+        <!-- /ko -->
+
         <div class="container locationList" data-bind="foreach: {data: tripViewModel.currentTrip().getAllFiltered(), as: 'location'}">
 
           <div class="locationList-item">
@@ -577,8 +580,17 @@
 
           </div>
         </div>
+        <!-- ko if: (tripViewModel.currentTrip().getAllFiltered().length === 0) -->
+        <div style="text-align: center; font-style: italic;margin-top: 35%">
+          <p>
+            There are no locations registered for this trip.</br>
+            Get out there and add some!
+            <input class="btn btn-raised btn-primary" data-bind="click:locationListController.backToMap" value="Let's go!"></input>
+          </p>
+        </div>
         <!-- /ko -->
 
+        <!-- /ko -->
       </div>
 
     </div>
@@ -720,6 +732,12 @@
                     <span class="material-icons"><input class="file-upload" type="file" accept="image/*" data-bind="event: { change: controller.editLocationController.addImage }">add_a_photo</span>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="row">
+                <input class="btn btn-danger btn-raised col-xs-12 col-sm-12" type="button" value="Delete location" style="color:white" data-bind="click: editLocationController.deleteLocation">
               </div>
             </div>
           </form>
