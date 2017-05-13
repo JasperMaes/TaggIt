@@ -6,7 +6,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
-  <script type="text/javascript" src="vendors/jquery/jquery-2.1.0.js"></script>
+  <script type="text/javascript" src="vendors/jquery/jquery-2.1.0.js" ></script>
 
   <!-- Bootstrap -->
   <link rel="stylesheet" href="vendors/bootstrap/bootstrap.min.css">
@@ -224,7 +224,7 @@
                 </div>
               </div>
             </div>
-            
+
             <div class="row" data-bind="foreach: Parameters.categories, as category">
               <div class="thumbnail" data-bind="css: { selected: $root.addLocationController.locationData.category() == name }">
                 <div class="content" data-bind="click:$root.addLocationController.selectCategory">
@@ -258,7 +258,7 @@
     <div class="panel panel-default">
       <div class="panel-body">
         <div class="frame">
-          <img class="mapMarker" src="/vendors/leaflet/images/marker-icon.png" />
+          <img class="mapMarker" src="vendors/leaflet/images/marker-icon.png" />
         </div>
       </div>
     </div>
@@ -323,7 +323,7 @@
                   <h2 style="margin-top: 5px">Add location</h2>
                 </div>
                 <div class="col-xs-2 col-sm-2" style="z-index:60;padding-right:0px">
-                  <span class="material-icons" style="font-size: 3em;" data-bind="click: addLocationController.savePosition">done</span>
+                  <span class="material-icons" style="font-size: 3em;" data-bind="click: addLocationController.savePositionBackToMap">done</span>
             </div>
           </div>
         </div>
@@ -369,7 +369,7 @@
         <nav class="navbar navbar-inverse navbar-fixed-bottom">
           <div class="container-fluid">
             <div class="row">
-              <input class="btn btn-default col-xs-12 col-sm-12" type="button" value="New location" style="color:white" data-bind="click: addLocationController.savePosition">
+              <input class="btn btn-default col-xs-12 col-sm-12" type="button" value="New location" style="color:white" data-bind="click: addLocationController.savePositionAddNew">
             </div>
           </div>
         </nav>
@@ -474,10 +474,10 @@
           <div class="row">
 
             <div class="col-xs-9 col-sm-9 form-group" style="margin-top:0px;padding-right:0px">
-              <input type="text" class="form-control" placeholder="Search..." />
+              <input type="text" class="form-control" placeholder="Search..." data-bind="value: locationListController.searchTerm"/>
             </div>
             <div class="col-xs-3 col-sm-3" style="padding-right:0px">
-              <span class="glyphicon glyphicon-search navbar-btn btn btn-default gi-1_5x material-input" style="padding: 0px 10px 0px 0px;"></span>
+              <span class="glyphicon glyphicon-search navbar-btn btn btn-default gi-1_5x material-input" data-bind="click: locationListController.search" style="padding: 0px 10px 0px 0px;"></span>
               <span class="glyphicon glyphicon-filter navbar-btn btn btn-default gi-1_5x material-input" style="padding: 0px;"></span>
             </div>
 

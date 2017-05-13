@@ -14,15 +14,36 @@ var AddLocationController = function(tripViewModel){
 
   var imagePreviewController = ImagePreviewController(locationData);
 
-  function backToMap() {
-    showPage("mapView");
-    // Reset entered data
+  function clearForm(){
     locationData.title(null);
     locationData.description(null);
     locationData.website(null);
     locationData.category(null);
     locationData.position = null;
     locationData.images([])
+  }
+
+  function backToMap() {
+    showPage("mapView");
+    // Reset entered data
+    clearForm();
+  }
+
+  function savePosition() {
+    var location = ko.toJS(locationData)
+    var currentdate = new Date();
+    location.createTime = currentdate.getDate() + "/"
+              + (currentdate.getMonth()+1)  + "/"
+              + currentdate.getFullYear() + " "
+              + currentdate.getHours() + ":"
+              + currentdate.getMinutes();
+
+    var trip = tripViewModel.currentTrip();
+    trip.add(location);
+    tripViewModel.currentTrip(trip)
+
+    // TODO show short popup that disappears automatically to inform user
+    clearForm();
   }
 
   var addLocationController = {
@@ -33,20 +54,16 @@ var AddLocationController = function(tripViewModel){
     },
 
     mapPreviewController: MapPreviewController(locationData, getMapPreviewPanel),
-    savePosition: function() {
-      var location = ko.toJS(locationData)
-      var currentdate = new Date();
-      location.createTime = currentdate.getDate() + "/"
-                + (currentdate.getMonth()+1)  + "/"
-                + currentdate.getFullYear() + " "
-                + currentdate.getHours() + ":"
-                + currentdate.getMinutes();
-
-      var trip = tripViewModel.currentTrip();
-      trip.add(location);
-      tripViewModel.currentTrip(trip)
-
-      // TODO show short popup that disappears automatically to inform user
+    savePosition: savePosition,
+    savePositionAddNew: function(controller){
+      savePosition();
+      //Take current location from map and add it to LocationData
+      //Select category
+      console.log(controller);
+      controller.mapController.addMarkerHandler()
+    },
+    savePositionBackToMap: function(){
+      savePosition();
       backToMap();
     },
     backToMap: backToMap,
