@@ -1,4 +1,4 @@
-var LocationListController = function(tripViewModel, viewLocationController) {
+var LocationListController = function(tripViewModel, viewLocationController, filterViewModel) {
 
   function getPanel(event) {
     return $(event.target).parents(".row").next(".mapPreview");
@@ -16,21 +16,16 @@ var LocationListController = function(tripViewModel, viewLocationController) {
     return controllers;
   })
 
-  var searchTerm = ko.observable("");
-
-  function search() {
-    tripViewModel.currentTrip().filter({
-      title: searchTerm()
-    });
-  }
-
   return {
+    backToMap: function(){
+      showPage("mapView");
+      tripViewModel.currentTrip().filter({});
+    },
     mapPreviewControllers: mapPreviewControllers,
     openWebsite: function(data) {
       window.open(data.website, "_blank");
     },
-    searchTerm: searchTerm,
-    search: search,
+    filterViewModel: filterViewModel,
     viewLocation: function(data, event) {
       viewLocationController.locationData(data);
       showPage("viewLocationView");

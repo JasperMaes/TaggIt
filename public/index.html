@@ -51,6 +51,7 @@
   <script type="text/javascript" src="resources/js/Trip.js"></script>
   <script type="text/javascript" src="resources/js/repository/TripModel.js"></script>
   <script type="text/javascript" src="resources/js/ViewModel/TripViewModel.js"></script>
+  <script type="text/javascript" src="resources/js/ViewModel/FilterViewModel.js"></script>
 
   <link rel="stylesheet" href="resources/css/page.css" />
   <link rel="stylesheet" href="resources/css/page-map.css" />
@@ -196,10 +197,10 @@
             </div>
             <!-- ko if:  mapController.filterbarVisible -->
             <div class="col-xs-7 col-sm-8 form-group" style="z-index:60;padding-right:0px">
-              <input type="text" class="form-control" placeholder="Search..." />
+              <input type="text" class="form-control" placeholder="Search..." data-bind="value: mapController.filterViewModel.searchTerm" />
             </div>
             <div class="col-xs-3 col-sm-3" style="z-index:60;padding-left:0px">
-              <span class="glyphicon glyphicon-search navbar-btn btn btn-default gi-1_5x material-input" style="padding-right: 15px;"></span>
+              <span class="glyphicon glyphicon-search navbar-btn btn btn-default gi-1_5x material-input" style="padding-right: 15px;" data-bind="click: mapController.filterViewModel.search"></span>
 
               <span class="glyphicon glyphicon-filter navbar-btn btn btn-default gi-1_5x material-input"></span>
             </div>
@@ -463,7 +464,7 @@
         <div id="header">
           <div class="row">
             <div class="col-xs-2 col-sm-1">
-              <span id="backbutton" class="material-icons material-input" style="z-index:3000; font-size: 3em" data-bind="click:addLocationController.backToMap">navigate_before</spanbeau>
+              <span id="backbutton" class="material-icons material-input" style="z-index:3000; font-size: 3em" data-bind="click:locationListController.backToMap">navigate_before</spanbeau>
                 </div>
                 <div class="col-xs-10 col-sm-11" style="z-index:60;padding-right:0px">
                   <h2 style="margin-top: 5px">My locations</h2>
@@ -475,10 +476,10 @@
           <div class="row">
 
             <div class="col-xs-9 col-sm-9 form-group" style="margin-top:0px;padding-right:0px">
-              <input type="text" class="form-control" placeholder="Search..." data-bind="value: locationListController.searchTerm"/>
+              <input type="text" class="form-control" placeholder="Search..." data-bind="value: locationListController.filterViewModel.searchTerm"/>
             </div>
             <div class="col-xs-3 col-sm-3" style="padding-right:0px">
-              <span class="glyphicon glyphicon-search navbar-btn btn btn-default gi-1_5x material-input" data-bind="click: locationListController.search" style="padding: 0px 10px 0px 0px;"></span>
+              <span class="glyphicon glyphicon-search navbar-btn btn btn-default gi-1_5x material-input" data-bind="click: locationListController.filterViewModel.search" style="padding: 0px 10px 0px 0px;"></span>
               <span class="glyphicon glyphicon-filter navbar-btn btn btn-default gi-1_5x material-input" style="padding: 0px;"></span>
             </div>
 

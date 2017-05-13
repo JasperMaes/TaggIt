@@ -65,19 +65,20 @@ $(window).on('load', function() {
       }
     })
     .then(function() {
+      var filterViewModel = FilterViewModel()
       var addLocationController = AddLocationController(tripViewModel);
       var editLocationController = EditLocationController(tripViewModel);
       var viewLocationController = ViewLocationController(editLocationController);
       var preferencesController = PreferencesController(tripViewModel);
-      var mapController = MapController(updateLocationGpsError, initLocationGpsError, tripViewModel, addLocationController);
-      
+      var mapController = MapController(updateLocationGpsError, initLocationGpsError, tripViewModel, addLocationController, filterViewModel);
+
       controller = {
         mapController: mapController,
         sidebarController: SidebarController(),
         messageContent: ko.observable(),
         addLocationController: addLocationController,
         preferencesController: preferencesController,
-        locationListController: LocationListController(tripViewModel, viewLocationController),
+        locationListController: LocationListController(tripViewModel, viewLocationController, filterViewModel),
         viewLocationController: viewLocationController,
         editLocationController: editLocationController,
         tripViewModel: tripViewModel,

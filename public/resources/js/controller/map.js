@@ -1,4 +1,4 @@
-var MapController = function(updateLocationGpsError, initLocationGpsError, tripViewModel, addLocationController) {
+var MapController = function(updateLocationGpsError, initLocationGpsError, tripViewModel, addLocationController, filterViewModel) {
 
   var watchId;
 
@@ -88,6 +88,7 @@ var MapController = function(updateLocationGpsError, initLocationGpsError, tripV
   var bounds = ko.observable();
 
   var mapController = {
+    filterViewModel: filterViewModel,
     center: center,
     markers: markers,
     zoom: zoom,
@@ -159,7 +160,7 @@ var MapController = function(updateLocationGpsError, initLocationGpsError, tripV
     var trip = tripViewModel.currentTrip();
     if (!!trip) {
       console.log("trip is ok", trip.getKoData().locations().length)
-      trip.getKoData().locations().forEach(function(location) {
+      trip.getAllFiltered().forEach(function(location) {
         result.push({
           center: [ko.observable(location.position[0]), ko.observable(location.position[1])],
           draggable: false,

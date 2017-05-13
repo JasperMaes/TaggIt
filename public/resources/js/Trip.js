@@ -42,8 +42,11 @@ var Trip = function(tripDetails) {
     return details.locations();
   }
 
-  var getAllFilteredLocations = ko.pureComputed(function() {
-    return applyFilter(filter(), getAllLocations())
+  var getAllFilteredLocations = ko.computed(function() {
+    var result = applyFilter(filter(), details.locations());
+    console.log("returning filtered locations ", filter())
+    console.log(result);
+    return result;
   });
 
   function getLocation(locationId) {
