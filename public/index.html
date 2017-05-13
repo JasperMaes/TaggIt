@@ -498,8 +498,8 @@
               </div>
               <div class="icon-group col-sm-5 col-xs-5">
                 <div class="pull-right">
-                  <span class="material-icons" data-bind="text: Util.getCategoryIcon(location.category)"></span>
                   <span class="material-icons" data-bind="click:$root.locationListController.mapPreviewControllers()[$index()].openMapPreviewHandler">place</span>
+                  <span class="material-icons" data-bind="text: Util.getCategoryIcon(location.category)"></span>
                   <!-- ko if: !!location.website -->
                   <span class="material-icons" data-bind="click:$root.locationListController.openWebsite, clickBubble: false">language</span>
                   <!-- /ko -->
