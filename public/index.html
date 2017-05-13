@@ -6,7 +6,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
-  <script type="text/javascript" src="vendors/jquery/jquery-2.1.0.js" ></script>
+  <script type="text/javascript" src="vendors/jquery/jquery-2.1.0.js"></script>
 
   <!-- Bootstrap -->
   <link rel="stylesheet" href="vendors/bootstrap/bootstrap.min.css">
@@ -197,14 +197,45 @@
             </div>
             <!-- ko if:  mapController.filterbarVisible -->
             <div class="col-xs-7 col-sm-8 form-group" style="z-index:60;padding-right:0px">
-              <input type="text" class="form-control" placeholder="Search..." data-bind="value: mapController.filterViewModel.searchTerm" />
+              <input type="text" class="form-control" placeholder="Search..." data-bind="value: mapController.filterViewModel.searchTerm, attr: {disabled: locationListController.filterViewModel.isAdvancedFilterOpen()}" />
             </div>
             <div class="col-xs-3 col-sm-3" style="z-index:60;padding-left:0px">
               <span class="glyphicon glyphicon-search navbar-btn btn btn-default gi-1_5x material-input" style="padding-right: 15px;" data-bind="click: mapController.filterViewModel.search"></span>
 
-              <span class="glyphicon glyphicon-filter navbar-btn btn btn-default gi-1_5x material-input"></span>
+              <span class="glyphicon glyphicon-filter navbar-btn btn btn-default gi-1_5x material-input" data-toggle="collapse" data-target="#filterOptions" data-bind="click: locationListController.filterViewModel.toggleAdvancedFilter"></span>
             </div>
+
             <!-- /ko -->
+          </div>
+          <div id="filterOptions" class="row collapse">
+            <div class="col-xs-12 col-sm-12" style="z-index:60;background: rgba(255,255,255,0.7);border-radius: 10px;">
+              <form class="form-horizontal">
+
+                <div class="form-group">
+                  <label class="control-label col-xs-4" for="title">Title:</label>
+                  <div class="col-xs-8 col-sm-8">
+                    <input class="form-control material-input" id="title" data-bind="value: mapController.filterViewModel.titleTerm" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-xs-4 col-sm-4" for="categorySelect">Category:</label>
+                  <div class="col-xs-8 col-sm-8">
+                    <select class="form-control material-input" id="categorySelect" data-bind="options: Parameters.categories, optionsText:'label', optionsValue:'name', valueAllowUnset: true, optionsCaption: '', value: mapController.filterViewModel.categoryTerm">
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-xs-4" for="description">Description:</label>
+                  <div class="col-xs-8 col-sm-8">
+                    <input class="form-control material-input" id="description" data-bind="value: mapController.filterViewModel.descriptionTerm" />
+                  </div>
+                </div>
+
+              </form>
+
+            </div>
           </div>
         </div>
 
@@ -256,7 +287,7 @@
     }
   </style>
 
-<script type="text/html" id="mapPreviewTemplate">
+  <script type="text/html" id="mapPreviewTemplate">
     <div class="panel panel-default">
       <div class="panel-body">
         <div class="frame">
@@ -264,121 +295,121 @@
         </div>
       </div>
     </div>
-</script>
+  </script>
 
-<script type="text/html" id="websiteCollapseTemplate">
-  <div class="panel panel-default">
-    <div class="panel-body">
-      <div class="form-group label-floating">
-        <label class="control-label" for="url" style="margin-top:0px">Website</label>
-        <input type="url" class="form-control" id="url" data-bind="value: website">
-        <span class="help-block error-message">Please enter a valid web address</span>
+  <script type="text/html" id="websiteCollapseTemplate">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="form-group label-floating">
+          <label class="control-label" for="url" style="margin-top:0px">Website</label>
+          <input type="url" class="form-control" id="url" data-bind="value: website">
+          <span class="help-block error-message">Please enter a valid web address</span>
+        </div>
       </div>
     </div>
-  </div>
-</script>
+  </script>
 
-<script type="text/html" id="categoryCollapseTemplate">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="panel panel-default">
-        <div class="panel-body" data-bind="foreach: Parameters.categories, as category">
-          <div class="thumbnail-3" data-bind="css: { selected: ko.unwrap(ko.unwrap($parent.locationData).category) == name }">
-            <div class="content" data-bind="click: $parent.selectCategoryClosePanel(name)">
-              <span class="material-icons" data-bind="text:icon"></span>
+  <script type="text/html" id="categoryCollapseTemplate">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="panel panel-default">
+          <div class="panel-body" data-bind="foreach: Parameters.categories, as category">
+            <div class="thumbnail-3" data-bind="css: { selected: ko.unwrap(ko.unwrap($parent.locationData).category) == name }">
+              <div class="content" data-bind="click: $parent.selectCategoryClosePanel(name)">
+                <span class="material-icons" data-bind="text:icon"></span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</script>
+  </script>
 
-<script type="text/html" id="imagePreview-template">
-  <div class="imagePreview" data-bind="visible: hasImage, style: { backgroundImage: url}">
-    <div class="page-content-wrapper">
-      <div id="header">
-        <div class="row">
-          <div class="col-xs-2 col-sm-1">
-            <span id="backbutton" class="material-icons" style="z-index:3000; font-size: 3em" data-bind="click:backButtonHandler">navigate_before</i>
+  <script type="text/html" id="imagePreview-template">
+    <div class="imagePreview" data-bind="visible: hasImage, style: { backgroundImage: url}">
+      <div class="page-content-wrapper">
+        <div id="header">
+          <div class="row">
+            <div class="col-xs-2 col-sm-1">
+              <span id="backbutton" class="material-icons" style="z-index:3000; font-size: 3em" data-bind="click:backButtonHandler">navigate_before</i>
               </div>
               <div class="col-xs-offset-8 col-sm-offset-9 col-xs-2 col-sm-2" style="z-index:60;padding-right:0px">
                 <span class="material-icons" style="font-size: 3em;" data-bind="click: deleteButtonHandler, visible: canDelete">delete</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</script>
+  </script>
 
-<script type="text/html" id="addLocationDetailsView-template">
-  <div id="addLocationDetailsView" class="page">
-    <div data-bind="template: { name: 'imagePreview-template', data: addLocationController.imagePreview }"></div>
-    <div class="page-content-wrapper" data-bind="visible: !addLocationController.imagePreview.hasImage()">
+  <script type="text/html" id="addLocationDetailsView-template">
+    <div id="addLocationDetailsView" class="page">
+      <div data-bind="template: { name: 'imagePreview-template', data: addLocationController.imagePreview }"></div>
+      <div class="page-content-wrapper" data-bind="visible: !addLocationController.imagePreview.hasImage()">
 
-      <div id="header">
-        <div class="row">
-          <div class="col-xs-2 col-sm-1">
-            <span id="backbutton" class="material-icons" style="z-index:3000; font-size: 3em" data-bind="click:addLocationController.backToSelectCategory">navigate_before</i>
+        <div id="header">
+          <div class="row">
+            <div class="col-xs-2 col-sm-1">
+              <span id="backbutton" class="material-icons" style="z-index:3000; font-size: 3em" data-bind="click:addLocationController.backToSelectCategory">navigate_before</i>
               </div>
               <div class="col-xs-8 col-sm-9" style="z-index:60;padding-right:0px">
                 <h2 style="margin-top: 5px">Add location</h2>
               </div>
               <div class="col-xs-2 col-sm-2" style="z-index:60;padding-right:0px">
                 <span class="material-icons" style="font-size: 3em;" data-bind="click: addLocationController.savePositionBackToMap">done</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="container">
-        <form>
-          <div class="form-group form-group-lg label-floating">
-            <label class="control-label" for="locationTitle">Title</label>
-            <input type="text" class="form-control" id="locationTitle" data-bind="value: addLocationController.locationData.title">
-          </div>
-          <div class="form-group label-floating">
-            <label class="control-label" for="locationDescription">Description</label>
-            <textarea class="form-control" id="locationDescription" rows="4" data-bind="value: addLocationController.locationData.description"></textarea>
-          </div>
-          <div class="row">
+        <div class="container">
+          <form>
+            <div class="form-group form-group-lg label-floating">
+              <label class="control-label" for="locationTitle">Title</label>
+              <input type="text" class="form-control" id="locationTitle" data-bind="value: addLocationController.locationData.title">
+            </div>
+            <div class="form-group label-floating">
+              <label class="control-label" for="locationDescription">Description</label>
+              <textarea class="form-control" id="locationDescription" rows="4" data-bind="value: addLocationController.locationData.description"></textarea>
+            </div>
+            <div class="row">
               <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".mapPreview" data-bind="click:addLocationController.mapPreviewController.openMapPreviewHandler">place</span>
               <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".changeCategoryCollapse" data-bind="text: Util.getCategoryIcon(addLocationController.locationData.category()), click:addLocationController.mapPreviewController.openPanelHandler"></span>
               <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".websiteCollapse" data-bind="click:addLocationController.mapPreviewController.openPanelHandler">language</span>
-          </div>
-          <div class="mapPreview collapse" data-bind="template: { name: 'mapPreviewTemplate', data: addLocationController.mapPreviewController }"></div>
-          <div class="websiteCollapse collapse" data-bind="template: { name: 'websiteCollapseTemplate', data: addLocationController.locationData }"></div>
-          <div class="changeCategoryCollapse collapse" data-bind="template: { name: 'categoryCollapseTemplate', data: addLocationController.mapPreviewController }"></div>
+            </div>
+            <div class="mapPreview collapse" data-bind="template: { name: 'mapPreviewTemplate', data: addLocationController.mapPreviewController }"></div>
+            <div class="websiteCollapse collapse" data-bind="template: { name: 'websiteCollapseTemplate', data: addLocationController.locationData }"></div>
+            <div class="changeCategoryCollapse collapse" data-bind="template: { name: 'categoryCollapseTemplate', data: addLocationController.mapPreviewController }"></div>
 
-          <div class="container-fluid">
-            <div class="row">
-              <!-- ko foreach: addLocationController.locationData.images -->
-              <div class="thumbnail-3-no-margin photo-tile">
-                <div class="content">
-                  <img data-bind="attr: { src: $data }, click: $root.addLocationController.openImage" />
+            <div class="container-fluid">
+              <div class="row">
+                <!-- ko foreach: addLocationController.locationData.images -->
+                <div class="thumbnail-3-no-margin photo-tile">
+                  <div class="content">
+                    <img data-bind="attr: { src: $data }, click: $root.addLocationController.openImage" />
+                  </div>
                 </div>
-              </div>
-              <!-- /ko -->
-              <div class="thumbnail-3-no-margin photo-tile">
-                <div class="content">
-                  <span class="material-icons"><input class="file-upload" type="file" accept="image/*" data-bind="event: { change: controller.addLocationController.addImage }">add_a_photo</span>
+                <!-- /ko -->
+                <div class="thumbnail-3-no-margin photo-tile">
+                  <div class="content">
+                    <span class="material-icons"><input class="file-upload" type="file" accept="image/*" data-bind="event: { change: controller.addLocationController.addImage }">add_a_photo</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </form>
-      </div>
-
-      <nav class="navbar navbar-inverse navbar-fixed-bottom">
-        <div class="container-fluid">
-          <div class="row">
-            <input class="btn btn-default col-xs-12 col-sm-12" type="button" value="New location" style="color:white" data-bind="click: addLocationController.savePositionAddNew">
-          </div>
+          </form>
         </div>
-      </nav>
 
+        <nav class="navbar navbar-inverse navbar-fixed-bottom">
+          <div class="container-fluid">
+            <div class="row">
+              <input class="btn btn-default col-xs-12 col-sm-12" type="button" value="New location" style="color:white" data-bind="click: addLocationController.savePositionAddNew">
+            </div>
+          </div>
+        </nav>
+
+      </div>
     </div>
-  </div>
-</script>
+  </script>
 
   <style>
     .list-group .list-group-separator:before {
@@ -476,13 +507,44 @@
           <div class="row">
 
             <div class="col-xs-9 col-sm-9 form-group" style="margin-top:0px;padding-right:0px">
-              <input type="text" class="form-control" placeholder="Search..." data-bind="value: locationListController.filterViewModel.searchTerm"/>
+              <input type="text" class="form-control" placeholder="Search..." data-bind="value: locationListController.filterViewModel.searchTerm, attr: {disabled: locationListController.filterViewModel.isAdvancedFilterOpen()}"/>
             </div>
             <div class="col-xs-3 col-sm-3" style="padding-right:0px">
               <span class="glyphicon glyphicon-search navbar-btn btn btn-default gi-1_5x material-input" data-bind="click: locationListController.filterViewModel.search" style="padding: 0px 10px 0px 0px;"></span>
-              <span class="glyphicon glyphicon-filter navbar-btn btn btn-default gi-1_5x material-input" style="padding: 0px;"></span>
+              <span class="glyphicon glyphicon-filter navbar-btn btn btn-default gi-1_5x material-input" data-toggle="collapse" data-target="#filterOptions" style="padding: 0px;" data-bind="click: locationListController.filterViewModel.toggleAdvancedFilter"></span>
             </div>
 
+          </div>
+
+          <div id="filterOptions" class="row collapse">
+            <div class="col-xs-12 col-sm-12" style="z-index:60;background: rgba(255,255,255,0.7);border-radius: 10px;">
+              <form class="form-horizontal">
+
+                <div class="form-group" style="margin-top:0px">
+                  <label class="control-label col-xs-4" for="title">Title:</label>
+                  <div class="col-xs-8 col-sm-8">
+                    <input class="form-control material-input" id="title" data-bind="value: mapController.filterViewModel.titleTerm" />
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-top:0px">
+                  <label class="control-label col-xs-4 col-sm-4" for="categorySelect">Category:</label>
+                  <div class="col-xs-8 col-sm-8">
+                    <select class="form-control material-input" id="categorySelect" data-bind="options: Parameters.categories, optionsText:'label', optionsValue:'name', valueAllowUnset: true, optionsCaption: '', value: mapController.filterViewModel.categoryTerm">
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-top:0px">
+                  <label class="control-label col-xs-4" for="description">Description:</label>
+                  <div class="col-xs-8 col-sm-8">
+                    <input class="form-control material-input" id="description" data-bind="value: mapController.filterViewModel.descriptionTerm" />
+                  </div>
+                </div>
+
+              </form>
+
+            </div>
           </div>
 
         </div>
@@ -562,9 +624,9 @@
               <input disabled type="text" class="form-control" id="locationCreationDate" data-bind="value: viewLocationController.locationData().createTime">
             </div>
             <div class="row">
-                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".mapPreview" data-bind="click:viewLocationController.mapPreviewController.openMapPreviewHandler">place</span>
-                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".changeCategoryCollapse" data-bind="text: Util.getCategoryIcon(viewLocationController.locationData().category), click:viewLocationController.mapPreviewController.openPanelHandler"></span>
-                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".websiteCollapse" data-bind="click:viewLocationController.mapPreviewController.openPanelHandler, css: { disabled: !viewLocationController.locationData().website}">language</span>
+              <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".mapPreview" data-bind="click:viewLocationController.mapPreviewController.openMapPreviewHandler">place</span>
+              <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".changeCategoryCollapse" data-bind="text: Util.getCategoryIcon(viewLocationController.locationData().category), click:viewLocationController.mapPreviewController.openPanelHandler"></span>
+              <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".websiteCollapse" data-bind="click:viewLocationController.mapPreviewController.openPanelHandler, css: { disabled: !viewLocationController.locationData().website}">language</span>
             </div>
             <div class="mapPreview collapse" data-bind="template: { name: 'mapPreviewTemplate', data: viewLocationController.mapPreviewController }"></div>
             <div class="websiteCollapse collapse" data-bind="template: { name: 'websiteCollapseTemplate', data: viewLocationController.locationData }"></div>
@@ -573,9 +635,9 @@
             <div class="container-fluid">
               <div class="row">
                 <!-- ko foreach: viewLocationController.locationData().images -->
-                <div class="thumbnail-3-no-margin photo-tile" >
+                <div class="thumbnail-3-no-margin photo-tile">
                   <div class="content">
-                    <img data-bind="attr: { src: $data }, click: $root.viewLocationController.openImage"/>
+                    <img data-bind="attr: { src: $data }, click: $root.viewLocationController.openImage" />
                   </div>
                 </div>
                 <!-- /ko -->
@@ -637,9 +699,9 @@
               <textarea class="form-control" id="locationDescription" rows="4" data-bind="value: editLocationController.locationData.description"></textarea>
             </div>
             <div class="row">
-                <span class="material-icons" style="font-size: 3em;" data-bind="click:editLocationController.openMapEditHandler">place</span>
-                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".changeCategoryCollapse" data-bind="text: Util.getCategoryIcon(editLocationController.locationData.category()), click:editLocationController.mapPreviewController.openPanelHandler"></span>
-                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".websiteCollapse" data-bind="click:editLocationController.mapPreviewController.openPanelHandler">language</span>
+              <span class="material-icons" style="font-size: 3em;" data-bind="click:editLocationController.openMapEditHandler">place</span>
+              <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".changeCategoryCollapse" data-bind="text: Util.getCategoryIcon(editLocationController.locationData.category()), click:editLocationController.mapPreviewController.openPanelHandler"></span>
+              <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".websiteCollapse" data-bind="click:editLocationController.mapPreviewController.openPanelHandler">language</span>
             </div>
             <div class="websiteCollapse collapse" data-bind="template: { name: 'websiteCollapseTemplate', data: editLocationController.locationData }"></div>
             <div class="changeCategoryCollapse collapse" data-bind="template: { name: 'categoryCollapseTemplate', data: editLocationController.mapPreviewController }"></div>

@@ -24,7 +24,7 @@ var Trip = function(tripDetails) {
       var objectMatches = Object.keys(parameters).every(function(key, index, array) {
         if (object.hasOwnProperty(key)) {
           var objectValue = object[key];
-          var paramValue = parameters[key];
+          var paramValue = parameters[key] || "";
           return (objectValue !== null) && (objectValue !== undefined) && (objectValue.toUpperCase().match(paramValue.toUpperCase()));
         } else {
           return true;
