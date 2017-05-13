@@ -97,7 +97,6 @@ var Trip = function(tripDetails) {
   function updateLocation(updatedLocation) {
     var locations = this.details.locations();
     var index = getLocationIndex(updatedLocation.id, locations)
-    console.log(index, " vs ", updatedLocation.id)
     locations[index] = updatedLocation;
     this.details.locations(locations);
   }
