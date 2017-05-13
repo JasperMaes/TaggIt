@@ -40,10 +40,6 @@ $(window).on('load', function() {
 
   tripViewModel.initialize()
     .then(function() {
-      //TODO REMOVE THIS
-      //tripViewModel.addRandomTrip()
-      tripViewModel.selectTrip("trip2")
-
       // Subscribe to changes in the currently active trip to store the ID
       // This is needed to reload it again when the application starts again
       tripViewModel.currentTrip.subscribe(function(newValue) {
