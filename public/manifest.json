@@ -7,7 +7,40 @@
   "background_color": "#fff",
   "description": "An application to record where you've been",
   "icons": [{
-    "src": "resources/images/icon.ico",
-    "sizes": "16x16 24x24 32x32 48x48 64x48 72x72 96x96 128x128 256x256"
-  }],
+    "src": "resources/images/icon_16x16.png",
+    "type": "image/png",
+    "sizes": "16x16"
+  },{
+    "src": "resources/images/icon_24x24.png",
+    "type": "image/png",
+    "sizes": "24x24"
+  },{
+    "src": "resources/images/icon_32x32.png",
+    "type": "image/png",
+    "sizes": "32x32"
+  },{
+    "src": "resources/images/icon_48x48.png",
+    "type": "image/png",
+    "sizes": "48x48"
+  },{
+    "src": "resources/images/icon_64x64.png",
+    "type": "image/png",
+    "sizes": "64x64"
+  },{
+    "src": "resources/images/icon_72x72.png",
+    "type": "image/png",
+    "sizes": "72x72"
+  },{
+    "src": "resources/images/icon_96x96.png",
+    "type": "image/png",
+    "sizes": "96x96"
+  },{
+    "src": "resources/images/icon_128x128.png",
+    "type": "image/png",
+    "sizes": "128x128"
+  },{
+    "src": "resources/images/icon_256x256.png",
+    "type": "image/png",
+    "sizes": "256x256"
+  }]
 }
