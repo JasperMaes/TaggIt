@@ -1,4 +1,4 @@
-var ViewLocationController = function(){
+var ViewLocationController = function(editLocationController){
   var locationData = ko.observable();
 
   function getMapPreviewPanel(event){
@@ -10,7 +10,7 @@ var ViewLocationController = function(){
   var viewLocationController = {
     locationData: locationData,
     imagePreview: imagePreviewController,
-    mapPreviewController: MapPreviewController(locationData, getMapPreviewPanel),
+    mapPreviewController: MapPreviewController(locationData, getMapPreviewPanel, false),
     openWebsite: function(data){
       window.open(data.website, "_blank");
     },
@@ -19,6 +19,8 @@ var ViewLocationController = function(){
     },
     editLocation: function(){
       console.log("Edit location", locationData())
+      editLocationController.setLocationData(locationData())
+      showPage("editLocationDetailsView")
     },
     openImage: function(data, event){
       var index = locationData().images.indexOf(data)

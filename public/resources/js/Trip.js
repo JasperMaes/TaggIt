@@ -76,6 +76,12 @@ var details = convertObjectToKnockout(tripDetails);
       return Message.UnknownLocation;
     }
   }
+  
+  function updateLocation(updatedLocation){
+    var locations = this.details.locations();
+    locations[updatedLocation.id] = updatedLocation;
+    this.details.locations(locations);
+  }
 
   return {
     details: details,

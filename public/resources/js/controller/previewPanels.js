@@ -1,4 +1,6 @@
-var MapPreviewController = function(locationData, getPanel) {
+var MapPreviewController = function(locationData, getPanel, editable) {
+
+  editable = !!editable;
 
   function openPanelHandler() {
     var $this = $(this);
@@ -8,13 +10,20 @@ var MapPreviewController = function(locationData, getPanel) {
   }
 
   function selectCategoryClosePanel(category) {
-    return function(controller, event) {
-      locationData.category(category);
-      $(event.target).closest(".changeCategoryCollapse").collapse("toggle")
-    };
+    if (editable) {
+      return function(controller, event) {
+        locationData.category(category);
+        $(event.target).closest(".changeCategoryCollapse").collapse("toggle")
+      };
+    } else {
+      return function(controller, event) {
+        console.log("Read only")
+      }
+    }
   }
 
   return {
+    editable: editable,
     locationData: locationData,
     selectCategoryClosePanel: selectCategoryClosePanel,
     openPanelHandler: openPanelHandler,

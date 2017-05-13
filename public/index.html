@@ -63,10 +63,11 @@
   <script type="text/javascript" src="resources/js/controller/map.js"></script>
   <script type="text/javascript" src="resources/js/controller/imagePreview.js"></script>
   <script type="text/javascript" src="resources/js/controller/addLocation.js"></script>
+  <script type="text/javascript" src="resources/js/controller/editLocation.js"></script>
   <script type="text/javascript" src="resources/js/controller/preferences.js"></script>
   <script type="text/javascript" src="resources/js/controller/locationList.js"></script>
   <script type="text/javascript" src="resources/js/controller/viewLocation.js"></script>
-  <script type="text/javascript" src="resources/js/controller/mapPreview.js"></script>
+  <script type="text/javascript" src="resources/js/controller/previewPanels.js"></script>
 
   <script type="text/javascript" src="resources/js/main.js"></script>
 
@@ -309,74 +310,74 @@
   </div>
 </script>
 
-  <script type="text/html" id="addLocationDetailsView-template">
-    <div id="addLocationDetailsView" class="page">
-      <div data-bind="template: { name: 'imagePreview-template', data: addLocationController.imagePreview }"></div>
-      <div class="page-content-wrapper" data-bind="visible: !addLocationController.imagePreview.hasImage()">
+<script type="text/html" id="addLocationDetailsView-template">
+  <div id="addLocationDetailsView" class="page">
+    <div data-bind="template: { name: 'imagePreview-template', data: addLocationController.imagePreview }"></div>
+    <div class="page-content-wrapper" data-bind="visible: !addLocationController.imagePreview.hasImage()">
 
-        <div id="header">
-          <div class="row">
-            <div class="col-xs-2 col-sm-1">
-              <span id="backbutton" class="material-icons" style="z-index:3000; font-size: 3em" data-bind="click:addLocationController.backToSelectCategory">navigate_before</i>
-                </div>
-                <div class="col-xs-8 col-sm-9" style="z-index:60;padding-right:0px">
-                  <h2 style="margin-top: 5px">Add location</h2>
-                </div>
-                <div class="col-xs-2 col-sm-2" style="z-index:60;padding-right:0px">
-                  <span class="material-icons" style="font-size: 3em;" data-bind="click: addLocationController.savePositionBackToMap">done</span>
-            </div>
+      <div id="header">
+        <div class="row">
+          <div class="col-xs-2 col-sm-1">
+            <span id="backbutton" class="material-icons" style="z-index:3000; font-size: 3em" data-bind="click:addLocationController.backToSelectCategory">navigate_before</i>
+              </div>
+              <div class="col-xs-8 col-sm-9" style="z-index:60;padding-right:0px">
+                <h2 style="margin-top: 5px">Add location</h2>
+              </div>
+              <div class="col-xs-2 col-sm-2" style="z-index:60;padding-right:0px">
+                <span class="material-icons" style="font-size: 3em;" data-bind="click: addLocationController.savePositionBackToMap">done</span>
           </div>
         </div>
+      </div>
 
-        <div class="container">
-          <form>
-            <div class="form-group form-group-lg label-floating">
-              <label class="control-label" for="locationTitle">Title</label>
-              <input type="text" class="form-control" id="locationTitle" data-bind="value: addLocationController.locationData.title">
-            </div>
-            <div class="form-group label-floating">
-              <label class="control-label" for="locationDescription">Description</label>
-              <textarea class="form-control" id="locationDescription" rows="4" data-bind="value: addLocationController.locationData.description"></textarea>
-            </div>
+      <div class="container">
+        <form>
+          <div class="form-group form-group-lg label-floating">
+            <label class="control-label" for="locationTitle">Title</label>
+            <input type="text" class="form-control" id="locationTitle" data-bind="value: addLocationController.locationData.title">
+          </div>
+          <div class="form-group label-floating">
+            <label class="control-label" for="locationDescription">Description</label>
+            <textarea class="form-control" id="locationDescription" rows="4" data-bind="value: addLocationController.locationData.description"></textarea>
+          </div>
+          <div class="row">
+              <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".mapPreview" data-bind="click:addLocationController.mapPreviewController.openMapPreviewHandler">place</span>
+              <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".changeCategoryCollapse" data-bind="text: Util.getCategoryIcon(addLocationController.locationData.category()), click:addLocationController.mapPreviewController.openPanelHandler"></span>
+              <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".websiteCollapse" data-bind="click:addLocationController.mapPreviewController.openPanelHandler">language</span>
+          </div>
+          <div class="mapPreview collapse" data-bind="template: { name: 'mapPreviewTemplate', data: addLocationController.mapPreviewController }"></div>
+          <div class="websiteCollapse collapse" data-bind="template: { name: 'websiteCollapseTemplate', data: addLocationController.locationData }"></div>
+          <div class="changeCategoryCollapse collapse" data-bind="template: { name: 'categoryCollapseTemplate', data: addLocationController.mapPreviewController }"></div>
+
+          <div class="container-fluid">
             <div class="row">
-                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".mapPreview" data-bind="click:addLocationController.mapPreviewController.openMapPreviewHandler">place</span>
-                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".changeCategoryCollapse" data-bind="text: Util.getCategoryIcon(addLocationController.locationData.category()), click:addLocationController.mapPreviewController.openPanelHandler"></span>
-                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".websiteCollapse" data-bind="click:addLocationController.mapPreviewController.openPanelHandler">language</span>
-            </div>
-            <div class="mapPreview collapse" data-bind="template: { name: 'mapPreviewTemplate', data: addLocationController.mapPreviewController }"></div>
-            <div class="websiteCollapse collapse" data-bind="template: { name: 'websiteCollapseTemplate', data: addLocationController.locationData }"></div>
-            <div class="changeCategoryCollapse collapse" data-bind="template: { name: 'categoryCollapseTemplate', data: addLocationController.mapPreviewController }"></div>
-
-            <div class="container-fluid">
-              <div class="row">
-                <!-- ko foreach: addLocationController.locationData.images -->
-                <div class="thumbnail-3-no-margin photo-tile">
-                  <div class="content">
-                    <img data-bind="attr: { src: $data }, click: $root.addLocationController.openImage" />
-                  </div>
+              <!-- ko foreach: addLocationController.locationData.images -->
+              <div class="thumbnail-3-no-margin photo-tile">
+                <div class="content">
+                  <img data-bind="attr: { src: $data }, click: $root.addLocationController.openImage" />
                 </div>
-                <!-- /ko -->
-                <div class="thumbnail-3-no-margin photo-tile">
-                  <div class="content">
-                    <span class="material-icons"><input class="file-upload" type="file" accept="image/*" data-bind="event: { change: controller.addLocationController.addImage }">add_a_photo</span>
-                  </div>
+              </div>
+              <!-- /ko -->
+              <div class="thumbnail-3-no-margin photo-tile">
+                <div class="content">
+                  <span class="material-icons"><input class="file-upload" type="file" accept="image/*" data-bind="event: { change: controller.addLocationController.addImage }">add_a_photo</span>
                 </div>
               </div>
             </div>
-          </form>
-        </div>
-
-        <nav class="navbar navbar-inverse navbar-fixed-bottom">
-          <div class="container-fluid">
-            <div class="row">
-              <input class="btn btn-default col-xs-12 col-sm-12" type="button" value="New location" style="color:white" data-bind="click: addLocationController.savePositionAddNew">
-            </div>
           </div>
-        </nav>
-
+        </form>
       </div>
+
+      <nav class="navbar navbar-inverse navbar-fixed-bottom">
+        <div class="container-fluid">
+          <div class="row">
+            <input class="btn btn-default col-xs-12 col-sm-12" type="button" value="New location" style="color:white" data-bind="click: addLocationController.savePositionAddNew">
+          </div>
+        </div>
+      </nav>
+
     </div>
-  </script>
+  </div>
+</script>
 
   <style>
     .list-group .list-group-separator:before {
@@ -530,7 +531,7 @@
     <div id="viewLocationView" class="page">
       <div data-bind="template: { name: 'imagePreview-template', data: viewLocationController.imagePreview }"></div>
 
-      <div class="page-content-wrapper"  data-bind="visible: !viewLocationController.imagePreview.hasImage()">
+      <div class="page-content-wrapper" data-bind="visible: !viewLocationController.imagePreview.hasImage()">
         <div id="header">
           <div class="row">
             <div class="col-xs-2 col-sm-1">
@@ -585,6 +586,86 @@
       </div>
     </div>
   </script>
+
+  <script type="text/html" id="editLocationDetailsView-template">
+    <div id="editLocationDetailsView" class="page">
+      <div data-bind="template: { name: 'imagePreview-template', data: editLocationController.imagePreview }"></div>
+
+<div data-bind="visible: editLocationController.openMapEdit()">
+  <div class="container" id="header">
+    <div class="row">
+      <div class="col-xs-2 col-sm-1" style="z-index:60">
+        <span id="backbutton" class="material-icons" style="z-index:3000; font-size: 3em" data-bind="click: editLocationController.closeMapEditHandler">navigate_before</i>
+          </div>
+          <div class="col-xs-8 col-sm-9" style="z-index:60;padding-right:0px">
+            <h2 style="margin-top: 5px">Move the marker</h2>
+          </div>
+          <div class="col-xs-2 col-sm-2" style="z-index:60;padding-right:0px">
+            <span class="material-icons" style="font-size: 3em;" data-bind="click: editLocationController.saveMapEditHandler">done</span>
+      </div>
+    </div>
+    <div data-bind="leafletMap: editLocationController.mapController" class="map"></div>
+  </div>
+</div>
+
+      <div class="page-content-wrapper" data-bind="visible: (!editLocationController.imagePreview.hasImage() && !editLocationController.openMapEdit())">
+
+
+        <div id="header">
+          <div class="row">
+            <div class="col-xs-2 col-sm-1">
+              <span id="backbutton" class="material-icons" style="z-index:3000; font-size: 3em" data-bind="click:editLocationController.backToViewLocation">navigate_before</i>
+                </div>
+                <div class="col-xs-8 col-sm-9" style="z-index:60;padding-right:0px">
+                  <h2 style="margin-top: 5px">Edit location</h2>
+                </div>
+                <div class="col-xs-2 col-sm-2" style="z-index:60;padding-right:0px">
+                  <span class="material-icons" style="font-size: 3em;" data-bind="click: editLocationController.saveEditsBackToView">done</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <form>
+            <div class="form-group form-group-lg label-floating">
+              <label class="control-label" for="locationTitle">Title</label>
+              <input type="text" class="form-control" id="locationTitle" data-bind="value: editLocationController.locationData.title">
+            </div>
+            <div class="form-group label-floating">
+              <label class="control-label" for="locationDescription">Description</label>
+              <textarea class="form-control" id="locationDescription" rows="4" data-bind="value: editLocationController.locationData.description"></textarea>
+            </div>
+            <div class="row">
+                <span class="material-icons" style="font-size: 3em;" data-bind="click:editLocationController.openMapEditHandler">place</span>
+                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".changeCategoryCollapse" data-bind="text: Util.getCategoryIcon(editLocationController.locationData.category()), click:editLocationController.mapPreviewController.openPanelHandler"></span>
+                <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".websiteCollapse" data-bind="click:editLocationController.mapPreviewController.openPanelHandler">language</span>
+            </div>
+            <div class="websiteCollapse collapse" data-bind="template: { name: 'websiteCollapseTemplate', data: editLocationController.locationData }"></div>
+            <div class="changeCategoryCollapse collapse" data-bind="template: { name: 'categoryCollapseTemplate', data: editLocationController.mapPreviewController }"></div>
+
+            <div class="container-fluid">
+              <div class="row">
+                <!-- ko foreach: editLocationController.locationData.images -->
+                <div class="thumbnail-3-no-margin photo-tile">
+                  <div class="content">
+                    <img data-bind="attr: { src: $data }, click: $root.editLocationController.openImage" />
+                  </div>
+                </div>
+                <!-- /ko -->
+                <div class="thumbnail-3-no-margin photo-tile">
+                  <div class="content">
+                    <span class="material-icons"><input class="file-upload" type="file" accept="image/*" data-bind="event: { change: controller.editLocationController.addImage }">add_a_photo</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </script>
+
 
 </head>
 

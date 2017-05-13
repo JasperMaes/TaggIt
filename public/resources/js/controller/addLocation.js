@@ -43,7 +43,6 @@ var AddLocationController = function(tripViewModel){
     tripViewModel.currentTrip(trip)
 
     // TODO show short popup that disappears automatically to inform user
-    clearForm();
   }
 
   var addLocationController = {
@@ -57,9 +56,8 @@ var AddLocationController = function(tripViewModel){
     savePosition: savePosition,
     savePositionAddNew: function(controller){
       savePosition();
-      //Take current location from map and add it to LocationData
-      //Select category
-      console.log(controller);
+      showPage("addLocationView");
+      clearForm();
       controller.mapController.addMarkerHandler()
     },
     savePositionBackToMap: function(){

@@ -65,11 +65,12 @@ $(window).on('load', function() {
       }
     })
     .then(function() {
-      var viewLocationController = ViewLocationController();
       var addLocationController = AddLocationController(tripViewModel);
+      var editLocationController = EditLocationController(tripViewModel);
+      var viewLocationController = ViewLocationController(editLocationController);
       var preferencesController = PreferencesController(tripViewModel);
       var mapController = MapController(updateLocationGpsError, initLocationGpsError, tripViewModel, addLocationController);
-
+      
       controller = {
         mapController: mapController,
         sidebarController: SidebarController(),
@@ -78,6 +79,7 @@ $(window).on('load', function() {
         preferencesController: preferencesController,
         locationListController: LocationListController(tripViewModel, viewLocationController),
         viewLocationController: viewLocationController,
+        editLocationController: editLocationController,
         tripViewModel: tripViewModel,
         clearAll: function(){
           Promise.all([TripModel._dataStore.clear(), localforage.clear()])
