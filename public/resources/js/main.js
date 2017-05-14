@@ -59,6 +59,14 @@ window.addEventListener('offline', removeAutoSync);
 var tripViewModel;
 
 $(window).on('load', function() {
+
+  if('serviceWorker' in navigator) {
+    navigator.serviceWorker
+             .register('/service-worker.js')
+             .then(function() { console.log("Service Worker Registered"); });
+  }
+
+
   // Use this class to add a ripple effect to a button
   // ==> Only useful when not changing pages since it is too slow to be visible before page changes
   //$.material.options.ripples = ".withripple";
