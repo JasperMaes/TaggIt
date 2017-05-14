@@ -25,6 +25,8 @@
   <div id="qunit-fixture"></div>
   <script>
     var tripDetails = {
+      createTime: new Date("2017-05-01 12:00"),
+      editTime: null,
       label: "Trip 1",
       maxId: 2,
       locations: [{
@@ -263,14 +265,18 @@
 
       QUnit.test("Test updating trip", function(assert) {
         var done = assert.async();
+        var addedTrip;
         TripModel.addTrip(tripDetails)
           .then(function(trip) {
+            addedTrip = trip;
             trip.getKoData().label("New label")
+
             return TripModel.updateTrip(trip)
           })
           .then(function(message) {
             assert.deepEqual(message, Message.TripUpdateSuccess, "The message that is returned should indicate that the trip was updated");
-            return TripModel.getTripDetails(trip.getId())
+
+            return TripModel.getTripDetails(addedTrip.getId())
           })
           .then(function(trip) {
             assert.equal(trip.getLabel(), "New label", "Updated label is returned")

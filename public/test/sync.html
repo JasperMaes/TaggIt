@@ -75,7 +75,7 @@
             lastEditTime: new Date("2017-05-08 10:43")
           }
         ];
-        
+
         var serverTrips = [{
             id: "trip1",
             lastEditTime: new Date("2017-05-02 15:21")
@@ -183,6 +183,36 @@
         assert.equal(actions.toUpload.length, 1, "1 trips to upload");
         assert.equal(actions.toUpload[0].id, "trip1", "'trip1' selected to upload");
         assert.equal(actions.toDownload.length, 0, "0 trips to download");
+        assert.equal(actions.toMerge.length, 1, "1 trip to merge");
+        assert.equal(actions.toMerge[0].id, 'trip2', "'trip2' to merge");
+
+      });
+
+      QUnit.test("Test both modified after sync date, no new trips -> reversed", function(assert) {
+        var serverTrips = [{
+            id: "trip1",
+            lastEditTime: new Date("2017-05-10 08:15")
+          },
+          {
+            id: "trip2",
+            lastEditTime: new Date("2017-05-10 10:43")
+          }
+        ];
+        
+        var localTrips = [{
+            id: "trip1",
+            lastEditTime: new Date("2017-05-02 15:21")
+          },
+          {
+            id: "trip2",
+            lastEditTime: new Date("2017-05-13 21:06")
+          }
+        ];
+
+        var actions = SyncTools.getNeededActions(localTrips, serverTrips, new Date("2017-05-09 00:00"));
+        assert.equal(actions.toDownload.length, 1, "1 trips to download");
+        assert.equal(actions.toDownload[0].id, "trip1", "'trip1' selected to download");
+        assert.equal(actions.toUpload.length, 0, "0 trips to upload");
         assert.equal(actions.toMerge.length, 1, "1 trip to merge");
         assert.equal(actions.toMerge[0].id, 'trip2', "'trip2' to merge");
 

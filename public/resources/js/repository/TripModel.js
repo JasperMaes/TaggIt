@@ -26,7 +26,7 @@ var TripModel = (function() {
           return tripStore.setItem("maxTripId", 0)
         }
       })
-
+      
     return Promise.all([tripListPromise, maxIdPromise])
       .then(function() {
         return Promise.resolve(Message.LocalForageInitComplete);
@@ -49,7 +49,7 @@ var TripModel = (function() {
           label: label
         };
         tripList.push(current);
-        return tripStore.setItem("tripList", tripList);
+        return setTripsList(tripList);
       })
   }
 
@@ -98,7 +98,7 @@ var TripModel = (function() {
           tripDetails.id = tripId;
 
           var setItemPromise = tripStore.setItem(tripId, tripDetails);
-          var updateTripListPromise = addToTripListTripsList(tripDetails.id, tripDetails.label);
+          var updateTripListPromise = addToTripListTripsList(tripId, tripDetails.label);
           var updateMaxIdPromise = tripStore.setItem("maxTripId", ++maxTripId)
 
           return Promise.all([setItemPromise, updateTripListPromise, updateMaxIdPromise])
@@ -106,6 +106,17 @@ var TripModel = (function() {
               return Promise.resolve(Trip(tripDetails));
             })
         }
+      })
+  }
+
+  function addTripWithId(tripDetails){
+    var tripId = tripDetails.id
+    var setItemPromise = tripStore.setItem(tripId, tripDetails);
+    var updateTripListPromise = addToTripListTripsList(tripId, tripDetails.label);
+
+    return Promise.all([setItemPromise, updateTripListPromise])
+      .then(function() {
+        return Promise.resolve(Trip(tripDetails));
       })
   }
 
@@ -163,13 +174,15 @@ var TripModel = (function() {
     getTripDetails: getTripDetails,
     existsTrip: existsTrip,
     addTrip: addTrip,
+    addTripWithId: addTripWithId,
     removeTrip: removeTrip,
     _dataStore: tripStore,
     _getMaxTripId: function() {
       return maxTripId;
     },
     _setMaxTripId: function(newValue) {
-      maxTripId = newValue
+      maxTripId = newValue;
+      return tripStore.setItem("maxTripId", newValue)
     },
     _getTripIndex: getTripIndex,
     createEmptyTrip: createEmptyTrip,

@@ -31,28 +31,16 @@
     </li>
   </ul>
   <button data-bind="click:addRandomTrip">Add trip</button>
-  <!--<div data-bind="with: currentTrip">
 
-    <h1 data-bind="text: getLabel()"></h1>
-    <p data-bind="text: getAll().length + ' locations stored'">
-    </p>
-    <ul data-bind="foreach: getAll()">
-      <li>
-        <p data-bind="text: id"></p>
-        <p data-bind=>
-          Delete
-        </p>
-      </li>
-    </ul>
-
-  </div> -->
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
   <script>
     var getTripDetails = function(id) {
       return {
+        createTime: new Date("2017-05-01 12:00"),
+        editTime: null,
         id: id,
-        label: "Trip "+Math.random(),
+        label: "Trip " + Math.random(),
         maxId: 2,
         locations: [{
             id: 0,
@@ -67,25 +55,7 @@
         ]
       }
     }
-    /*
-        var trip = Trip(tripDetails);
-        trip.add({
-          title: "TITLE location 0",
-          description: "DESCRIPTION location 0"
-        })
-        trip.add({
-          title: "TITLE location 1",
-          description: "DESCRIPTION location 1"
-        })
-        trip.add({
-          title: "TITLE location 2",
-          description: "DESCRIPTION location 2"
-        })
-        trip.add({
-          title: "TITLE location 3",
-          description: "DESCRIPTION location 3"
-        })
-    */
+
     var maxId = 10;
     QUnit.module("TripViewModel operations", {
       beforeEach: function() {
@@ -128,7 +98,7 @@
         ko.cleanNode(element);
       }
     }, function() {
-      
+
       QUnit.test("Add a trip", function(assert) {
         var done = assert.async();
         var vm = this.vm;
@@ -236,7 +206,9 @@
         var done = assert.async();
         var vm = this.vm;
 
-        vm._currentTripId.subscribe(function(){console.log("New active trip id")})
+        vm._currentTripId.subscribe(function() {
+          console.log("New active trip id")
+        })
         //vm.currentTrip.subscribe(function(){console.log("New active trip")})
         var trip1;
         var trip2;
@@ -253,22 +225,22 @@
               //console.log("Current trip", vm.currentTrip().getId())
 
               vm.addTrip(getTripDetails())
-              .then(function(trip){
-                trip2 = trip
-                console.log("Added trip 2")
-                console.log("Current trip id", vm._currentTripId())
-                //console.log("Current trip", vm.currentTrip().getId())
+                .then(function(trip) {
+                  trip2 = trip
+                  console.log("Added trip 2")
+                  console.log("Current trip id", vm._currentTripId())
+                  //console.log("Current trip", vm.currentTrip().getId())
 
-                console.log(trip1.tripId)
-                console.log(trip2.tripId)
+                  console.log(trip1.tripId)
+                  console.log(trip2.tripId)
 
-                console.log(trip1.getId())
-                console.log(trip2.getId())
+                  console.log(trip1.getId())
+                  console.log(trip2.getId())
 
 
 
-                done();
-              })
+                  done();
+                })
 
             }, 500)
           })
@@ -351,20 +323,9 @@
       });
     })
 
-    // TODO Write test for update
-
     QUnit.done(function(details) {
       console.log("Total: ", details.total, " Failed: ", details.failed, " Passed:", details.passed, " Runtime: ", details.runtime);
     });
-
-
-var tripA = Trip(getTripDetails(0));
-var tripB = Trip(getTripDetails(1));
-console.log(tripA.tripId)
-console.log(tripB.tripId)
-
-console.log(tripA.getId())
-console.log(tripB.getId())
 
   </script>
 </body>

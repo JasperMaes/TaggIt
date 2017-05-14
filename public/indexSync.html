@@ -72,14 +72,12 @@
   <!--Add buttons to initiate auth sequence and sign out-->
   <button id="authorize-button" style="display: none;">Authorize</button>
   <button id="signout-button" style="display: none;">Sign Out</button>
-  <button id="create-folder" style="display: none;">Create, save and delete file</button>
 
   <pre id="content"></pre>
 
   <script type="text/javascript">
     var authorizeButton = document.getElementById('authorize-button');
     var signoutButton = document.getElementById('signout-button');
-    var createFolderButton = document.getElementById('create-folder');
 
     /**
      *  Initializes the API client library and sets up sign-in state
@@ -93,7 +91,6 @@
           updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
           authorizeButton.onclick = GoogleSignin.signIn;
           signoutButton.onclick = GoogleSignin.signOut;
-          createFolderButton.onclick = createFolder;
 
           gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus)
         })
@@ -107,38 +104,11 @@
       if (isSignedIn) {
         authorizeButton.style.display = 'none';
         signoutButton.style.display = 'block';
-        createFolderButton.style.display = 'block';
         listFiles();
       } else {
         authorizeButton.style.display = 'block';
         signoutButton.style.display = 'none';
-        createFolderButton.style.display = 'none';
       }
-    }
-
-    /*
-      Idea: Create batch request to create file and store contents
-      https://developers.google.com/api-client-library/javascript/features/batch
-    */
-    function createFolder() {
-      GoogleDrive.createAppDataFile('your-app-data-file-name.json')
-        .then(function(data) {
-          console.log("Created file");
-          return GoogleDrive.saveAppData(data.fileId, {
-            "attribute1": "value1"
-          })
-        })
-        .then(function(data) {
-          console.log("Saved content");
-          return GoogleDrive.getAppDataFileContent(data.fileId)
-        })
-        .then(function(data) {
-          console.log("Retrieved content " + JSON.stringify(data.content));
-          return GoogleDrive.deleteFile(data.fileId)
-        })
-        .then(function(data) {
-          console.log("Deleted file")
-        })
     }
 
     /**
@@ -175,33 +145,6 @@
     var tripViewModel;
     var dataInStore;
 
-//TODO reset this so that it returns the existing file
-function getOrCreateFileId(fileName) {
-  return GoogleDrive.getAppDataFiles()
-    .then(function(files) {
-      var result = $.grep(files, function(el) {
-        return el.fileName === fileName
-      })
-
-      if (result.length === 0) {
-        return Promise.reject("No index file found")
-      } else {
-        return GoogleDrive.deleteFile(result[0].fileId)//Promise.resolve(result[0]);
-      }
-    })
-    .then(
-      function(data) {
-        return GoogleDrive.createAppDataFile(fileName)//Promise.resolve(data)
-      },
-      function() {
-        return GoogleDrive.createAppDataFile(fileName);
-      }
-    )
-    .then(function(data) {
-      return Promise.resolve(data.fileId)
-    })
-}
-
     $(window).on('load', function() {
       initClient()
 
@@ -233,25 +176,6 @@ function getOrCreateFileId(fileName) {
         })
     })
 
-
-    function getTripList() {
-      return TripModel.getTrips()
-        .then(function(trips) {
-          var promises = [];
-          trips.forEach(function(trip) {
-            var promise = TripModel.getTripDetails(trip.id)
-              .then(function(tripDetails) {
-                return {
-                  id: tripDetails.details.id,
-                  lastEditTime: (tripDetails.details.editTime || tripDetails.details.createTime).toISOString()
-                }
-              })
-            promises.push(promise);
-          })
-          return Promise.all(promises)
-        })
-    }
-
     function editLocation() {
       dataInStore = tripViewModel.currentTrip()._getRawData();
       var location = tripViewModel.currentTrip().getAll()[0];
@@ -267,126 +191,14 @@ function getOrCreateFileId(fileName) {
       if (dataInStore.editTime < tripViewModel.currentTrip().details.editTime) {
         console.log("Trip has been edited, needs update")
 
-        // TODO: create triplist file ==> Contains last update dates and trip id's + maxId
-
-        ///////////////////////////////////////////////////////////////////////////////////////////
-        //UPDATE PROCESS!
-        //DIFF doen in beide richtingen om de toUpload en toDownload te weten
-        // Dan vergelijken met de  last sync time, alles wat ervoor valt mag genegeerd worden
-        // Alles wat erna valt moet toegepast worden
-        // Als een zowel in download als upload zit gaat het nog falen maar dan is dat maar zo
-        ///////////////////////////////////////////////////////////////////////////////////////////
-
-        getOrCreateFileId("TripList.json")
-          .then(function(fileId) {
-            return GoogleDrive.getAppDataFileContent(fileId)
-          })
-          .then(function(data) {
-            console.log("TripList data: ", data)
-
-            //TODO compare maxId
-            // add to local list those that were added on serverside
-            // add to serverside those that were added on the clientside
-
-            var localMaxId = TripModel._getMaxTripId();
-            var fileId = data.fileId;
-            var fileContent = data.content || {};
-            var serverMaxId = fileContent.maxTripId || -1;
-            var serverTrips = fileContent.trips || [];
-            var lastSyncDate = new Date("2000-01-01 00:00");
-            var localTripsGlobal;
-
-            return getTripList()
-              .then(function(localTrips) {
-
-                //SWAP FOR TEST DOWNLOAD
-                // var temp = localTrips;
-                // localTrips = serverTrips;
-                // serverTrips = temp;
-                //////////
-
-                localTripsGlobal = localTrips;
-                var neededActions = SyncTools.getNeededActions(localTrips, serverTrips, lastSyncDate);
-                console.log("Needed actions: ",neededActions)
-
-                var newMaxId = Math.max(localMaxId, serverMaxId)
-                console.log("Max id: ",newMaxId)
-
-                // Upload those that need to be uploaded
-                if(neededActions.toUpload.length > 0){
-                  var newTrips = serverTrips.concat(neededActions.toUpload)
-                  console.log("New trips list: ",newTrips)
-
-                  var newServerData = {maxTripId: newMaxId, trips: newTrips};
-                  var promises = []
-                  var updateTripListPromise = GoogleDrive.saveAppData(data.fileId, newServerData)
-                  .then(function(){
-                    lastSyncDate = new Date();
-                    return GoogleDrive.getAppDataFileContent(fileId)
-                  })
-                  //TODO remove this then
-                  .then(function(data){
-                    var fileContent = data.content || {};
-                    var serverTrips = fileContent.trips || [];
-
-                    var neededActions = SyncTools.getNeededActions(localTripsGlobal, serverTrips, lastSyncDate);
-                    console.log("Needed actions: ",neededActions)
-                  })
-                  promises.push(updateTripListPromise);
-
-                  neededActions.toUpload.forEach(function(item){
-
-                    console.log("Uploading trip: ",item)
-
-                    var promise = TripModel.getTripDetails(item.id)
-                    .then(function(tripDetails){
-                      var tripData = tripDetails._getRawData();
-                      console.log("Create file for Trip set content")
-                      return getOrCreateFileId(tripData.id+".json")
-                      .then(function(fileId){
-                        console.log(fileId);
-                        return GoogleDrive.saveAppData(fileId, tripData)
-                      })
-                    })
-                    promises.push(promise);
-                  })
-
-                  return Promise.all(promises)
-                }
-                if(neededActions.toDownload.length > 0) {
-
-                }
-              })
-
-          })
-
-
-
         var localData = tripViewModel.currentTrip()._getRawData();
         var id = localData.id;
         console.log(id);
 
-        //TODO delete file if it already exists
-        /*
-                GoogleDrive.createAppDataFile(id + '.json')
-                  .then(function(data) {
-                    console.log("Created file");
-                    return GoogleDrive.saveAppData(data.fileId, localData)
-                  })
-                  .then(function(data) {
-                    console.log("Saved content");
-                    return GoogleDrive.getAppDataFileContent(data.fileId)
-                  })
-                  .then(function(data) {
-                    console.log("File ID: ", data.fileId)
-                    console.log("Retrieved content ", JSON.stringify(data.content));
-                  })
-        */
-
+        SyncTools.triggerSync();
       } else {
         console.log("Trip has not been edited, no update")
       }
-
 
     }
   </script>
