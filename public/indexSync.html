@@ -1,0 +1,395 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>My Page</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+  <!--
+    Icon from: http://www.iconarchive.com/show/flatwoken-icons-by-alecive/Apps-Google-Maps-icon.html
+    Created by Alessandro Roncone (https://github.com/alecive/FlatWoken)
+    -->
+  <link rel="manifest" href="manifest.json">
+
+  <script type="text/javascript" src="vendors/jquery/jquery-2.1.0.js"></script>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="vendors/bootstrap/bootstrap.min.css">
+  <script type="text/javascript" src="vendors/bootstrap/bootstrap.min.js"></script>
+
+  <!-- Bootstrap material design -->
+  <!-- https://cdn.rawgit.com/FezVrasta/bootstrap-material-design/gh-pages-v3/bootstrap-elements.html -->
+  <!-- Material Design fonts -->
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
+
+  <link rel="stylesheet" href="vendors/bootstrap-material/bootstrap-material-design.min.css" />
+  <link rel="stylesheet" href="vendors/bootstrap-material/ripples.min.css" />
+  <script type="text/javascript" src="vendors/bootstrap-material/material.min.js"></script>
+  <script type="text/javascript" src="vendors/bootstrap-material/ripples.min.js"></script>
+
+  <!-- Leaflet (http://leafletjs.com/) -->
+  <link rel="stylesheet" href="vendors/leaflet/leaflet.css" />
+  <script src="vendors/leaflet/leaflet.js" type="text/javascript"></script>
+
+  <!-- Leaflet pulsating icon (https://github.com/mapshakers/leaflet-icon-pulse) -->
+  <link rel="stylesheet" href="vendors/LeafletPulsingIcon/L.Icon.Pulse.min.css" />
+  <script src="vendors/LeafletPulsingIcon/L.Icon.Pulse.min.js" type="text/javascript"></script>
+
+  <!-- Knockout.js -->
+  <!--
+          TODO: Maybe needed for Bootstrap as well: https://faulknercs.github.io/Knockstrap/
+       -->
+  <script src="vendors/knockout/knockout-min.js"></script>
+  <script src="resources/js/ko-leaflet.js"></script>
+
+  <!-- LocalForage -->
+  <script type="text/javascript" src="vendors/localforage/localforage.min.js"></script>
+
+  <!-- Application code -->
+  <script type="text/javascript" src="resources/js/Parameters.js"></script>
+  <script type="text/javascript" src="resources/js/Util.js"></script>
+  <script type="text/javascript" src="resources/js/SyncTools.js"></script>
+  <script type="text/javascript" src="resources/js/Messages.js"></script>
+  <script type="text/javascript" src="resources/js/Trip.js"></script>
+  <script type="text/javascript" src="resources/js/repository/TripModel.js"></script>
+  <script type="text/javascript" src="resources/js/ViewModel/TripViewModel.js"></script>
+  <script type="text/javascript" src="resources/js/ViewModel/FilterViewModel.js"></script>
+
+
+  <script src="resources/js/GoogleSignin.js"></script>
+  <script src="resources/js/GoogleDrive.js"></script>
+  <script src="https://apis.google.com/js/api.js">
+  </script>
+
+
+</head>
+
+<body>
+  <p>Drive API Quickstart</p>
+
+  <!--Add buttons to initiate auth sequence and sign out-->
+  <button id="authorize-button" style="display: none;">Authorize</button>
+  <button id="signout-button" style="display: none;">Sign Out</button>
+  <button id="create-folder" style="display: none;">Create, save and delete file</button>
+
+  <pre id="content"></pre>
+
+  <script type="text/javascript">
+    var authorizeButton = document.getElementById('authorize-button');
+    var signoutButton = document.getElementById('signout-button');
+    var createFolderButton = document.getElementById('create-folder');
+
+    /**
+     *  Initializes the API client library and sets up sign-in state
+     *  listeners.
+     */
+    function initClient() {
+      GoogleSignin.load()
+        .then(GoogleSignin.init)
+        .then(function() {
+          // Handle the initial sign-in state.
+          updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+          authorizeButton.onclick = GoogleSignin.signIn;
+          signoutButton.onclick = GoogleSignin.signOut;
+          createFolderButton.onclick = createFolder;
+
+          gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus)
+        })
+    }
+
+    /**
+     *  Called when the signed in status changes, to update the UI
+     *  appropriately. After a sign-in, the API is called.
+     */
+    function updateSigninStatus(isSignedIn) {
+      if (isSignedIn) {
+        authorizeButton.style.display = 'none';
+        signoutButton.style.display = 'block';
+        createFolderButton.style.display = 'block';
+        listFiles();
+      } else {
+        authorizeButton.style.display = 'block';
+        signoutButton.style.display = 'none';
+        createFolderButton.style.display = 'none';
+      }
+    }
+
+    /*
+      Idea: Create batch request to create file and store contents
+      https://developers.google.com/api-client-library/javascript/features/batch
+    */
+    function createFolder() {
+      GoogleDrive.createAppDataFile('your-app-data-file-name.json')
+        .then(function(data) {
+          console.log("Created file");
+          return GoogleDrive.saveAppData(data.fileId, {
+            "attribute1": "value1"
+          })
+        })
+        .then(function(data) {
+          console.log("Saved content");
+          return GoogleDrive.getAppDataFileContent(data.fileId)
+        })
+        .then(function(data) {
+          console.log("Retrieved content " + JSON.stringify(data.content));
+          return GoogleDrive.deleteFile(data.fileId)
+        })
+        .then(function(data) {
+          console.log("Deleted file")
+        })
+    }
+
+    /**
+     * Append a pre element to the body containing the given message
+     * as its text node. Used to display the results of the API call.
+     *
+     * @param {string} message Text to be placed in pre element.
+     */
+    function appendPre(message) {
+      var pre = document.getElementById('content');
+      var textContent = document.createTextNode(message + '\n');
+      pre.appendChild(textContent);
+    }
+
+    /**
+     * Print files.
+     */
+    function listFiles() {
+      GoogleDrive.getAppDataFiles()
+        .then(function(files) {
+          appendPre('Files:');
+          if (files && files.length > 0) {
+            for (var i = 0; i < files.length; i++) {
+              var file = files[i];
+              appendPre(file.fileName + ' (' + file.fileId + ')');
+            }
+          } else {
+            appendPre('No files found.');
+          }
+        });
+
+    }
+
+    var tripViewModel;
+    var dataInStore;
+
+//TODO reset this so that it returns the existing file
+function getOrCreateFileId(fileName) {
+  return GoogleDrive.getAppDataFiles()
+    .then(function(files) {
+      var result = $.grep(files, function(el) {
+        return el.fileName === fileName
+      })
+
+      if (result.length === 0) {
+        return Promise.reject("No index file found")
+      } else {
+        return GoogleDrive.deleteFile(result[0].fileId)//Promise.resolve(result[0]);
+      }
+    })
+    .then(
+      function(data) {
+        return GoogleDrive.createAppDataFile(fileName)//Promise.resolve(data)
+      },
+      function() {
+        return GoogleDrive.createAppDataFile(fileName);
+      }
+    )
+    .then(function(data) {
+      return Promise.resolve(data.fileId)
+    })
+}
+
+    $(window).on('load', function() {
+      initClient()
+
+      tripViewModel = TripViewModel();
+
+      tripViewModel.initialize()
+        .then(function() {
+          // Subscribe to changes in the currently active trip to store the ID
+          // This is needed to reload it again when the application starts again
+          tripViewModel.currentTrip.subscribe(function(newValue) {
+            if (!!newValue) {
+              localforage.setItem("lastActiveTrip", newValue.getId())
+            } else {
+              localforage.removeItem("lastActiveTrip")
+            }
+          })
+
+          return localforage.getItem("lastActiveTrip");
+        })
+        .then(function(lastActiveTrip) {
+          //Restore last active trip from localforage
+          if (!!lastActiveTrip) {
+            console.log("Read last active trip ", lastActiveTrip)
+            tripViewModel.selectTrip(lastActiveTrip);
+          }
+        })
+        .then(function() {
+          console.log("All done loading");
+        })
+    })
+
+
+    function getTripList() {
+      return TripModel.getTrips()
+        .then(function(trips) {
+          var promises = [];
+          trips.forEach(function(trip) {
+            var promise = TripModel.getTripDetails(trip.id)
+              .then(function(tripDetails) {
+                return {
+                  id: tripDetails.details.id,
+                  lastEditTime: (tripDetails.details.editTime || tripDetails.details.createTime).toISOString()
+                }
+              })
+            promises.push(promise);
+          })
+          return Promise.all(promises)
+        })
+    }
+
+    function editLocation() {
+      dataInStore = tripViewModel.currentTrip()._getRawData();
+      var location = tripViewModel.currentTrip().getAll()[0];
+      location.title = "Test location - edited";
+      location.editTime = new Date();
+      var trip = tripViewModel.currentTrip();
+      trip.update(location);
+      tripViewModel.currentTrip(trip);
+
+      console.log("Read at start: ", dataInStore.editTime)
+      console.log("Now in memory: ", tripViewModel.currentTrip().details.editTime)
+
+      if (dataInStore.editTime < tripViewModel.currentTrip().details.editTime) {
+        console.log("Trip has been edited, needs update")
+
+        // TODO: create triplist file ==> Contains last update dates and trip id's + maxId
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        //UPDATE PROCESS!
+        //DIFF doen in beide richtingen om de toUpload en toDownload te weten
+        // Dan vergelijken met de  last sync time, alles wat ervoor valt mag genegeerd worden
+        // Alles wat erna valt moet toegepast worden
+        // Als een zowel in download als upload zit gaat het nog falen maar dan is dat maar zo
+        ///////////////////////////////////////////////////////////////////////////////////////////
+
+        getOrCreateFileId("TripList.json")
+          .then(function(fileId) {
+            return GoogleDrive.getAppDataFileContent(fileId)
+          })
+          .then(function(data) {
+            console.log("TripList data: ", data)
+
+            //TODO compare maxId
+            // add to local list those that were added on serverside
+            // add to serverside those that were added on the clientside
+
+            var localMaxId = TripModel._getMaxTripId();
+            var fileId = data.fileId;
+            var fileContent = data.content || {};
+            var serverMaxId = fileContent.maxTripId || -1;
+            var serverTrips = fileContent.trips || [];
+            var lastSyncDate = new Date("2000-01-01 00:00");
+            var localTripsGlobal;
+
+            return getTripList()
+              .then(function(localTrips) {
+
+                //SWAP FOR TEST DOWNLOAD
+                // var temp = localTrips;
+                // localTrips = serverTrips;
+                // serverTrips = temp;
+                //////////
+
+                localTripsGlobal = localTrips;
+                var neededActions = SyncTools.getNeededActions(localTrips, serverTrips, lastSyncDate);
+                console.log("Needed actions: ",neededActions)
+
+                var newMaxId = Math.max(localMaxId, serverMaxId)
+                console.log("Max id: ",newMaxId)
+
+                // Upload those that need to be uploaded
+                if(neededActions.toUpload.length > 0){
+                  var newTrips = serverTrips.concat(neededActions.toUpload)
+                  console.log("New trips list: ",newTrips)
+
+                  var newServerData = {maxTripId: newMaxId, trips: newTrips};
+                  var promises = []
+                  var updateTripListPromise = GoogleDrive.saveAppData(data.fileId, newServerData)
+                  .then(function(){
+                    lastSyncDate = new Date();
+                    return GoogleDrive.getAppDataFileContent(fileId)
+                  })
+                  //TODO remove this then
+                  .then(function(data){
+                    var fileContent = data.content || {};
+                    var serverTrips = fileContent.trips || [];
+
+                    var neededActions = SyncTools.getNeededActions(localTripsGlobal, serverTrips, lastSyncDate);
+                    console.log("Needed actions: ",neededActions)
+                  })
+                  promises.push(updateTripListPromise);
+
+                  neededActions.toUpload.forEach(function(item){
+
+                    console.log("Uploading trip: ",item)
+
+                    var promise = TripModel.getTripDetails(item.id)
+                    .then(function(tripDetails){
+                      var tripData = tripDetails._getRawData();
+                      console.log("Create file for Trip set content")
+                      return getOrCreateFileId(tripData.id+".json")
+                      .then(function(fileId){
+                        console.log(fileId);
+                        return GoogleDrive.saveAppData(fileId, tripData)
+                      })
+                    })
+                    promises.push(promise);
+                  })
+
+                  return Promise.all(promises)
+                }
+                if(neededActions.toDownload.length > 0) {
+
+                }
+              })
+
+          })
+
+
+
+        var localData = tripViewModel.currentTrip()._getRawData();
+        var id = localData.id;
+        console.log(id);
+
+        //TODO delete file if it already exists
+        /*
+                GoogleDrive.createAppDataFile(id + '.json')
+                  .then(function(data) {
+                    console.log("Created file");
+                    return GoogleDrive.saveAppData(data.fileId, localData)
+                  })
+                  .then(function(data) {
+                    console.log("Saved content");
+                    return GoogleDrive.getAppDataFileContent(data.fileId)
+                  })
+                  .then(function(data) {
+                    console.log("File ID: ", data.fileId)
+                    console.log("Retrieved content ", JSON.stringify(data.content));
+                  })
+        */
+
+      } else {
+        console.log("Trip has not been edited, no update")
+      }
+
+
+    }
+  </script>
+</body>
+
+</html>
