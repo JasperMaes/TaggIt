@@ -47,12 +47,18 @@
   <!-- LocalForage -->
   <script type="text/javascript" src="vendors/localforage/localforage.min.js"></script>
 
+  <!-- Google Drive -->
+  <script type="text/javascript" src="resources/js/GoogleSignin.js"></script>
+  <script type="text/javascript" src="resources/js/GoogleDrive.js"></script>
+  <script type="text/javascript" src="https://apis.google.com/js/api.js"></script>
+
   <!-- Application code -->
   <script type="text/javascript" src="resources/js/Parameters.js"></script>
   <script type="text/javascript" src="resources/js/Util.js"></script>
   <script type="text/javascript" src="resources/js/Messages.js"></script>
   <script type="text/javascript" src="resources/js/GeoLocation.js"></script>
   <script type="text/javascript" src="resources/js/Trip.js"></script>
+  <script type="text/javascript" src="resources/js/SyncTools.js"></script>
   <script type="text/javascript" src="resources/js/repository/TripModel.js"></script>
   <script type="text/javascript" src="resources/js/ViewModel/TripViewModel.js"></script>
   <script type="text/javascript" src="resources/js/ViewModel/FilterViewModel.js"></script>
@@ -467,8 +473,32 @@
 
           <div class="row">
             <h3>Google Drive</h3>
-
-            <!-- TODO add buttons and explanation for Google Drive -->
+            <div>
+              <!-- ko if: $root.isOnline() -->
+                <!-- ko if: preferencesController.signedInStatus() -->
+                <p>
+                  Signed in successfully
+                </p>
+                <!-- TODO: Fix sync button (blocks sometimes) or remove it if no fix found -->
+                <input type="button" value="Sign out" class="btn btn-danger btn-raised btn-sm" data-bind="click: preferencesController.signOutHandler" />
+                <button class="btn btn-primary btn-raised btn-sm has-spinner" data-bind="attr: {disabled: SyncTools.isSyncing()}, click: SyncTools.triggerSync"><span class="spinner"><i class="icon-spin icon-refresh"></i></span>
+                  Sync now</button>
+                <!-- /ko -->
+                <!-- ko if: !preferencesController.signedInStatus() -->
+                <p>
+                  Not signed in
+                </p>
+                <input type="button" value="Sign in" class="btn btn-primary btn-raised btn-sm" data-bind="click: preferencesController.signInHandler" />
+                <input type="button" value="Synchronize" class="btn btn-primary btn-raised btn-sm" disabled />
+                <!-- /ko -->
+                <p data-bind="text: preferencesController.lastSyncText"></p>
+            <!-- /ko -->
+            <!-- ko if: !$root.isOnline()  -->
+            <p>
+              Google Drive is only available when online.
+            </p>
+            <!-- /ko -->
+            </div>
 
           </div>
 

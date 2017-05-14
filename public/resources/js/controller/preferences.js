@@ -6,7 +6,36 @@ var PreferencesController = function(tripViewModel) {
     return result;
   }
 
+var signInHandler = function(){
+  if(!signedInStatus()){
+    GoogleSignin.signIn();
+  }
+};
+var signOutHandler = function(){
+  if(signedInStatus()){
+    GoogleSignin.signOut();
+  }
+};
+var signedInStatus = ko.observable(false);
+
+  function initGoogleDriveClient() {
+    GoogleSignin.load()
+      .then(GoogleSignin.init)
+      .then(function() {
+        // Handle the initial sign-in state.
+        signedInStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+
+        gapi.auth2.getAuthInstance().isSignedIn.listen(signedInStatus);
+
+        return SyncTools.getLastSyncDate()
+      })
+  }
+
   return {
+    signInHandler: signInHandler,
+    signOutHandler: signOutHandler,
+    signedInStatus: signedInStatus,
+    initGoogleDriveClient: initGoogleDriveClient,
 
     backToMap: function() {
       showPage("mapView");
@@ -38,6 +67,12 @@ var PreferencesController = function(tripViewModel) {
       console.log("Deleting trip: " + this.id)
       tripViewModel.removeTrip(this.id);
     },
+
+    lastSyncText: ko.computed(function(){
+      var dateString = !!SyncTools.lastSyncDate() ? Util.getDateTimeString(SyncTools.lastSyncDate()) : 'Never';
+      return 'Last sync: '+dateString;
+    })
+
 
   }
 

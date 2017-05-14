@@ -1,5 +1,8 @@
 var SyncTools = (function() {
 
+  var lastSyncDate = ko.observable();
+  var isSyncing = ko.observable(false);
+
   function getNeededActions(localTrips, serverTrips, lastSyncDate) {
     lastSyncDate = lastSyncDate || new Date("2000-01-01 00:00:00");
 
@@ -87,17 +90,26 @@ var SyncTools = (function() {
   };
 
   function syncComplete() {
-    return localforage.setItem("lastSyncDate", new Date());
+    var date = new Date();
+    return localforage.setItem("lastSyncDate", date)
+    .then(function(){
+      lastSyncDate(date);
+      isSyncing(false);
+      return Promise.resolve(date);
+    });
   }
 
   function getLastSyncDate() {
     return localforage.getItem("lastSyncDate")
       .then(
         function(date) {
+          lastSyncDate(date);
           return Promise.resolve(date)
         },
         function() {
-          return Promise.resolve(new Date("2000-01-01 00:00"))
+          var date = new Date("2000-01-01 00:00");
+          lastSyncDate(date);
+          return Promise.resolve(date)
         }
       );
   }
@@ -114,7 +126,7 @@ var SyncTools = (function() {
         } else {
           return Promise.resolve(result[0]);
         }
-      })
+      },console.log)
       .then(
         function(data) {
           return Promise.resolve(data)
@@ -226,10 +238,12 @@ var SyncTools = (function() {
   }
 
   function triggerSync() {
+    isSyncing(true);
+      console.log("syncing")
     getOrCreateFileId("TripList.json")
       .then(function(fileId) {
-        return Promise.all([GoogleDrive.getAppDataFileContent(fileId), SyncTools.getLastSyncDate()])
-      })
+        return Promise.all([GoogleDrive.getAppDataFileContent(fileId), getLastSyncDate()])
+      }, console.log)
       .then(function(data) {
         console.log("TripList data: ", data[0])
 
@@ -252,8 +266,12 @@ var SyncTools = (function() {
             var downloadPromise = handleDownload(neededActions.toDownload, newMaxId);
             var mergePromise = handleMerge(neededActions.toMerge, serverTrips, fileId, newMaxId)
 
-            return Promise.all([uploadPromise, downloadPromise, mergePromise]).then(SyncTools.syncComplete);
+            return Promise.all([uploadPromise, downloadPromise, mergePromise])
           })
+          .then(function(){
+            console.log("complete")
+            return syncComplete();
+          });
       })
   }
 
@@ -261,7 +279,9 @@ var SyncTools = (function() {
     getNeededActions: getNeededActions,
     syncComplete: syncComplete,
     getLastSyncDate: getLastSyncDate,
-    triggerSync: triggerSync
+    triggerSync: triggerSync,
+    lastSyncDate: lastSyncDate,
+    isSyncing: isSyncing
   }
 
 })()
