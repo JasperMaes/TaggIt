@@ -13,7 +13,7 @@
 
         <div class="row" data-bind="foreach: Parameters.categories, as category">
           <div class="thumbnail" data-bind="css: { selected: $root.addLocationController.locationData.category() == name }">
-            <div class="content" data-bind="click:$root.addLocationController.selectCategory">
+            <div class="content" data-bind="click:$root.addLocationController.selectCategory($root)">
               <span class="material-icons" data-bind="text:icon"></span>
         </div>
       </div>

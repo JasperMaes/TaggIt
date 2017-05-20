@@ -15,10 +15,10 @@ var MapController = function(updateLocationGpsError, initLocationGpsError, tripV
 
   var markers = ko.observableArray([]);
 
-  function addMarker(position) {
+  function addMarker(position, controller) {
     addLocationController.locationData.position = position;
 
-    showPage("addLocationView");
+    showPage("addLocationView", controller);
   }
 
   function updateCenterMarker(options) {
@@ -118,11 +118,11 @@ var MapController = function(updateLocationGpsError, initLocationGpsError, tripV
     bounds: bounds,
     isInitialized: isInitialized,
 
-    addMarkerHandler: function() {
+    addMarkerHandler: function(controller) {
       var lat = centerMarker.center[0]();
       var lng = centerMarker.center[1]();
 
-      addMarker([lat, lng]);
+      addMarker([lat, lng], controller);
     },
 
     centerMapHandler: function() {

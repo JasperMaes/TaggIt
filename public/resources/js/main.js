@@ -1,8 +1,6 @@
-var controller;
-
 var templates = {};
 
-function showPage(pageName) {
+function showPage(pageName, controller) {
   var element = $("body > div.page")
   if (element.length > 0) {
     ko.cleanNode(element[0]);
@@ -30,77 +28,66 @@ function initLocationGpsError(error) {
   controller.messageContent("GPS error: Initialization error; is the GPS enabled?");
 }
 
-function removeAutoSync() {
-  console.log("OFFLINE")
-  controller.isOnline(false);
-  window.removeEventListener('online', addAutoSync);
-  if (!!syncTimer) {
-    clearInterval(timer);
-    syncTimer = null;
-  }
+function preloadViews(viewsToLoad) {
+  var headers = new Headers();
+  headers.append("Content-Type", "text/html");
+  var requestParams = {
+    headers: headers,
+    method: "GET"
+  };
+
+  // Load template file and stored in templates global
+  viewsToLoad.forEach(function(viewName) {
+    fetch('resources/templates/' + viewName + '.html', requestParams)
+      .then(function(response) {
+        return response.text();
+      }).then(function(content) {
+        templates[viewName] = content;
+      });
+  })
 }
 
-var syncTimer = null;
-
-function addAutoSync() {
-  console.log("ONLINE");
-  controller.isOnline(true);
-  var triggerFunc = function() {
-    console.log("Trigger");
-    SyncTools.triggerSync()
+function setupServiceWorker() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+      .register('/service-worker.js')
+      .then(function() {
+        console.log("Service Worker Registered");
+      });
   }
-  // Sync every 15 minutes
-  timer = setInterval(triggerFunc, 15 * 60 * 1000)
 }
-
-//TODO: replace with background sync service worker if it supports periodic sync
-window.addEventListener('online', addAutoSync);
-window.addEventListener('offline', removeAutoSync);
-
-
-var tripViewModel;
 
 $(window).on('load', function() {
-
-  if('serviceWorker' in navigator) {
-    navigator.serviceWorker
-             .register('/service-worker.js')
-             .then(function() { console.log("Service Worker Registered"); });
-  }
-
-  var myHeaders = new Headers();
-  myHeaders.append("Content-Type", "text/html");
-
+  setupServiceWorker();
   var viewsToLoad = ["mapView", "addLocationView", "addLocationDetailsView", "preferencesView", "locationsListView", "viewLocationView", "editLocationDetailsView"];
-
-  // Load all templates
-  viewsToLoad.forEach(function(viewName){
-    fetch('resources/templates/'+viewName+'.html', {headers: myHeaders, method: "GET"}).then(function(response) {
-      return response.text();
-    }).then(function(content) {
-      templates[viewName] = content;
-    });
-  })
-
-
+  preloadViews(viewsToLoad);
   initializeApp();
-
 })
 
-function initializeApp(){
-  // Use this class to add a ripple effect to a button
-  // ==> Only useful when not changing pages since it is too slow to be visible before page changes
-  //$.material.options.ripples = ".withripple";
+function setupAutoSync(controller) {
+  if (navigator.onLine) {
+    SyncTools.addAutoSync(controller)
+  }
+  //TODO: replace with background sync service worker if it supports periodic sync
+  window.addEventListener('online', function() {
+    SyncTools.addAutoSync(controller)
+  });
+  window.addEventListener('offline', function() {
+    SyncTools.removeAutoSync(controller)
+  });
+}
+
+function initializeApp() {
   $.material.init();
 
-  tripViewModel = TripViewModel();
+  var tripViewModel = TripViewModel();
+  var controller = {};
 
   tripViewModel.initialize()
     .then(function() {
       // Subscribe to changes in the currently active trip to store the ID
       // This is needed to reload it again when the application starts again
       tripViewModel.currentTrip.subscribe(function(newValue) {
-        console.log("Active trip changed to ", newValue)
         if (!!newValue) {
           localforage.setItem("lastActiveTrip", newValue.getId())
         } else {
@@ -113,7 +100,6 @@ function initializeApp(){
     .then(function(lastActiveTrip) {
       //Restore last active trip from localforage
       if (!!lastActiveTrip) {
-        console.log("Read last active trip ", lastActiveTrip)
         tripViewModel.selectTrip(lastActiveTrip);
       }
     })
@@ -125,40 +111,34 @@ function initializeApp(){
       var preferencesController = PreferencesController(tripViewModel);
       var mapController = MapController(updateLocationGpsError, initLocationGpsError, tripViewModel, addLocationController, filterViewModel);
 
-      preferencesController.initGoogleDriveClient();
-
-      controller = {
-        mapController: mapController,
-        sidebarController: SidebarController(),
-        messageContent: ko.observable(),
-        addLocationController: addLocationController,
-        preferencesController: preferencesController,
-        locationListController: LocationListController(tripViewModel, viewLocationController, filterViewModel),
-        viewLocationController: viewLocationController,
-        editLocationController: editLocationController,
-        tripViewModel: tripViewModel,
-        clearAll: function() {
-          Promise.all([TripModel._dataStore.clear(), localforage.clear()])
-            .then(function() {
-              console.log("All cleared")
-              location.reload()
-            })
-        },
-        isOnline: ko.observable(false)
+      controller.mapController = mapController;
+      controller.sidebarController = SidebarController();
+      controller.messageContent = ko.observable();
+      controller.addLocationController = addLocationController;
+      controller.preferencesController = preferencesController;
+      controller.locationListController = LocationListController(tripViewModel, viewLocationController, filterViewModel);
+      controller.viewLocationController = viewLocationController;
+      controller.editLocationController = editLocationController;
+      controller.tripViewModel = tripViewModel;
+      controller.clearAll = function() {
+        Promise.all([TripModel._dataStore.clear(), localforage.clear()])
+          .then(function() {
+            location.reload()
+          })
       };
+      controller.isOnline = ko.observable(false);
 
       mapController.initMap();
+      preferencesController.initGoogleDriveClient();
 
-      if (navigator.onLine) {
-        addAutoSync()
-      } else {
-        console.log("Do nothing, offline")
-      }
+      setupAutoSync(controller);
 
+      // Show initial page
+      // If there are no trips, user is redirected to preferences to add one
       if (tripViewModel.trips().length > 0) {
-        showPage("mapView")
+        showPage("mapView", controller)
       } else {
-        showPage("preferencesView")
+        showPage("preferencesView", controller)
       }
 
       console.log("All done loading");

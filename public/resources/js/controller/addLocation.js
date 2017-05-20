@@ -23,9 +23,8 @@ var AddLocationController = function(tripViewModel){
     locationData.images([])
   }
 
-  function backToMap() {
-    showPage("mapView");
-    // Reset entered data
+  function backToMap(controller) {
+    showPage("mapView", controller);
     clearForm();
   }
 
@@ -43,22 +42,23 @@ var AddLocationController = function(tripViewModel){
 
   var addLocationController = {
     locationData: locationData,
-    selectCategory: function(category, event) {
+    selectCategory: function(controller){
+    return function(category, event) {
       locationData.category(category.name);
-      showPage("addLocationDetailsView");
-    },
-
+      showPage("addLocationDetailsView", controller);
+    }
+  },
     mapPreviewController: MapPreviewController(locationData, getMapPreviewPanel),
     savePosition: savePosition,
     savePositionAddNew: function(controller){
       savePosition();
-      showPage("addLocationView");
+      showPage("addLocationView", controller);
       clearForm();
-      controller.mapController.addMarkerHandler()
+      controller.mapController.addMarkerHandler(controller)
     },
-    savePositionBackToMap: function(){
+    savePositionBackToMap: function(controller){
       savePosition();
-      backToMap();
+      backToMap(controller);
     },
     backToMap: backToMap,
     addImage: function(data, event) {
@@ -100,8 +100,8 @@ var AddLocationController = function(tripViewModel){
 
       event.target.value = "";
     },
-    backToSelectCategory: function() {
-      showPage("addLocationView");
+    backToSelectCategory: function(controller) {
+      showPage("addLocationView", controller);
     },
     imagePreview: imagePreviewController,
     openImage: function(data, event){

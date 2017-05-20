@@ -64,7 +64,7 @@
       <div class="locationList-item">
         <div class="row">
           <div class="col-sm-12 col-xs-12">
-            <p class="h3" data-bind="text: location.title || '<No name>', click: $root.locationListController.viewLocation"></p>
+            <p class="h3" data-bind="text: location.title || '<No name>', click: $root.locationListController.viewLocation($root)"></p>
           </div>
           <div class="col-sm-7 col-xs-7">
             <p class="h5" style="color: gray" data-bind="text: Util.getDateTimeString(!!location.editTime ? location.editTime : location.createTime), click: $root.locationListController.viewLocation"></p>
@@ -93,7 +93,7 @@
         There are no locations registered for this trip.</br>
         Get out there and add some!
       </p>
-      <input class="btn btn-raised btn-primary" data-bind="click:locationListController.backToMap" value="Let's go!"></input>
+      <input class="btn btn-raised btn-primary" data-bind="click:$root.locationListController.backToMap" value="Let's go!"></input>
 
     </div>
     <!-- /ko -->

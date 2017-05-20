@@ -37,19 +37,19 @@ var EditLocationController = function(tripViewModel) {
     locationData.createTime = null;
   }
 
-  function backToViewLocation() {
-    showPage("viewLocationView")
+  function backToViewLocation(controller) {
+    showPage("viewLocationView", controller)
     // Reset entered data
     clearForm();
   }
 
-  function deleteLocation(){
-    var result = confirm("Want to delete?");
+  function deleteLocation(controller){
+    var result = confirm("Do you really want to delete the location?");
     if (result) {
       var trip = tripViewModel.currentTrip();
       trip.remove(locationData.id);
       tripViewModel.currentTrip(trip)
-      showPage("locationsListView");
+      showPage("locationsListView", controller);
     }
   }
 
@@ -104,7 +104,7 @@ var EditLocationController = function(tripViewModel) {
       trip.update(locationDataJS);
       tripViewModel.currentTrip(trip)
 
-      backToViewLocation();
+      backToViewLocation(controller);
     },
     addImage: function(data, event) {
       var file = event.target.files[0]; //sames as here

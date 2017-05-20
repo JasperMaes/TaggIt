@@ -9,14 +9,24 @@ var SidebarController = function() {
     isVisible(false);
   };
 
-  var openPreferencesHandler = function(){
-    showPage("preferencesView");
-    close();
+  var openPreferencesHandler = function(controller) {
+    return function() {
+      showPage("preferencesView", controller);
+      close();
+    }
   }
 
-  var viewLocations = function(){
-    showPage("locationsListView");
-    close();
+  function viewLocations(controller) {
+    return function() {
+      showPage("locationsListView", controller);
+      close();
+    }
+  }
+
+  function openAddLocationHandler(controller) {
+    return function() {
+      controller.mapController.addMarkerHandler(controller)
+    }
   }
 
   return {
@@ -24,6 +34,7 @@ var SidebarController = function() {
     toggle: toggle,
     close: close,
     openPreferencesHandler: openPreferencesHandler,
+    openAddLocationHandler: openAddLocationHandler,
     viewLocations: viewLocations
   };
 };

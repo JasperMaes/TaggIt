@@ -17,18 +17,20 @@ var LocationListController = function(tripViewModel, viewLocationController, fil
   })
 
   return {
-    backToMap: function(){
-      showPage("mapView");
+    backToMap: function(controller){
+      showPage("mapView", controller);
       tripViewModel.currentTrip().filter({});
-    },
+  },
     mapPreviewControllers: mapPreviewControllers,
     openWebsite: function(data) {
       window.open(data.website, "_blank");
     },
     filterViewModel: filterViewModel,
-    viewLocation: function(data, event) {
-      viewLocationController.locationData(data);
-      showPage("viewLocationView");
+    viewLocation: function (controller){
+      return function(data, event) {
+        viewLocationController.locationData(data);
+        showPage("viewLocationView", controller);
+      }
     }
   }
 }

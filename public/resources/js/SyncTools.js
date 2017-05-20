@@ -275,13 +275,37 @@ var SyncTools = (function() {
       })
   }
 
+
+  function removeAutoSync(controller) {
+    console.log("OFFLINE")
+    controller.isOnline(false);
+    window.removeEventListener('online', addAutoSync);
+    if (!!syncTimer) {
+      clearInterval(timer);
+      syncTimer = null;
+    }
+  }
+
+  var syncTimer = null;
+
+  function addAutoSync(controller) {
+    controller.isOnline(true);
+    var triggerFunc = function() {
+      SyncTools.triggerSync()
+    }
+    // Sync every 15 minutes
+    timer = setInterval(triggerFunc, 15 * 60 * 1000)
+  }
+
   return {
     getNeededActions: getNeededActions,
     syncComplete: syncComplete,
     getLastSyncDate: getLastSyncDate,
     triggerSync: triggerSync,
     lastSyncDate: lastSyncDate,
-    isSyncing: isSyncing
+    isSyncing: isSyncing,
+    removeAutoSync: removeAutoSync,
+    addAutoSync: addAutoSync
   }
 
 })()
