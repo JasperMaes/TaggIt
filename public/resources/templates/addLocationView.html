@@ -1,0 +1,23 @@
+<div id="addLocationView" class="page">
+  <div class="page-content-wrapper">
+    <div id="header">
+      <div class="row">
+        <div class="col-xs-2 col-sm-1">
+          <span id="backbutton" class="material-icons material-input" style="z-index:3000; font-size: 3em" data-bind="click:addLocationController.backToMap">navigate_before</i>
+            </div>
+            <div class="col-xs-10 col-sm-11" style="z-index:60;padding-right:0px">
+              <h2 style="margin-top: 5px">Add location</h2>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" data-bind="foreach: Parameters.categories, as category">
+          <div class="thumbnail" data-bind="css: { selected: $root.addLocationController.locationData.category() == name }">
+            <div class="content" data-bind="click:$root.addLocationController.selectCategory">
+              <span class="material-icons" data-bind="text:icon"></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

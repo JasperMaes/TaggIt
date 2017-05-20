@@ -1,0 +1,56 @@
+<div id="mapView" class="page has-sidebar active" data-bind="css : { toggled : sidebarController.isVisible() }">
+  <div data-bind="template: { name: 'sidebar-template', data: sidebarController }"></div>
+
+  <div class="page-content-wrapper">
+    <div id="header">
+      <div class="row">
+        <div class="col-xs-2 col-sm-1">
+          <span id="toggleButton" class="glyphicon glyphicon-menu-hamburger btn btn-default gi-1_5x material-input" style="z-index:3000" data-bind="click: sidebarController.toggle"></span>
+        </div>
+        <!-- ko if:  mapController.filterbarVisible -->
+        <div class="col-xs-7 col-sm-8 form-group" style="z-index:60;padding-right:0px">
+          <input type="text" class="form-control" placeholder="Search..." data-bind="value: mapController.filterViewModel.searchTerm, attr: {disabled: locationListController.filterViewModel.isAdvancedFilterOpen()}" />
+        </div>
+        <div class="col-xs-3 col-sm-3" style="z-index:60;padding-left:0px">
+          <span class="glyphicon glyphicon-search navbar-btn btn btn-default gi-1_5x material-input" style="padding-right: 15px;" data-bind="click: mapController.filterViewModel.search"></span>
+
+          <span class="glyphicon glyphicon-filter navbar-btn btn btn-default gi-1_5x material-input" data-toggle="collapse" data-target="#filterOptions" data-bind="click: locationListController.filterViewModel.toggleAdvancedFilter"></span>
+        </div>
+
+        <!-- /ko -->
+      </div>
+      <div id="filterOptions" class="row collapse">
+        <div class="col-xs-12 col-sm-12" style="z-index:60;background: rgba(255,255,255,0.7);border-radius: 10px;">
+          <form class="form-horizontal">
+
+            <div class="form-group">
+              <label class="control-label col-xs-4" for="title">Title:</label>
+              <div class="col-xs-8 col-sm-8">
+                <input class="form-control material-input" id="title" data-bind="value: mapController.filterViewModel.titleTerm" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-xs-4 col-sm-4" for="categorySelect">Category:</label>
+              <div class="col-xs-8 col-sm-8">
+                <select class="form-control material-input" id="categorySelect" data-bind="options: Parameters.categories, optionsText:'label', optionsValue:'name', valueAllowUnset: true, optionsCaption: '', value: mapController.filterViewModel.categoryTerm">
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-xs-4" for="description">Description:</label>
+              <div class="col-xs-8 col-sm-8">
+                <input class="form-control material-input" id="description" data-bind="value: mapController.filterViewModel.descriptionTerm" />
+              </div>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+    <div data-bind="template: { name: 'map-template', data: $data }"></div>
+  </div>
+</div>

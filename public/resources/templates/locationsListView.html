@@ -1,0 +1,104 @@
+<div id="locationsListView" class="page">
+  <div class="page-content-wrapper">
+    <div id="header">
+      <div class="row">
+        <div class="col-xs-2 col-sm-1">
+          <span id="backbutton" class="material-icons material-input" style="z-index:3000; font-size: 3em" data-bind="click:locationListController.backToMap">navigate_before</span>
+        </div>
+        <div class="col-xs-10 col-sm-11" style="z-index:60;padding-right:0px">
+          <h2 style="margin-top: 5px">My locations</h2>
+        </div>
+      </div>
+    </div>
+
+    <!-- ko if: !!tripViewModel.currentTrip() -->
+    <!-- ko if: (tripViewModel.currentTrip().getAllFiltered().length > 0) -->
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xs-9 col-sm-9 form-group" style="margin-top:0px;padding-right:0px">
+          <input type="text" class="form-control" placeholder="Search..." data-bind="value: locationListController.filterViewModel.searchTerm, attr: {disabled: locationListController.filterViewModel.isAdvancedFilterOpen()}" />
+        </div>
+        <div class="col-xs-3 col-sm-3" style="padding-right:0px">
+          <span class="glyphicon glyphicon-search navbar-btn btn btn-default gi-1_5x material-input" data-bind="click: locationListController.filterViewModel.search" style="padding: 0px 10px 0px 0px;"></span>
+          <span class="glyphicon glyphicon-filter navbar-btn btn btn-default gi-1_5x material-input" data-toggle="collapse" data-target="#filterOptions" style="padding: 0px;" data-bind="click: locationListController.filterViewModel.toggleAdvancedFilter"></span>
+        </div>
+
+      </div>
+
+      <div id="filterOptions" class="row collapse">
+        <div class="col-xs-12 col-sm-12" style="z-index:60;background: rgba(255,255,255,0.7);border-radius: 10px;">
+          <form class="form-horizontal">
+
+            <div class="form-group" style="margin-top:0px">
+              <label class="control-label col-xs-4" for="title">Title:</label>
+              <div class="col-xs-8 col-sm-8">
+                <input class="form-control material-input" id="title" data-bind="value: mapController.filterViewModel.titleTerm" />
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top:0px">
+              <label class="control-label col-xs-4 col-sm-4" for="categorySelect">Category:</label>
+              <div class="col-xs-8 col-sm-8">
+                <select class="form-control material-input" id="categorySelect" data-bind="options: Parameters.categories, optionsText:'label', optionsValue:'name', valueAllowUnset: true, optionsCaption: '', value: mapController.filterViewModel.categoryTerm">
+                        </select>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top:0px">
+              <label class="control-label col-xs-4" for="description">Description:</label>
+              <div class="col-xs-8 col-sm-8">
+                <input class="form-control material-input" id="description" data-bind="value: mapController.filterViewModel.descriptionTerm" />
+              </div>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+    <!-- /ko -->
+
+    <div class="container locationList" data-bind="foreach: {data: tripViewModel.currentTrip().getAllFiltered(), as: 'location'}">
+
+      <div class="locationList-item">
+        <div class="row">
+          <div class="col-sm-12 col-xs-12">
+            <p class="h3" data-bind="text: location.title || '<No name>', click: $root.locationListController.viewLocation"></p>
+          </div>
+          <div class="col-sm-7 col-xs-7">
+            <p class="h5" style="color: gray" data-bind="text: Util.getDateTimeString(!!location.editTime ? location.editTime : location.createTime), click: $root.locationListController.viewLocation"></p>
+          </div>
+          <div class="icon-group col-sm-5 col-xs-5">
+            <div class="pull-right">
+              <span class="material-icons" data-bind="click:$root.locationListController.mapPreviewControllers()[$index()].openMapPreviewHandler">place</span>
+              <span class="material-icons" data-bind="text: Util.getCategoryIcon(location.category)"></span>
+              <!-- ko if: !!location.website -->
+              <span class="material-icons" data-bind="click:$root.locationListController.openWebsite, clickBubble: false">language</span>
+              <!-- /ko -->
+              <!-- ko ifnot: !!location.website -->
+              <span class="material-icons disabled">language</span>
+              <!-- /ko -->
+            </div>
+          </div>
+        </div>
+
+        <div class="mapPreview collapse" data-bind="template: { name: 'mapPreviewTemplate', data: $root.locationListController.mapPreviewControllers()[$index()] }"></div>
+
+      </div>
+    </div>
+    <!-- ko if: (tripViewModel.currentTrip().getAllFiltered().length === 0) -->
+    <div style="text-align: center; font-style: italic;margin-top: 35vh;">
+      <p>
+        There are no locations registered for this trip.</br>
+        Get out there and add some!
+      </p>
+      <input class="btn btn-raised btn-primary" data-bind="click:locationListController.backToMap" value="Let's go!"></input>
+
+    </div>
+    <!-- /ko -->
+
+    <!-- /ko -->
+  </div>
+
+</div>

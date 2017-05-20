@@ -1,0 +1,71 @@
+<div id="preferencesView" class="page">
+  <div class="page-content-wrapper">
+    <div id="header">
+      <div class="row">
+        <div class="col-xs-2 col-sm-1">
+          <span id="backbutton" class="material-icons material-input" style="z-index:3000; font-size: 3em" data-bind="click:preferencesController.backToMap">navigate_before</span>
+        </div>
+        <div class="col-xs-10 col-sm-11" style="z-index:60;padding-right:0px">
+          <h2 style="margin-top: 5px">Preferences</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <h3>Active trip</h3>
+
+        <ul class="nav nav-pills nav-stacked" data-bind="foreach: { data: $root.tripViewModel.trips, as: 'trip' }">
+          <li data-bind="attr: {id: trip.id}, css: {active: $root.preferencesController.isActive(trip.id), inactive: !$root.preferencesController.isActive(trip.id) }, click: $root.preferencesController.selectTrip">
+            <a>
+              <span style="margin: 0px;" data-bind="text: trip.label"></span>
+              <span class="glyphicon glyphicon-trash pull-right" style="font-size: 1.2em;" data-bind="click: $root.preferencesController.deleteTripHandler, clickBubble: false"></span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="row">
+        <div class="form-group input-group" style="margin-top: 0px; padding-left: 15px;">
+          <input type="text" id="newTripName" class="form-control" data-bind="value: preferencesController.newTripName, valueUpdate:'afterkeydown'" placeholder="New trip name">
+          <div class="input-group-addon">
+            <a class="btn btn-default btn-raised btn-sm btn-primary" style="margin: 0px" data-bind="click: preferencesController.addNewTripHandler, attr: {disabled: preferencesController.newTripName().length === 0}">
+              <span class="glyphicon glyphicon-plus gi-1_5x"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Google Drive</h3>
+        <div>
+          <!-- ko if: $root.isOnline() -->
+          <!-- ko if: preferencesController.signedInStatus() -->
+          <p>
+            Signed in successfully
+          </p>
+          <!-- TODO: Fix sync button (blocks sometimes) or remove it if no fix found -->
+          <input type="button" value="Sign out" class="btn btn-danger btn-raised btn-sm" data-bind="click: preferencesController.signOutHandler" />
+          <button class="btn btn-primary btn-raised btn-sm has-spinner" data-bind="attr: {disabled: SyncTools.isSyncing()}, click: SyncTools.triggerSync"><span class="spinner"><i class="icon-spin icon-refresh"></i></span>
+              Sync now</button>
+          <!-- /ko -->
+          <!-- ko if: !preferencesController.signedInStatus() -->
+          <p>
+            Not signed in
+          </p>
+          <input type="button" value="Sign in" class="btn btn-primary btn-raised btn-sm" data-bind="click: preferencesController.signInHandler" />
+          <input type="button" value="Synchronize" class="btn btn-primary btn-raised btn-sm" disabled />
+          <!-- /ko -->
+          <p data-bind="text: preferencesController.lastSyncText"></p>
+          <!-- /ko -->
+          <!-- ko if: !$root.isOnline()  -->
+          <p>
+            Google Drive is only available when online.
+          </p>
+          <!-- /ko -->
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

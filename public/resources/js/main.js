@@ -1,13 +1,15 @@
 var controller;
 
+var templates = {};
+
 function showPage(pageName) {
   var element = $("body > div.page")
   if (element.length > 0) {
     ko.cleanNode(element[0]);
     $("body").empty()
   }
-  var page = $($("#" + pageName + "-template").html())
 
+  var page = $(templates[pageName]);
   $("body").append(page);
   $("#" + pageName).addClass("active");
 
@@ -66,7 +68,26 @@ $(window).on('load', function() {
              .then(function() { console.log("Service Worker Registered"); });
   }
 
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "text/html");
 
+  var viewsToLoad = ["mapView", "addLocationView", "addLocationDetailsView", "preferencesView", "locationsListView", "viewLocationView", "editLocationDetailsView"];
+
+  // Load all templates
+  viewsToLoad.forEach(function(viewName){
+    fetch('resources/templates/'+viewName+'.html', {headers: myHeaders, method: "GET"}).then(function(response) {
+      return response.text();
+    }).then(function(content) {
+      templates[viewName] = content;
+    });
+  })
+
+
+  initializeApp();
+
+})
+
+function initializeApp(){
   // Use this class to add a ripple effect to a button
   // ==> Only useful when not changing pages since it is too slow to be visible before page changes
   //$.material.options.ripples = ".withripple";
@@ -143,4 +164,4 @@ $(window).on('load', function() {
       console.log("All done loading");
 
     })
-})
+}
