@@ -36,7 +36,7 @@
   width: 100%;
   position: absolute;
   padding: 15px;
-  padding-top: 0px;
+  padding-top: 0;
 }
 
 .page.has-sidebar.toggled .page-content-wrapper {
@@ -74,11 +74,11 @@
 }
 
 .sidebar-nav li.active {
-  background-color:#e4e4e4;
+  background-color: #e4e4e4;
 }
 
 .sidebar-nav li.active a {
-  color:black;
+  color: black;
 }
 
 .sidebar-nav li.sidebar-brand a {
@@ -101,11 +101,11 @@
   width: 100vw;
   height: 100vh;
   z-index: 2000;
-  left: 0px;
-  right: 0px;
+  left: 0;
+  right: 0;
 }
 
-    .sidebar-subitem {
-      padding-left: 20px;
-      width: 100%;
-    }
+.sidebar-subitem {
+  padding-left: 20px;
+  width: 100%;
+}

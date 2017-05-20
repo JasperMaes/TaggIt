@@ -94,12 +94,12 @@
   width: 97%;
   /* = 100% - 2*5% padding */
   padding: 10% 5%;
-  text-align-center
+  text-align: center;
 }
 
 .photo-tile {
   background-color: lightgray;
-  margin: 0px;
+  margin: 0;
 }
 
 .photo-tile img {
@@ -137,8 +137,8 @@
 .file-upload {
   opacity: 0;
   position: absolute;
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: 0;
   height: 100%;
   width: 100%;
 }
