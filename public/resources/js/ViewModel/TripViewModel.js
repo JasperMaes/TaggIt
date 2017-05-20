@@ -4,8 +4,8 @@ var TripViewModel = function() {
   var activeTripId = ko.observable(null);
   var activeTripDetails = function(value){
     var val = value;
-    return {getId:function(){return val.getId()}}
-  }
+    return {getId:function(){return val.getId();}};
+  };
   activeTripDetails = ko.observable(null);
 
   ko.computed(function() {
@@ -13,29 +13,29 @@ var TripViewModel = function() {
     if (!!tripId) {
       TripModel.getTripDetails(tripId)
         .then(function(tripDetails) {
-          activeTripDetails(tripDetails)
+          activeTripDetails(tripDetails);
         });
     } else {
       activeTripDetails(null);
     }
-  })
+  });
 
   activeTripDetails.subscribe(function(newValue) {
     if(!!newValue){//Don't update when no trip is selected
-      TripModel.updateTrip(newValue)
+      TripModel.updateTrip(newValue);
     }
-  })
+  });
 
   function addTrip(tripDetails) {
     var addedTrip;
     return TripModel.addTrip(tripDetails)
       .then(function(trip) {
         addedTrip = trip;
-        return refreshTripsList()
+        return refreshTripsList();
       })
       .then(function() {
         return Promise.resolve(addedTrip);
-      })
+      });
   }
 
   function tripExists(tripId) {
@@ -65,19 +65,19 @@ var TripViewModel = function() {
       return TripModel.removeTrip(tripId)
         .then(function(trip) {
           removedTrip = trip;
-          return refreshTripsList()
+          return refreshTripsList();
         })
         .then(function() {
           var selectIndex = Math.min(index, trips().length - 1);
           if (!!activeTripId() && selectIndex >= 0) {
-            var newCurrentTripId = trips()[selectIndex].id
+            var newCurrentTripId = trips()[selectIndex].id;
             selectTrip(newCurrentTripId);
           } else {
             activeTripId(null);
             activeTripDetails(null);
           }
           return Promise.resolve(removedTrip);
-        })
+        });
 
     } else {
       return Promise.reject(Message.UnknownTrip);
@@ -87,11 +87,11 @@ var TripViewModel = function() {
   function initialize() {
     return TripModel.initialize()
       .then(function() {
-        return TripModel.getTrips()
+        return TripModel.getTrips();
       }).then(function(tripsList) {
         trips(tripsList);
-        return Promise.resolve(Message.InitializationComplete)
-      })
+        return Promise.resolve(Message.InitializationComplete);
+      });
   }
 
   return {
@@ -104,6 +104,6 @@ var TripViewModel = function() {
     removeTrip: removeTrip,
     tripExists: tripExists,
     createEmptyTrip: TripModel.createEmptyTrip
-  }
+  };
 
-}
+};

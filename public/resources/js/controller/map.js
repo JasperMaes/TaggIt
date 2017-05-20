@@ -11,7 +11,7 @@ var MapController = function(updateLocationGpsError, initLocationGpsError, tripV
       iconSize: [18, 18],
       color: '#2196F3'
     })
-  }
+  };
 
   var markers = ko.observableArray([]);
 
@@ -37,13 +37,13 @@ var MapController = function(updateLocationGpsError, initLocationGpsError, tripV
     updateCenterMarker(options);
   }
 
-  var center = [ko.observable(50.81057), ko.observable(4.93622)]
+  var center = [ko.observable(50.81057), ko.observable(4.93622)];
 
   var zoom = ko.observable(16);
 
   var centerCircle = {
     radius: ko.observable(0)
-  }
+  };
 
   function initMap() {
     GeoLocation.get().then(function(position) {
@@ -155,11 +155,11 @@ var MapController = function(updateLocationGpsError, initLocationGpsError, tripV
           center: [ko.observable(location.position[0]), ko.observable(location.position[1])],
           draggable: false,
           opened: ko.observable(false)
-        })
-      })
+        });
+      });
     }
     markers(result);
-  })
+  });
 
   return mapController;
 };

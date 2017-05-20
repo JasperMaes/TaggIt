@@ -27,8 +27,8 @@ var signedInStatus = ko.observable(false);
 
         gapi.auth2.getAuthInstance().isSignedIn.listen(signedInStatus);
 
-        return SyncTools.getLastSyncDate()
-      })
+        return SyncTools.getLastSyncDate();
+      });
   }
 
   return {
@@ -44,7 +44,7 @@ var signedInStatus = ko.observable(false);
     isActive: isActive,
 
     selectTrip: function() {
-      tripViewModel.selectTrip(this.id)
+      tripViewModel.selectTrip(this.id);
     },
 
     newTripName: newTripName,
@@ -54,7 +54,7 @@ var signedInStatus = ko.observable(false);
       if (tripLabel) {
         var trip = tripViewModel.createEmptyTrip(tripLabel);
         trip.createTime = new Date();
-        tripViewModel.addTrip(trip)
+        tripViewModel.addTrip(trip);
         //TODO select added trip if it is the only one
         //TODO message to inform user that trip was added successfully
         newTripName("");
@@ -71,6 +71,6 @@ var signedInStatus = ko.observable(false);
     })
 
 
-  }
+  };
 
-}
+};

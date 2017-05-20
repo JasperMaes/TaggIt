@@ -2,13 +2,13 @@ var ImagePreviewController = function(locationData, options) {
 
   var defaultOptions = {
     canDelete: true
-  }
+  };
 
-  options = $.extend({}, defaultOptions, options)
+  options = $.extend({}, defaultOptions, options);
 
   var images = ko.pureComputed(function() {
-    return ko.unwrap(ko.unwrap(locationData).images)
-  })
+    return ko.unwrap(ko.unwrap(locationData).images);
+  });
 
   var imageIndex = ko.observable(null);
 
@@ -19,14 +19,14 @@ var ImagePreviewController = function(locationData, options) {
     } else {
       return null;
     }
-  })
+  });
 
   var hasImage = ko.pureComputed(function() {
-    return imageIndex() != null;
-  })
+    return imageIndex() !== null;
+  });
 
   function backButtonHandler() {
-    imageIndex(null)
+    imageIndex(null);
   }
 
   /* WARNING: Delete only works if the images variable is an observable */
@@ -36,7 +36,7 @@ var ImagePreviewController = function(locationData, options) {
       console.error("Images array is not in an observable; not deleting image");
       return;
     }
-    
+
     imagesObservable.splice(imageIndex(), 1);
 
     backButtonHandler();

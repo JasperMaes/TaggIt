@@ -1,9 +1,9 @@
 (function() {
   function showPage(pageName) {
-    var element = $("body > div.page")
+    var element = $("body > div.page");
     if (element.length > 0) {
       ko.cleanNode(element[0]);
-      $("body").empty()
+      $("body").empty();
     }
 
     var controller = this;
@@ -11,7 +11,7 @@
     $("body").append(page);
     $("#" + pageName).addClass("active");
 
-    ko.applyBindings(controller, page[0])
+    ko.applyBindings(controller, page[0]);
   }
 
   function updateLocationGpsError(error) {
@@ -45,7 +45,7 @@
         }).then(function(content) {
           templates[viewName] = content;
         });
-    })
+    });
   }
 
   function setupServiceWorker() {
@@ -65,18 +65,18 @@
     var viewsToLoad = ["mapView", "addLocationView", "addLocationDetailsView", "preferencesView", "locationsListView", "viewLocationView", "editLocationDetailsView"];
     preloadViews(viewsToLoad, controller.templates);
     initializeApp(controller);
-  })
+  });
 
   function setupAutoSync(controller) {
     if (navigator.onLine) {
-      addAutoSync(controller)
+      addAutoSync(controller);
     }
     //TODO: replace with background sync service worker if it supports periodic sync
     window.addEventListener('online', function() {
-      addAutoSync(controller)
+      addAutoSync(controller);
     });
     window.addEventListener('offline', function() {
-      removeAutoSync(controller)
+      removeAutoSync(controller);
     });
   }
 
@@ -94,10 +94,10 @@
   function addAutoSync(controller) {
     controller.isOnline(true);
     var triggerFunc = function() {
-      SyncTools.triggerSync()
-    }
+      SyncTools.triggerSync();
+    };
     // Sync every 15 minutes
-    timer = setInterval(triggerFunc, 15 * 60 * 1000)
+    timer = setInterval(triggerFunc, 15 * 60 * 1000);
   }
 
 
@@ -112,11 +112,11 @@
         // This is needed to reload it again when the application starts again
         tripViewModel.currentTrip.subscribe(function(newValue) {
           if (!!newValue) {
-            localforage.setItem(Parameters.storage.lastActiveTrip, newValue.getId())
+            localforage.setItem(Parameters.storage.lastActiveTrip, newValue.getId());
           } else {
-            localforage.removeItem(Parameters.storage.lastActiveTrip)
+            localforage.removeItem(Parameters.storage.lastActiveTrip);
           }
-        })
+        });
 
         return localforage.getItem(Parameters.storage.lastActiveTrip);
       })
@@ -127,7 +127,7 @@
         }
       })
       .then(function() {
-        var filterViewModel = FilterViewModel()
+        var filterViewModel = FilterViewModel();
         var addLocationController = AddLocationController(tripViewModel);
         var editLocationController = EditLocationController(tripViewModel);
         var viewLocationController = ViewLocationController(editLocationController);
@@ -146,8 +146,8 @@
         controller.clearAll = function() {
           Promise.all([TripModel._dataStore.clear(), localforage.clear()])
             .then(function() {
-              location.reload()
-            })
+              location.reload();
+            });
         };
         controller.showPage = showPage;
         controller.isOnline = ko.observable(false);
@@ -160,13 +160,13 @@
         // Show initial page
         // If there are no trips, user is redirected to preferences to add one
         if (tripViewModel.trips().length > 0) {
-          controller.showPage("mapView")
+          controller.showPage("mapView");
         } else {
-          controller.showPage("preferencesView")
+          controller.showPage("preferencesView");
         }
 
         console.log("All done loading");
 
-      })
+      });
   }
-})()
+})();

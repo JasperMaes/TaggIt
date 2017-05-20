@@ -42,7 +42,7 @@ var GeoLocation = (function() {
     var errorMessage = Message.GeoLocationUnknownError;
     switch (error.code) {
       case error.PERMISSION_DENIED:
-        errorMessage = Message.GeoLocationPermissionDenied
+        errorMessage = Message.GeoLocationPermissionDenied;
         break;
       case error.POSITION_UNAVAILABLE:
         errorMessage = Message.GeoLocationPositionUnavailable;
@@ -53,7 +53,7 @@ var GeoLocation = (function() {
       case error.UNKNOWN_ERROR:
         errorMessage = Message.GeoLocationUnknownError;
         break;
-    };
+    }
     console.log(errorMessage.id + " - " + errorMessage.message);
   }
 
@@ -63,5 +63,5 @@ var GeoLocation = (function() {
     clearWatch: clearWatch,
     isSupported: (!!navigator.geolocation),
     printError: printError
-  }
-})()
+  };
+})();

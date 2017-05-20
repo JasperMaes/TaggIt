@@ -54,7 +54,7 @@ var GoogleDrive = (function() {
         fileName: data.result.name,
         kind: data.result.kind,
         mimeType: data.result.mimeType
-      }
+      };
     });
   };
 
@@ -71,7 +71,7 @@ var GoogleDrive = (function() {
           fileName: file.name
         };
         files.push(item);
-      })
+      });
 
       return files;
     });
@@ -80,9 +80,9 @@ var GoogleDrive = (function() {
   function deleteAllFiles() {
     getAppDataFiles().then(function(files) {
       files.forEach(function(file) {
-        deleteFile(file.id)
-      })
-    })
+        deleteFile(file.id);
+      });
+    });
   }
 
   return {
@@ -92,6 +92,6 @@ var GoogleDrive = (function() {
     getAppDataFileContent: getAppDataFileContent,
     createAppDataFile: createAppDataFile,
     deleteAllFiles: deleteAllFiles
-  }
+  };
 
-})()
+})();

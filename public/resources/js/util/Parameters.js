@@ -30,10 +30,10 @@ var Parameters = Util.deepFreeze({
       icon: 'directions_bike'
     },
   ],
-  storage: Object.freeze({
+  storage: {
     tripList: "tripList",
     maxTripId: "maxTripId",
     lastActiveTrip: "lastActiveTrip"
-  })
+  }
 
-})
+});

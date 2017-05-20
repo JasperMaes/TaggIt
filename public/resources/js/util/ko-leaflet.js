@@ -48,7 +48,7 @@
     };
 
     if (!!title) {
-      markerOptions.title = ko.unwrap(title || '----')
+      markerOptions.title = ko.unwrap(title || '----');
     }
 
     if (m.color) {
@@ -83,13 +83,13 @@
     if (!!ko.unwrap(text)) {
       self.marker.bindPopup(ko.unwrap(text));
 
-      var popup = self.marker.getPopup()
+      var popup = self.marker.getPopup();
       self.subscriptions.push(title.subscribe(function() {
         self.marker.title = ko.unwrap(title);
       }));
       self.subscriptions.push(text.subscribe(function() {
         popup.setContent(ko.unwrap(text));
-      }))
+      }));
       if (m.opened && ko.isObservable(m.opened)) {
         self.subscriptions.push(m.opened.subscribe(function(o) {
           if (o) {
@@ -169,7 +169,7 @@
 
       // Add all event listeners to the map by running through the keys of the object
       each(Object.keys(customEventsHandlers || {}), function(handlerName) {
-        map.on(handlerName, customEventsHandlers[handlerName])
+        map.on(handlerName, customEventsHandlers[handlerName]);
       });
 
       // triggers an 'invalidateSize' when detecting a change in an observable (cfr http://stackoverflow.com/questions/20400713/leaflet-map-not-showing-properly-in-bootstrap-3-0-modal)
@@ -195,30 +195,30 @@
       }
 
       map.on('moveend', function(e) {
-        controller.bounds(map.getBounds())
+        controller.bounds(map.getBounds());
       });
 
       var markersList = [];
       each(ko.unwrap(markers), function(m, idx) {
         markersList.push(new Marker(m, map));
-      })
+      });
       if (centerMarker) {
         var markerCenter = new Marker(ko.unwrap(centerMarker), map);
-        
+
         var centerCircleObject = L.circle(markerCenter.centerM(), {
           fillColor: centerMarker.color,
           fillOpacity: 0.3,
           radius: centerCircle.radius(),
           weight: 0
-        }).addTo(map)
+        }).addTo(map);
 
         markerCenter.centerM.subscribe(function(newValue) {
-          this.setLatLng(newValue)
-        }, centerCircleObject)
+          this.setLatLng(newValue);
+        }, centerCircleObject);
 
         centerCircle.radius.subscribe(function(newValue) {
-          this.setRadius(newValue)
-        }, centerCircleObject)
+          this.setRadius(newValue);
+        }, centerCircleObject);
       }
       // http://stackoverflow.com/questions/14149551/subscribe-to-observable-array-for-new-or-removed-entry-only
       var subscr = markers.subscribe(function(changes) {
@@ -233,14 +233,14 @@
               markersList[c.index].dispose();
             }
           }
-        })
+        });
         var addedIndexes = [];
         each(changes, function(c) {
           if (c.status === "added") {
             markersList[c.index] = new Marker(c.value, map);
             addedIndexes.push(c.index);
           }
-        })
+        });
         // delete after that all have been disposed otherwise cannot be accessed anymore via 'index'.
         each(changes.reverse(), function(c) {
           if ((c.status === "deleted") && (addedIndexes.indexOf(c.index) === -1)) {

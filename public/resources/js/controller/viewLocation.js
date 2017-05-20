@@ -2,7 +2,7 @@ var ViewLocationController = function(editLocationController){
   var locationData = ko.observable();
 
   function getMapPreviewPanel(event){
-    return $(event.target).parent().siblings(".mapPreview")
+    return $(event.target).parent().siblings(".mapPreview");
   }
 
   var imagePreviewController = ImagePreviewController(locationData, {canDelete: false});
@@ -18,14 +18,14 @@ var ViewLocationController = function(editLocationController){
       controller.showPage("locationsListView");
     },
     editLocation: function(controller){
-      editLocationController.setLocationData(locationData())
-      controller.showPage("editLocationDetailsView")
+      editLocationController.setLocationData(locationData());
+      controller.showPage("editLocationDetailsView");
     },
     openImage: function(data, event){
-      var index = locationData().images.indexOf(data)
+      var index = locationData().images.indexOf(data);
       imagePreviewController.imageIndex(index);
     }
-  }
+  };
 
   return viewLocationController;
-}
+};

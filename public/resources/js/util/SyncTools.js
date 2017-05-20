@@ -4,7 +4,7 @@ var SyncTools = (function() {
   var isSyncing = ko.observable(false);
 
   function getEarliestDate() {
-    return new Date("2000-01-01 00:00:00")
+    return new Date("2000-01-01 00:00:00");
   }
 
   function getNeededActions(localTrips, serverTrips, lastSyncDate) {
@@ -27,27 +27,27 @@ var SyncTools = (function() {
         var serverTrip = localTripMatches[0];
         if ((new Date(serverTrip.lastEditTime).getTime() > lastSyncDate.getTime()) &&
           (new Date(localTrip.lastEditTime).getTime() > lastSyncDate.getTime())) {
-          toMerge.push(localTrip)
+          toMerge.push(localTrip);
         } else if (new Date(localTrip.lastEditTime).getTime() > new Date(serverTrip.lastEditTime).getTime()) {
           toUpload.push(localTrip);
         }
       }
-    })
+    });
 
     serverTrips.forEach(function(serverTrip) {
-      var serverTripMatches = findTripInArray(serverTrip.id, localTrips);
+      var serverTripMatches = Util.findIdInArray(serverTrip.id, localTrips);
       if (serverTripMatches.length === 0) {
         toDownload.push(serverTrip);
       } else {
         var localTrip = serverTripMatches[0];
         if ((new Date(serverTrip.lastEditTime).getTime() > lastSyncDate.getTime()) &&
           (new Date(localTrip.lastEditTime).getTime() > lastSyncDate.getTime())) {
-          toMerge.push(localTrip)
+          toMerge.push(localTrip);
         } else if (new Date(serverTrip.lastEditTime).getTime() > new Date(localTrip.lastEditTime).getTime()) {
           toDownload.push(localTrip);
         }
       }
-    })
+    });
 
     // Step 3: Remove duplicates from the to merge array since they can be added twice
     toMerge = Util.getUniqueArray(toMerge, "id");
@@ -56,7 +56,7 @@ var SyncTools = (function() {
       toUpload: toUpload,
       toDownload: toDownload,
       toMerge: toMerge
-    }
+    };
 
   }
 
@@ -65,7 +65,7 @@ var SyncTools = (function() {
     return trips.filter(function(trip) {
       return (new Date(trip.lastEditTime).getTime() >= date.getTime());
     });
-  };
+  }
 
   function syncComplete() {
     var date = new Date();
@@ -82,12 +82,12 @@ var SyncTools = (function() {
       .then(
         function(date) {
           lastSyncDate(date);
-          return Promise.resolve(date)
+          return Promise.resolve(date);
         },
         function() {
           var date = getEarliestDate();
           lastSyncDate(date);
-          return Promise.resolve(date)
+          return Promise.resolve(date);
         }
       );
   }
@@ -96,38 +96,38 @@ var SyncTools = (function() {
     return GoogleDrive.getAppDataFiles()
       .then(function(files) { // TODO handle error
         var result = $.grep(files, function(el) {
-          return el.fileName === fileName
-        })
+          return el.fileName === fileName;
+        });
 
         if (result.length === 0) {
-          return Promise.reject("No index file found")
+          return Promise.reject("No index file found");
         } else {
           return Promise.resolve(result[0]);
         }
       })
       .then(
         function(data) {
-          return Promise.resolve(data)
+          return Promise.resolve(data);
         },
         function() {
           return GoogleDrive.createAppDataFile(fileName);
         }
       )
       .then(function(data) {
-        return Promise.resolve(data.fileId)
-      })
+        return Promise.resolve(data.fileId);
+      });
   }
 
   function handleUpload(tripsToUpload, serverTrips, listFileId, newMaxId) {
     if (tripsToUpload.length > 0) {
-      var newTrips = serverTrips.concat(tripsToUpload)
+      var newTrips = serverTrips.concat(tripsToUpload);
 
       var newServerData = {
         maxTripId: newMaxId,
         trips: newTrips
       };
-      var promises = []
-      var updateTripListPromise = GoogleDrive.saveAppData(listFileId, newServerData)
+      var promises = [];
+      var updateTripListPromise = GoogleDrive.saveAppData(listFileId, newServerData);
       promises.push(updateTripListPromise);
 
       tripsToUpload.forEach(function(item) {
@@ -136,11 +136,11 @@ var SyncTools = (function() {
             var tripData = tripDetails._getRawData();
             return getOrCreateFileId(tripData.id + ".json")
               .then(function(fileId) {
-                return GoogleDrive.saveAppData(fileId, tripData)
-              })
-          })
+                return GoogleDrive.saveAppData(fileId, tripData);
+              });
+          });
         promises.push(promise);
-      })
+      });
 
       return Promise.all(promises);
     } else {
@@ -150,9 +150,9 @@ var SyncTools = (function() {
 
   function handleDownload(tripsToDownload, newMaxId) {
     if (tripsToDownload.length > 0) {
-      var promises = []
+      var promises = [];
       var maxIdPromise = TripModel._setMaxTripId(newMaxId);
-      promises.push(maxIdPromise)
+      promises.push(maxIdPromise);
 
       //For each trip to download: download file and call TripModel.addTripWithId
       tripsToDownload.forEach(function(item) {
@@ -165,9 +165,9 @@ var SyncTools = (function() {
             tripDetails.createTime = new Date(tripDetails.createTime);
             tripDetails.editTime = new Date(tripDetails.editTime);
             return TripModel.addTripWithId(tripDetails);
-          })
-        promises.push(promise)
-      })
+          });
+        promises.push(promise);
+      });
 
       return Promise.all(promises);
     } else {
@@ -186,7 +186,7 @@ var SyncTools = (function() {
         } else {
           promises.push(handleDownload([item], newMaxId));
         }
-      })
+      });
 
       return Promise.all(promises);
     } else {
@@ -204,19 +204,19 @@ var SyncTools = (function() {
               return {
                 id: tripDetails.details.id,
                 lastEditTime: (tripDetails.details.editTime || tripDetails.details.createTime).toISOString()
-              }
-            })
+              };
+            });
           promises.push(promise);
-        })
-        return Promise.all(promises)
-      })
+        });
+        return Promise.all(promises);
+      });
   }
 
   function triggerSync() {
     isSyncing(true);
     getOrCreateFileId("TripList.json")
       .then(function(fileId) { //TODO handle error
-        return Promise.all([GoogleDrive.getAppDataFileContent(fileId), getLastSyncDate()])
+        return Promise.all([GoogleDrive.getAppDataFileContent(fileId), getLastSyncDate()]);
       })
       .then(function(data) {
 
@@ -231,18 +231,18 @@ var SyncTools = (function() {
           .then(function(localTrips) {
             var neededActions = SyncTools._getNeededActions(localTrips, serverTrips, lastSyncDate);
 
-            var newMaxId = Math.max(localMaxId, serverMaxId)
+            var newMaxId = Math.max(localMaxId, serverMaxId);
 
             var uploadPromise = handleUpload(neededActions.toUpload, serverTrips, fileId, newMaxId);
             var downloadPromise = handleDownload(neededActions.toDownload, newMaxId);
-            var mergePromise = handleMerge(neededActions.toMerge, serverTrips, fileId, newMaxId)
+            var mergePromise = handleMerge(neededActions.toMerge, serverTrips, fileId, newMaxId);
 
-            return Promise.all([uploadPromise, downloadPromise, mergePromise])
+            return Promise.all([uploadPromise, downloadPromise, mergePromise]);
           })
           .then(function() {
             return syncComplete();
           });
-      })
+      });
   }
 
   return {
@@ -252,6 +252,6 @@ var SyncTools = (function() {
     triggerSync: triggerSync,
     lastSyncDate: lastSyncDate,
     isSyncing: isSyncing
-  }
+  };
 
-})()
+})();

@@ -15,7 +15,7 @@ var GoogleSignin = (function() {
   function load(callback) {
     return new Promise(function(resolve, reject) {
       gapi.load('client:auth2', resolve);
-    })
+    });
   }
 
   /**
@@ -24,7 +24,7 @@ var GoogleSignin = (function() {
   function signIn(event) {
     gapi.auth2.getAuthInstance().signIn();
   }
-  
+
   /**
    *  Sign out the user upon button click.
    */
@@ -37,7 +37,7 @@ var GoogleSignin = (function() {
       discoveryDocs: DISCOVERY_DOCS,
       clientId: CLIENT_ID,
       scope: SCOPES
-    })
+    });
   }
 
   return {
@@ -45,6 +45,6 @@ var GoogleSignin = (function() {
     signIn: signIn,
     signOut: signOut,
     init: init
-  }
+  };
 
-})()
+})();

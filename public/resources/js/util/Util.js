@@ -47,8 +47,8 @@ var Util = (function() {
 
   function findIdInArray(id, array) {
     return array.filter(function(obj) {
-      return (obj.id == id)
-    })
+      return (obj.id == id);
+    });
   }
 
   // ONLY works for strings!
@@ -62,9 +62,9 @@ var Util = (function() {
         } else {
           return true;
         }
-      })
+      });
       return objectMatches;
-    }
+    };
   }
 
   // Make objects immutable
@@ -94,5 +94,5 @@ var Util = (function() {
     findIdInArray: findIdInArray,
     compareObjectParameters: compareObjectParameters,
     deepFreeze: deepFreeze
-  }
-})()
+  };
+})();

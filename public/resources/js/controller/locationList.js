@@ -11,10 +11,10 @@ var LocationListController = function(tripViewModel, viewLocationController, fil
         var mapPreviewController = MapPreviewController(locationData, getPanel);
 
         controllers.push(mapPreviewController);
-      })
+      });
     }
     return controllers;
-  })
+  });
 
   return {
     backToMap: function(controller){
@@ -30,7 +30,7 @@ var LocationListController = function(tripViewModel, viewLocationController, fil
       return function(data, event) {
         viewLocationController.locationData(data);
         controller.showPage("viewLocationView");
-      }
+      };
     }
-  }
-}
+  };
+};

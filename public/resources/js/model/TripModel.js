@@ -4,7 +4,7 @@ var TripModel = (function() {
     name: "TripStore"
   });
 
-  var maxTripId = undefined;
+  var maxTripId;
 
   function initialize() {
     var tripListPromise = tripStore.getItem(Parameters.storage.tripList)
@@ -12,9 +12,9 @@ var TripModel = (function() {
         if (!!data) {
           return Promise.resolve(true);
         } else {
-          return tripStore.setItem(Parameters.storage.tripList, [])
+          return tripStore.setItem(Parameters.storage.tripList, []);
         }
-      })
+      });
 
     var maxIdPromise = tripStore.getItem(Parameters.storage.maxTripId)
       .then(function(data) {
@@ -23,14 +23,14 @@ var TripModel = (function() {
           return Promise.resolve(true);
         } else {
           maxTripId = 0;
-          return tripStore.setItem(Parameters.storage.maxTripId, 0)
+          return tripStore.setItem(Parameters.storage.maxTripId, 0);
         }
-      })
+      });
 
     return Promise.all([tripListPromise, maxIdPromise])
       .then(function() {
         return Promise.resolve(Message.LocalForageInitComplete);
-      })
+      });
   }
 
   function getTripsList() {
@@ -50,7 +50,7 @@ var TripModel = (function() {
         };
         tripList.push(current);
         return setTripsList(tripList);
-      })
+      });
   }
 
   function getTripIndex(tripsList, tripId){
@@ -59,7 +59,7 @@ var TripModel = (function() {
     for (var i = 0; i < arrayLength; i++) {
       if (tripsList[i].id === tripId) {
         index = i;
-        break
+        break;
       }
     }
     return index;
@@ -71,7 +71,7 @@ var TripModel = (function() {
         var index = getTripIndex(tripsList, id);
         tripsList.splice(index, 1);
         return setTripsList(tripsList);
-      })
+      });
   }
 
   function getTripDetails(tripId) {
@@ -80,12 +80,12 @@ var TripModel = (function() {
         if (exists) {
           return tripStore.getItem(tripId)
             .then(function(tripDetails) {
-              return Promise.resolve(Trip(tripDetails))
-            })
+              return Promise.resolve(Trip(tripDetails));
+            });
         } else {
-          return Promise.reject(Message.UnknownTrip)
+          return Promise.reject(Message.UnknownTrip);
         }
-      })
+      });
   }
 
   function addTrip(tripDetails) {
@@ -99,48 +99,48 @@ var TripModel = (function() {
 
           var setItemPromise = tripStore.setItem(tripId, tripDetails);
           var updateTripListPromise = addToTripListTripsList(tripId, tripDetails.label);
-          var updateMaxIdPromise = tripStore.setItem(Parameters.storage.maxTripId, ++maxTripId)
+          var updateMaxIdPromise = tripStore.setItem(Parameters.storage.maxTripId, ++maxTripId);
 
           return Promise.all([setItemPromise, updateTripListPromise, updateMaxIdPromise])
             .then(function() {
               return Promise.resolve(Trip(tripDetails));
-            })
+            });
         }
-      })
+      });
   }
 
   function addTripWithId(tripDetails){
-    var tripId = tripDetails.id
+    var tripId = tripDetails.id;
     var setItemPromise = tripStore.setItem(tripId, tripDetails);
     var updateTripListPromise = addToTripListTripsList(tripId, tripDetails.label);
 
     return Promise.all([setItemPromise, updateTripListPromise])
       .then(function() {
         return Promise.resolve(Trip(tripDetails));
-      })
+      });
   }
 
   function existsTrip(tripId) {
     return getTripsList()
       .then(function(tripsList) {
-        var index = getTripIndex(tripsList, tripId)
+        var index = getTripIndex(tripsList, tripId);
         return Promise.resolve(index > -1);
-      })
+      });
   }
 
   function removeTrip(tripId) {
     return existsTrip(tripId)
       .then(function(exists) {
         if (exists) {
-          var tripsListPromise = removeFromTripList(tripId)
-          var removeItemPromise = tripStore.removeItem(tripId)
+          var tripsListPromise = removeFromTripList(tripId);
+          var removeItemPromise = tripStore.removeItem(tripId);
           return Promise.all([tripsListPromise, removeItemPromise]).then(function() {
             return Promise.resolve(Message.TripRemoveSuccess);
-          })
+          });
         } else {
           return Promise.resolve(Message.UnknownTrip);
         }
-      })
+      });
   }
 
   function createEmptyTrip(tripLabel){
@@ -150,7 +150,7 @@ var TripModel = (function() {
       maxId: 0,
       createTime: new Date(),
       editTime: null
-    }
+    };
   }
 
   function updateTrip(trip){
@@ -160,11 +160,11 @@ var TripModel = (function() {
         return tripStore.setItem(trip.getId(), trip._getRawData())
         .then(function(){
           return Promise.resolve(Message.TripUpdateSuccess);
-        })
+        });
       } else {
         return Promise.reject(Message.UnknownTrip);
       }
-    })
+    });
   }
 
   return {
@@ -182,11 +182,11 @@ var TripModel = (function() {
     },
     _setMaxTripId: function(newValue) {
       maxTripId = newValue;
-      return tripStore.setItem(Parameters.storage.maxTripId, newValue)
+      return tripStore.setItem(Parameters.storage.maxTripId, newValue);
     },
     _getTripIndex: getTripIndex,
     createEmptyTrip: createEmptyTrip,
     updateTrip: updateTrip
-  }
+  };
 
-})()
+})();

@@ -33,9 +33,9 @@ var FilterViewModel = function() {
     isAdvancedFilterOpen: isAdvancedFilterOpen,
     searchTerm: searchTerm,
     titleTerm: titleTerm,
-    categoryTerm, categoryTerm,
+    categoryTerm: categoryTerm,
     descriptionTerm: descriptionTerm,
     search: search,
     toggleAdvancedFilter: toggleAdvancedFilter
-  }
-}
+  };
+};

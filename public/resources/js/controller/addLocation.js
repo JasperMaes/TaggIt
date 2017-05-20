@@ -9,7 +9,7 @@ var AddLocationController = function(tripViewModel){
   };
 
   function getMapPreviewPanel(event){
-    return $(event.target).parent().siblings(".mapPreview")
+    return $(event.target).parent().siblings(".mapPreview");
   }
 
   var imagePreviewController = ImagePreviewController(locationData);
@@ -20,7 +20,7 @@ var AddLocationController = function(tripViewModel){
     locationData.website(null);
     locationData.category(null);
     locationData.position = null;
-    locationData.images([])
+    locationData.images([]);
   }
 
   function backToMap(controller) {
@@ -35,7 +35,7 @@ var AddLocationController = function(tripViewModel){
 
     var trip = tripViewModel.currentTrip();
     trip.add(location);
-    tripViewModel.currentTrip(trip)
+    tripViewModel.currentTrip(trip);
 
     // TODO show short popup that disappears automatically to inform user
   }
@@ -46,7 +46,7 @@ var AddLocationController = function(tripViewModel){
     return function(category, event) {
       locationData.category(category.name);
       controller.showPage("addLocationDetailsView");
-    }
+    };
   },
     mapPreviewController: MapPreviewController(locationData, getMapPreviewPanel),
     savePosition: savePosition,
@@ -54,7 +54,7 @@ var AddLocationController = function(tripViewModel){
       savePosition();
       controller.showPage("addLocationView");
       clearForm();
-      controller.mapController.addMarkerHandler(controller)
+      controller.mapController.addMarkerHandler(controller);
     },
     savePositionBackToMap: function(controller){
       savePosition();
@@ -69,8 +69,8 @@ var AddLocationController = function(tripViewModel){
 
         reader.onerror = function() {
           //TODO show message to inform user
-          console.log("failed loading file")
-        }
+          console.log("failed loading file");
+        };
 
         reader.onloadend = function() {
           var newImage = reader.result;
@@ -85,13 +85,13 @@ var AddLocationController = function(tripViewModel){
           }
           locationData.images.push(newImage);
           //TODO show short popup that disappears automatically to inform user
-        }
+        };
 
         if (file) {
           reader.readAsDataURL(file); //reads the data as a URL
         } else {
           //TODO show message to inform user
-          console.log("failed loading file")
+          console.log("failed loading file");
         }
       } else {
         //TODO show message to inform user
@@ -105,10 +105,10 @@ var AddLocationController = function(tripViewModel){
     },
     imagePreview: imagePreviewController,
     openImage: function(data, event){
-      var index = locationData.images().indexOf(data)
+      var index = locationData.images().indexOf(data);
       imagePreviewController.imageIndex(index);
     }
-  }
+  };
 
   return addLocationController;
-}
+};

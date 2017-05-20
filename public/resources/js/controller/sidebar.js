@@ -13,20 +13,20 @@ var SidebarController = function() {
     return function() {
       controller.showPage("preferencesView");
       close();
-    }
-  }
+    };
+  };
 
   function viewLocations(controller) {
     return function() {
       controller.showPage("locationsListView");
       close();
-    }
+    };
   }
 
   function openAddLocationHandler(controller) {
     return function() {
-      controller.mapController.addMarkerHandler(controller)
-    }
+      controller.mapController.addMarkerHandler(controller);
+    };
   }
 
   return {

@@ -51,4 +51,4 @@ var Message = {
     id: "GeoLocationUnknownError",
     message: "An unknown error occurred."
   }
-}
+};
