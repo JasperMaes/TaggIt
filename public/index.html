@@ -25,9 +25,7 @@
   <link rel="stylesheet" type="text/css" href="vendors/fonts/material-icons/material-icons.css">
 
   <link rel="stylesheet" href="vendors/bootstrap-material/bootstrap-material-design.min.css" />
-  <link rel="stylesheet" href="vendors/bootstrap-material/ripples.min.css" />
   <script type="text/javascript" src="vendors/bootstrap-material/material.min.js"></script>
-  <script type="text/javascript" src="vendors/bootstrap-material/ripples.min.js"></script>
 
   <!-- Leaflet (http://leafletjs.com/) -->
   <link rel="stylesheet" href="vendors/leaflet/leaflet.css" />
@@ -38,9 +36,6 @@
   <script src="vendors/LeafletPulsingIcon/L.Icon.Pulse.min.js" type="text/javascript"></script>
 
   <!-- Knockout.js -->
-  <!--
-        TODO: Maybe needed for Bootstrap as well: https://faulknercs.github.io/Knockstrap/
-     -->
   <script src="vendors/knockout/knockout-min.js"></script>
   <script src="resources/js/ko-leaflet.js"></script>
 
@@ -63,9 +58,9 @@
   <script type="text/javascript" src="resources/js/ViewModel/TripViewModel.js"></script>
   <script type="text/javascript" src="resources/js/ViewModel/FilterViewModel.js"></script>
 
-  <link rel="stylesheet" href="resources/css/page.css" />
+  <link rel="stylesheet" href="resources/css/main.css" />
   <link rel="stylesheet" href="resources/css/page-map.css" />
-  <link rel="stylesheet" href="resources/css/category-tiles.css" />
+  <link rel="stylesheet" href="resources/css/tiles.css" />
   <link rel="stylesheet" href="resources/css/sidebar.css" />
   <link rel="stylesheet" href="resources/css/loadingSpinner.css" />
   <link rel="stylesheet" href="resources/css/glyphicon-util.css" />
@@ -82,55 +77,8 @@
 
   <script type="text/javascript" src="resources/js/main.js"></script>
 
-  <style>
-    .file-upload {
-      opacity: 0;
-      position: absolute;
-      top: 0px;
-      left: 0px;
-      height: 100%;
-      width: 100%;
-    }
-
-    .mapPreview .mapMarker {
-      position: relative;
-      left: 123px;
-      top: 60px;
-      right: 0;
-      bottom: 0;
-
-      display: block;
-      margin: 0;
-      padding: 0;
-    }
-
-    .frame {
-      height: 200px;
-    }
-
-    .form-group.has-error .help-block.error-message {
-      display: block;
-    }
-
-    .form-group .help-block.error-message {
-      display: none;
-    }
-
-    .sidebar-subitem {
-      padding-left: 20px;
-      width: 100%;
-    }
-
-    .material-icons.disabled {
-      color: lightgray;
-    }
-  </style>
-
-
   <!-- Templates -->
-
   <script type="text/html" id="sidebar-template">
-
     <div class="sidebar-wrapper">
       <ul class="sidebar-nav">
         <li class="sidebar-brand">
@@ -195,23 +143,6 @@
     </div>
   </script>
 
-  <style>
-    .imagePreview {
-      width: 100vw;
-      height: 100vh;
-      background-color: black;
-      background-size: contain;
-      background-repeat-x: no-repeat;
-      background-repeat-y: no-repeat;
-      background-position-x: center;
-      background-position-y: center;
-    }
-
-    .imagePreview .material-icons {
-      color: white;
-    }
-  </style>
-
   <script type="text/html" id="mapPreviewTemplate">
     <div class="panel panel-default">
       <div class="panel-body">
@@ -266,36 +197,6 @@
       </div>
     </div>
   </script>
-
-  <style>
-    .list-group .list-group-separator:before {
-      width: 100%
-    }
-
-    .nav-pills>li.inactive>a,
-    .nav-pills>li.inactive>a:hover,
-    .nav-pills>li.inactive>a:focus {
-      background-color: #e4e4e4;
-    }
-
-    div.container.locationList div.locationList-item:not(:last-child) {
-      border-color: gray;
-      border-style: solid;
-      border-bottom-width: 1px;
-      border-top-width: 0;
-      border-left-width: 0;
-      border-right-width: 0;
-    }
-
-    div.locationList .material-icons {
-      font-size: 2em;
-      vertical-align: bottom;
-    }
-
-    .form-group.is-focused .form-control:disabled {
-      background-image: none;
-    }
-  </style>
 
 </head>
 

@@ -104,3 +104,8 @@
   left: 0px;
   right: 0px;
 }
+
+    .sidebar-subitem {
+      padding-left: 20px;
+      width: 100%;
+    }

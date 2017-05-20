@@ -1,0 +1,88 @@
+/* Page */
+
+div.page.active {
+  display: block
+}
+
+div.page {
+  display: none
+}
+
+
+/* Preferences */
+
+.nav-pills>li.inactive>a, .nav-pills>li.inactive>a:hover, .nav-pills>li.inactive>a:focus {
+  background-color: #e4e4e4;
+}
+
+
+/* Locations list */
+
+div.container.locationList div.locationList-item:not(:last-child) {
+  border-color: gray;
+  border-style: solid;
+  border-bottom-width: 1px;
+  border-top-width: 0;
+  border-left-width: 0;
+  border-right-width: 0;
+}
+
+div.locationList .material-icons {
+  font-size: 2em;
+  vertical-align: bottom;
+}
+
+.form-group.is-focused .form-control:disabled {
+  background-image: none;
+}
+
+
+/* Map preview */
+
+.imagePreview {
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  background-size: contain;
+  background-repeat-x: no-repeat;
+  background-repeat-y: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+}
+
+.imagePreview .material-icons {
+  color: white;
+}
+
+
+/* Form error */
+
+.form-group.has-error .help-block.error-message {
+  display: block;
+}
+
+.form-group .help-block.error-message {
+  display: none;
+}
+
+
+/* Map preview */
+
+.mapPreview .mapMarker {
+  position: relative;
+  left: 123px;
+  top: 60px;
+  right: 0;
+  bottom: 0;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+.frame {
+  height: 200px;
+}
+
+.material-icons.disabled {
+  color: lightgray;
+}

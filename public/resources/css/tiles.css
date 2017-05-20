@@ -8,12 +8,10 @@
     margin: 1.66%;
     overflow: hidden;
   }
-
   .thumbnail .content .material-icons {
     display: inline-block;
     font-size: 36.8vw;
   }
-
   .thumbnail-3 {
     float: left;
     position: relative;
@@ -24,7 +22,6 @@
     overflow: hidden;
     font-size: 3.68vw;
   }
-
   .thumbnail-3-no-margin {
     float: left;
     position: relative;
@@ -34,17 +31,16 @@
     overflow: hidden;
     font-size: 3.68vw;
   }
-
   .thumbnail-3 .content .material-icons {
     font-size: 20vw;
     display: inline-block;
   }
-
   .thumbnail-3-no-margin .content .material-icons {
     font-size: 20vw;
     display: inline-block;
   }
 }
+
 @media all and (orientation:landscape) {
   .thumbnail {
     float: left;
@@ -55,13 +51,10 @@
     margin: 1.66%;
     overflow: hidden;
   }
-
   .thumbnail .content .material-icons {
     display: inline-block;
     font-size: 24vw;
   }
-
-
   .thumbnail-3 {
     float: left;
     position: relative;
@@ -71,7 +64,6 @@
     margin: 1.66%;
     overflow: hidden;
   }
-
   .thumbnail-3-no-margin {
     float: left;
     position: relative;
@@ -80,12 +72,10 @@
     /* = width for a 1:1 aspect ratio */
     overflow: hidden;
   }
-
   .thumbnail-3 .content .material-icons {
     font-size: 9.5vw;
     display: inline-block;
   }
-
   .thumbnail-3-no-margin .content .material-icons {
     font-size: 9.5vw;
     display: inline-block;
@@ -142,4 +132,13 @@
   width: 100%;
   text-align: center;
   line-height: inherit;
+}
+
+.file-upload {
+  opacity: 0;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
 }
