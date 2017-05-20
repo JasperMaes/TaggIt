@@ -1,4 +1,4 @@
-var templates = {};
+
 
 function showPage(pageName, controller) {
   var element = $("body > div.page")
@@ -7,7 +7,7 @@ function showPage(pageName, controller) {
     $("body").empty()
   }
 
-  var page = $(templates[pageName]);
+  var page = $(controller.templates[pageName]);
   $("body").append(page);
   $("#" + pageName).addClass("active");
 
@@ -56,12 +56,14 @@ function setupServiceWorker() {
       });
   }
 }
-
 $(window).on('load', function() {
+var controller = {};
+controller.templates = {};
+
   setupServiceWorker();
   var viewsToLoad = ["mapView", "addLocationView", "addLocationDetailsView", "preferencesView", "locationsListView", "viewLocationView", "editLocationDetailsView"];
-  preloadViews(viewsToLoad);
-  initializeApp();
+  preloadViews(viewsToLoad, controller.templates);
+  initializeApp(controller);
 })
 
 function setupAutoSync(controller) {
@@ -77,11 +79,11 @@ function setupAutoSync(controller) {
   });
 }
 
-function initializeApp() {
+function initializeApp(controller) {
   $.material.init();
 
   var tripViewModel = TripViewModel();
-  var controller = {};
+
 
   tripViewModel.initialize()
     .then(function() {
