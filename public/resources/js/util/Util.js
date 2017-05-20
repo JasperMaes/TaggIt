@@ -51,10 +51,28 @@ var Util = (function() {
     })
   }
 
+  // ONLY works for strings!
+  function compareObjectParameters(parameters) {
+    return function(object) {
+      var objectMatches = Object.keys(parameters).every(function(key, index, array) {
+        if (object.hasOwnProperty(key)) {
+          var objectValue = object[key];
+          var paramValue = parameters[key] || "";
+          return (objectValue !== null) && (objectValue !== undefined) && (objectValue.toUpperCase().match(paramValue.toUpperCase()));
+        } else {
+          return true;
+        }
+      })
+      return objectMatches;
+    }
+  }
+
+
   return {
     getCategoryIcon: getCategoryIcon,
     getDateTimeString: getDateTimeString,
     getUniqueArray: getUniqueArray,
-    findIdInArray: findIdInArray
+    findIdInArray: findIdInArray,
+    compareObjectParameters: compareObjectParameters
   }
 })()

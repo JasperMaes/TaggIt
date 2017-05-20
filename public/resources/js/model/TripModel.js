@@ -7,26 +7,26 @@ var TripModel = (function() {
   var maxTripId = undefined;
 
   function initialize() {
-    var tripListPromise = tripStore.getItem("tripList")
+    var tripListPromise = tripStore.getItem(Parameters.tripListStorageName)
       .then(function(data) {
         if (!!data) {
           return Promise.resolve(true);
         } else {
-          return tripStore.setItem("tripList", [])
+          return tripStore.setItem(Parameters.tripListStorageName, [])
         }
       })
 
-    var maxIdPromise = tripStore.getItem("maxTripId")
+    var maxIdPromise = tripStore.getItem(Parameters.maxTripIdStorageName)
       .then(function(data) {
         if (!!data) {
           maxTripId = data;
           return Promise.resolve(true);
         } else {
           maxTripId = 0;
-          return tripStore.setItem("maxTripId", 0)
+          return tripStore.setItem(Parameters.maxTripIdStorageName, 0)
         }
       })
-      
+
     return Promise.all([tripListPromise, maxIdPromise])
       .then(function() {
         return Promise.resolve(Message.LocalForageInitComplete);
@@ -34,11 +34,11 @@ var TripModel = (function() {
   }
 
   function getTripsList() {
-    return tripStore.getItem("tripList");
+    return tripStore.getItem(Parameters.tripListStorageName);
   }
 
   function setTripsList(tripList) {
-    return tripStore.setItem("tripList", tripList);
+    return tripStore.setItem(Parameters.tripListStorageName, tripList);
   }
 
   function addToTripListTripsList(id, label) {
@@ -99,7 +99,7 @@ var TripModel = (function() {
 
           var setItemPromise = tripStore.setItem(tripId, tripDetails);
           var updateTripListPromise = addToTripListTripsList(tripId, tripDetails.label);
-          var updateMaxIdPromise = tripStore.setItem("maxTripId", ++maxTripId)
+          var updateMaxIdPromise = tripStore.setItem(Parameters.maxTripIdStorageName, ++maxTripId)
 
           return Promise.all([setItemPromise, updateTripListPromise, updateMaxIdPromise])
             .then(function() {
@@ -182,7 +182,7 @@ var TripModel = (function() {
     },
     _setMaxTripId: function(newValue) {
       maxTripId = newValue;
-      return tripStore.setItem("maxTripId", newValue)
+      return tripStore.setItem(Parameters.maxTripIdStorageName, newValue)
     },
     _getTripIndex: getTripIndex,
     createEmptyTrip: createEmptyTrip,

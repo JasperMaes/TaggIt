@@ -29,7 +29,10 @@ var Parameters = {
       name: 'sport',
       icon: 'directions_bike'
     },
-  ]
+  ],
+
+     tripListStorageName: "tripList",
+     maxTripIdStorageName: "maxTripId"
 
 
 }

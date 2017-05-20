@@ -1,6 +1,6 @@
 var Trip = function(tripDetails) {
 
-  function convertObjectToKnockout(trip) {
+  function convertTripObjectToKnockout(trip) {
     var result = {};
 
     result.id = trip.id;
@@ -13,7 +13,7 @@ var Trip = function(tripDetails) {
     return result;
   }
 
-  var details = convertObjectToKnockout(tripDetails);
+  var details = convertTripObjectToKnockout(tripDetails);
 
   var filter = ko.observable({});
 
@@ -21,23 +21,8 @@ var Trip = function(tripDetails) {
     return applyFilter(searchParameters, getAllLocations());
   }
 
-  function compareObjectParameters(parameters) {
-    return function(object) {
-      var objectMatches = Object.keys(parameters).every(function(key, index, array) {
-        if (object.hasOwnProperty(key)) {
-          var objectValue = object[key];
-          var paramValue = parameters[key] || "";
-          return (objectValue !== null) && (objectValue !== undefined) && (objectValue.toUpperCase().match(paramValue.toUpperCase()));
-        } else {
-          return true;
-        }
-      })
-      return objectMatches;
-    }
-  }
-
   function applyFilter(searchParameters, locations) {
-    return $.grep(locations, compareObjectParameters(searchParameters));
+    return $.grep(locations, Util.compareObjectParameters(searchParameters));
   }
 
   function getAllLocations() {
