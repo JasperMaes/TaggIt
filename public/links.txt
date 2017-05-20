@@ -1,3 +1,0 @@
-http://api.qunitjs.com/QUnit/
-https://localforage.github.io/localForage/
-http://knockoutjs.com/documentation/foreach-binding.html

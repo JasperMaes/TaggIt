@@ -39,21 +39,22 @@ var GeoLocation = (function() {
   }
 
   function printError(error) {
+    var errorMessage = Message.GeoLocationUnknownError;
     switch (error.code) {
-      //TODO convert to message objects
       case error.PERMISSION_DENIED:
-        console.log("User denied the request for Geolocation.")
+        errorMessage = Message.GeoLocationPermissionDenied
         break;
       case error.POSITION_UNAVAILABLE:
-        console.log("Location information is unavailable.")
+        errorMessage = Message.GeoLocationPositionUnavailable;
         break;
       case error.TIMEOUT:
-        console.log("The request to get user location timed out.")
+        errorMessage = Message.GeoLocationTimeout;
         break;
       case error.UNKNOWN_ERROR:
-        console.log("An unknown error occurred.")
+        errorMessage = Message.GeoLocationUnknownError;
         break;
-    }
+    };
+    console.log(errorMessage.id + " - " + errorMessage.message);
   }
 
   return {

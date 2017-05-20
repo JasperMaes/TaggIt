@@ -3,20 +3,24 @@ var SyncTools = (function() {
   var lastSyncDate = ko.observable();
   var isSyncing = ko.observable(false);
 
+  function getEarliestDate() {
+    return new Date("2000-01-01 00:00:00")
+  }
+
   function getNeededActions(localTrips, serverTrips, lastSyncDate) {
-    lastSyncDate = lastSyncDate || new Date("2000-01-01 00:00:00");
+    lastSyncDate = lastSyncDate || getEarliestDate();
 
     //Step 1: Filter out those that haven't been updated since the last sync date
     var localModifiedSinceDate = getTripsModifiedSince(localTrips, lastSyncDate);
     //Can't apply same to trips from server since they can be older than the last sync date but non-existent on current device
-    var serverModifiedSinceDate = serverTrips; //getTripsModifiedSince(serverTrips, date);
+    var serverModifiedSinceDate = serverTrips;
 
     //Step 2: Compare the arrays to find those to upload, download or merge
     var toUpload = [];
     var toDownload = [];
     var toMerge = [];
     localModifiedSinceDate.forEach(function(localTrip) {
-      var localTripMatches = findTripInArray(localTrip.id, serverTrips);
+      var localTripMatches = Util.findIdInArray(localTrip.id, serverTrips);
       if (localTripMatches.length === 0) {
         toUpload.push(localTrip);
       } else {
@@ -46,7 +50,7 @@ var SyncTools = (function() {
     })
 
     // Step 3: Remove duplicates from the to merge array since they can be added twice
-    toMerge = getUniqueArray(toMerge, "id");
+    toMerge = Util.getUniqueArray(toMerge, "id");
 
     return {
       toUpload: toUpload,
@@ -54,24 +58,6 @@ var SyncTools = (function() {
       toMerge: toMerge
     }
 
-  }
-
-  function getUniqueArray(array, property) {
-    var values = {};
-    var result = array.filter(function(entry) {
-      if (values[entry[property]]) {
-        return false;
-      }
-      values[entry[property]] = true;
-      return true;
-    });
-    return result;
-  }
-
-  function findTripInArray(id, array) {
-    return array.filter(function(obj) {
-      return (obj.id == id)
-    })
   }
 
   // Filter out those where there is only either the same one or an older one
@@ -99,7 +85,7 @@ var SyncTools = (function() {
           return Promise.resolve(date)
         },
         function() {
-          var date = new Date("2000-01-01 00:00");
+          var date = getEarliestDate();
           lastSyncDate(date);
           return Promise.resolve(date)
         }
@@ -131,7 +117,6 @@ var SyncTools = (function() {
         return Promise.resolve(data.fileId)
       })
   }
-
 
   function handleUpload(tripsToUpload, serverTrips, listFileId, newMaxId) {
     if (tripsToUpload.length > 0) {

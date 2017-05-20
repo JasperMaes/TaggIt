@@ -16,6 +16,7 @@
   }
 
   function updateLocationGpsError(error) {
+    var controller = this;
     GeoLocation.printError(error);
     controller.mapController.buttonsVisible(false);
     controller.mapController.mapVisible(false);
@@ -24,7 +25,7 @@
   }
 
   function initLocationGpsError(error) {
-    console.log("initLocationGpsError");
+    var controller = this;
     GeoLocation.printError(error);
     controller.messageContent("GPS error: Initialization error; is the GPS enabled?");
   }
@@ -132,7 +133,7 @@
         var editLocationController = EditLocationController(tripViewModel);
         var viewLocationController = ViewLocationController(editLocationController);
         var preferencesController = PreferencesController(tripViewModel);
-        var mapController = MapController(updateLocationGpsError, initLocationGpsError, tripViewModel, addLocationController, filterViewModel);
+        var mapController = MapController(updateLocationGpsError.bind(controller), initLocationGpsError.bind(controller), tripViewModel, addLocationController, filterViewModel);
 
         controller.mapController = mapController;
         controller.sidebarController = SidebarController();

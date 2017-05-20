@@ -34,5 +34,21 @@ var Message = {
   TripsListRefreshComplete: {
     id: "TripsListRefreshComplete",
     message: "Refreshing the trips list completed"
+  },
+  GeoLocationPermissionDenied: {
+    id: "GeoLocation",
+    message: "User denied the request for Geolocation."
+  },
+  GeoLocationPositionUnavailable: {
+    id: "GeoLocationPositionUnavailable",
+    message: "Location information is unavailable."
+  },
+  GeoLocationTimeout: {
+    id: "GeoLocationTimeout",
+    message: "The request to get user location timed out."
+  },
+  GeoLocationUnknownError: {
+    id: "GeoLocationUnknownError",
+    message: "An unknown error occurred."
   }
 }
