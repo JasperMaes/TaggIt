@@ -49,7 +49,6 @@ var MapController = function(updateLocationGpsError, initLocationGpsError, tripV
     GeoLocation.get().then(function(position) {
       var pos = [position.coords.latitude, position.coords.longitude];
       var accuracy = position.coords.accuracy;
-      console.log("Got actual position");
       var centerOptions = {
         lat: pos[0],
         lng: pos[1],
@@ -95,15 +94,8 @@ var MapController = function(updateLocationGpsError, initLocationGpsError, tripV
     mapOptions: {
       zoomControl: false
     },
-    //TODO REMOVE THIS
-    printMarkers: function() {
-      markers().forEach(function(marker) {
-        console.log(marker.center[0](), ",", marker.center[1]())
-      })
-    },
     events: {
       dragstart: function(evt) {
-        console.log("DISABLE watch");
         if (watchId > 0) {
           GeoLocation.clearWatch(watchId);
           watchId = -1;
@@ -156,10 +148,8 @@ var MapController = function(updateLocationGpsError, initLocationGpsError, tripV
 
   ko.computed(function() {
     var result = [];
-    console.log("Updating markers on map")
     var trip = tripViewModel.currentTrip();
     if (!!trip) {
-      console.log("trip is ok", trip.getKoData().locations().length)
       trip.getAllFiltered().forEach(function(location) {
         result.push({
           center: [ko.observable(location.position[0]), ko.observable(location.position[1])],

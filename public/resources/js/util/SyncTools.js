@@ -47,15 +47,7 @@ var SyncTools = (function() {
 
     // Step 3: Remove duplicates from the to merge array since they can be added twice
     toMerge = getUniqueArray(toMerge, "id");
-    /*
-        console.log("Local trips: ", localTrips);
-        console.log("Server trips: ", serverTrips);
-        console.log("Last sync date: ", lastSyncDate);
 
-        console.log("Upload: ", toUpload);
-        console.log("Download: ", toDownload);
-        console.log("Merge: ", toMerge);
-    */
     return {
       toUpload: toUpload,
       toDownload: toDownload,
@@ -116,7 +108,7 @@ var SyncTools = (function() {
 
   function getOrCreateFileId(fileName) {
     return GoogleDrive.getAppDataFiles()
-      .then(function(files) {
+      .then(function(files) { // TODO handle error
         var result = $.grep(files, function(el) {
           return el.fileName === fileName
         })
@@ -126,7 +118,7 @@ var SyncTools = (function() {
         } else {
           return Promise.resolve(result[0]);
         }
-      }, console.log)
+      })
       .then(
         function(data) {
           return Promise.resolve(data)
@@ -159,7 +151,6 @@ var SyncTools = (function() {
             var tripData = tripDetails._getRawData();
             return getOrCreateFileId(tripData.id + ".json")
               .then(function(fileId) {
-                console.log(fileId);
                 return GoogleDrive.saveAppData(fileId, tripData)
               })
           })
@@ -190,7 +181,6 @@ var SyncTools = (function() {
             tripDetails.editTime = new Date(tripDetails.editTime);
             return TripModel.addTripWithId(tripDetails);
           })
-          .then(console.log)
         promises.push(promise)
       })
 
@@ -239,13 +229,11 @@ var SyncTools = (function() {
 
   function triggerSync() {
     isSyncing(true);
-    console.log("syncing")
     getOrCreateFileId("TripList.json")
-      .then(function(fileId) {
+      .then(function(fileId) { //TODO handle error
         return Promise.all([GoogleDrive.getAppDataFileContent(fileId), getLastSyncDate()])
-      }, console.log)
+      })
       .then(function(data) {
-        console.log("TripList data: ", data[0])
 
         var localMaxId = TripModel._getMaxTripId();
         var fileId = data[0].fileId;
@@ -257,10 +245,8 @@ var SyncTools = (function() {
         return getTripList()
           .then(function(localTrips) {
             var neededActions = SyncTools.getNeededActions(localTrips, serverTrips, lastSyncDate);
-            console.log("Needed actions: ", neededActions)
 
             var newMaxId = Math.max(localMaxId, serverMaxId)
-            console.log("Max id: ", newMaxId)
 
             var uploadPromise = handleUpload(neededActions.toUpload, serverTrips, fileId, newMaxId);
             var downloadPromise = handleDownload(neededActions.toDownload, newMaxId);
@@ -269,42 +255,18 @@ var SyncTools = (function() {
             return Promise.all([uploadPromise, downloadPromise, mergePromise])
           })
           .then(function() {
-            console.log("complete")
             return syncComplete();
           });
       })
   }
 
-
-  function removeAutoSync(controller) {
-    controller.isOnline(false);
-    window.removeEventListener('online', addAutoSync);
-    if (!!syncTimer) {
-      clearInterval(timer);
-      syncTimer = null;
-    }
-  }
-
-  var syncTimer = null;
-
-  function addAutoSync(controller) {
-    controller.isOnline(true);
-    var triggerFunc = function() {
-      SyncTools.triggerSync()
-    }
-    // Sync every 15 minutes
-    timer = setInterval(triggerFunc, 15 * 60 * 1000)
-  }
-
   return {
-    getNeededActions: getNeededActions,
+    _getNeededActions: getNeededActions,
     syncComplete: syncComplete,
     getLastSyncDate: getLastSyncDate,
     triggerSync: triggerSync,
     lastSyncDate: lastSyncDate,
-    isSyncing: isSyncing,
-    removeAutoSync: removeAutoSync,
-    addAutoSync: addAutoSync
+    isSyncing: isSyncing
   }
 
 })()

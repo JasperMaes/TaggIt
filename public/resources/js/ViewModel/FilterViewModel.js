@@ -6,7 +6,6 @@ var FilterViewModel = function() {
   var isAdvancedFilterOpen = ko.observable(false);
 
   function search() {
-    console.log(searchTerm())
     var filterOptions = {};
     if(isAdvancedFilterOpen()){
       if(!!titleTerm() && titleTerm().length){

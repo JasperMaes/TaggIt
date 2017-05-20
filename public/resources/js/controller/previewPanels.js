@@ -16,9 +16,7 @@ var MapPreviewController = function(locationData, getPanel, editable) {
         $(event.target).closest(".changeCategoryCollapse").collapse("toggle")
       };
     } else {
-      return function(controller, event) {
-        console.log("Read only")
-      }
+      return function(controller, event) {}
     }
   }
 

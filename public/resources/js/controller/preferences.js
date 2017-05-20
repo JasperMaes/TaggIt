@@ -44,7 +44,6 @@ var signedInStatus = ko.observable(false);
     isActive: isActive,
 
     selectTrip: function() {
-      console.log("Selecting trip: " + this.id)
       tripViewModel.selectTrip(this.id)
     },
 
@@ -63,7 +62,6 @@ var signedInStatus = ko.observable(false);
     },
 
     deleteTripHandler: function() {
-      console.log("Deleting trip: " + this.id)
       tripViewModel.removeTrip(this.id);
     },
 

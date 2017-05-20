@@ -18,7 +18,6 @@ var ViewLocationController = function(editLocationController){
       controller.showPage("locationsListView");
     },
     editLocation: function(controller){
-      console.log("Edit location", locationData())
       editLocationController.setLocationData(locationData())
       controller.showPage("editLocationDetailsView")
     },

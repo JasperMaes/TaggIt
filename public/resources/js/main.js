@@ -69,16 +69,37 @@
 
   function setupAutoSync(controller) {
     if (navigator.onLine) {
-      SyncTools.addAutoSync(controller)
+      addAutoSync(controller)
     }
     //TODO: replace with background sync service worker if it supports periodic sync
     window.addEventListener('online', function() {
-      SyncTools.addAutoSync(controller)
+      addAutoSync(controller)
     });
     window.addEventListener('offline', function() {
-      SyncTools.removeAutoSync(controller)
+      removeAutoSync(controller)
     });
   }
+
+  function removeAutoSync(controller) {
+    controller.isOnline(false);
+    window.removeEventListener('online', addAutoSync);
+    if (!!syncTimer) {
+      clearInterval(timer);
+      syncTimer = null;
+    }
+  }
+
+  var syncTimer = null;
+
+  function addAutoSync(controller) {
+    controller.isOnline(true);
+    var triggerFunc = function() {
+      SyncTools.triggerSync()
+    }
+    // Sync every 15 minutes
+    timer = setInterval(triggerFunc, 15 * 60 * 1000)
+  }
+
 
   function initializeApp(controller) {
     $.material.init();

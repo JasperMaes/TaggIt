@@ -105,7 +105,6 @@ var AddLocationController = function(tripViewModel){
     },
     imagePreview: imagePreviewController,
     openImage: function(data, event){
-      console.log("Edit image")
       var index = locationData.images().indexOf(data)
       imagePreviewController.imageIndex(index);
     }

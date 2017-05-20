@@ -88,7 +88,6 @@ var EditLocationController = function(tripViewModel) {
     },
     saveMapEditHandler: function() {
       var newPosition = ko.toJS(mapController.markers()[0].center);
-      console.log("Save map edit. New position: ", newPosition);
       locationData.position(newPosition);
       openMapEdit(false)
     },
@@ -147,7 +146,6 @@ var EditLocationController = function(tripViewModel) {
     },
     imagePreview: imagePreviewController,
     openImage: function(data, event) {
-      console.log("Edit image")
       var index = locationData.images().indexOf(data)
       imagePreviewController.imageIndex(index);
     },

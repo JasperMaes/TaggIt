@@ -39,8 +39,8 @@ var GeoLocation = (function() {
   }
 
   function printError(error) {
-    console.log(error)
     switch (error.code) {
+      //TODO convert to message objects
       case error.PERMISSION_DENIED:
         console.log("User denied the request for Geolocation.")
         break;
