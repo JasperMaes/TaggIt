@@ -15,12 +15,12 @@ var ViewLocationController = function(editLocationController){
       window.open(data.website, "_blank");
     },
     backToLocationListView: function(controller){
-      showPage("locationsListView", controller);
+      controller.showPage("locationsListView");
     },
     editLocation: function(controller){
       console.log("Edit location", locationData())
       editLocationController.setLocationData(locationData())
-      showPage("editLocationDetailsView", controller)
+      controller.showPage("editLocationDetailsView")
     },
     openImage: function(data, event){
       var index = locationData().images.indexOf(data)

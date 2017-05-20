@@ -38,7 +38,7 @@ var EditLocationController = function(tripViewModel) {
   }
 
   function backToViewLocation(controller) {
-    showPage("viewLocationView", controller)
+    controller.showPage("viewLocationView")
     // Reset entered data
     clearForm();
   }
@@ -49,7 +49,7 @@ var EditLocationController = function(tripViewModel) {
       var trip = tripViewModel.currentTrip();
       trip.remove(locationData.id);
       tripViewModel.currentTrip(trip)
-      showPage("locationsListView", controller);
+      controller.showPage("locationsListView");
     }
   }
 

@@ -18,7 +18,7 @@ var LocationListController = function(tripViewModel, viewLocationController, fil
 
   return {
     backToMap: function(controller){
-      showPage("mapView", controller);
+      controller.showPage("mapView");
       tripViewModel.currentTrip().filter({});
   },
     mapPreviewControllers: mapPreviewControllers,
@@ -29,7 +29,7 @@ var LocationListController = function(tripViewModel, viewLocationController, fil
     viewLocation: function (controller){
       return function(data, event) {
         viewLocationController.locationData(data);
-        showPage("viewLocationView", controller);
+        controller.showPage("viewLocationView");
       }
     }
   }

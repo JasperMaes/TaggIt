@@ -11,14 +11,14 @@ var SidebarController = function() {
 
   var openPreferencesHandler = function(controller) {
     return function() {
-      showPage("preferencesView", controller);
+      controller.showPage("preferencesView");
       close();
     }
   }
 
   function viewLocations(controller) {
     return function() {
-      showPage("locationsListView", controller);
+      controller.showPage("locationsListView");
       close();
     }
   }

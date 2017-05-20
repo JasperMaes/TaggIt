@@ -18,7 +18,7 @@ var MapController = function(updateLocationGpsError, initLocationGpsError, tripV
   function addMarker(position, controller) {
     addLocationController.locationData.position = position;
 
-    showPage("addLocationView", controller);
+    controller.showPage("addLocationView");
   }
 
   function updateCenterMarker(options) {

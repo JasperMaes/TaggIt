@@ -47,15 +47,15 @@ var SyncTools = (function() {
 
     // Step 3: Remove duplicates from the to merge array since they can be added twice
     toMerge = getUniqueArray(toMerge, "id");
+    /*
+        console.log("Local trips: ", localTrips);
+        console.log("Server trips: ", serverTrips);
+        console.log("Last sync date: ", lastSyncDate);
 
-    console.log("Local trips: ", localTrips);
-    console.log("Server trips: ", serverTrips);
-    console.log("Last sync date: ", lastSyncDate);
-
-    console.log("Upload: ", toUpload);
-    console.log("Download: ", toDownload);
-    console.log("Merge: ", toMerge);
-
+        console.log("Upload: ", toUpload);
+        console.log("Download: ", toDownload);
+        console.log("Merge: ", toMerge);
+    */
     return {
       toUpload: toUpload,
       toDownload: toDownload,
@@ -92,11 +92,11 @@ var SyncTools = (function() {
   function syncComplete() {
     var date = new Date();
     return localforage.setItem("lastSyncDate", date)
-    .then(function(){
-      lastSyncDate(date);
-      isSyncing(false);
-      return Promise.resolve(date);
-    });
+      .then(function() {
+        lastSyncDate(date);
+        isSyncing(false);
+        return Promise.resolve(date);
+      });
   }
 
   function getLastSyncDate() {
@@ -126,7 +126,7 @@ var SyncTools = (function() {
         } else {
           return Promise.resolve(result[0]);
         }
-      },console.log)
+      }, console.log)
       .then(
         function(data) {
           return Promise.resolve(data)
@@ -239,7 +239,7 @@ var SyncTools = (function() {
 
   function triggerSync() {
     isSyncing(true);
-      console.log("syncing")
+    console.log("syncing")
     getOrCreateFileId("TripList.json")
       .then(function(fileId) {
         return Promise.all([GoogleDrive.getAppDataFileContent(fileId), getLastSyncDate()])
@@ -268,7 +268,7 @@ var SyncTools = (function() {
 
             return Promise.all([uploadPromise, downloadPromise, mergePromise])
           })
-          .then(function(){
+          .then(function() {
             console.log("complete")
             return syncComplete();
           });
@@ -277,7 +277,6 @@ var SyncTools = (function() {
 
 
   function removeAutoSync(controller) {
-    console.log("OFFLINE")
     controller.isOnline(false);
     window.removeEventListener('online', addAutoSync);
     if (!!syncTimer) {

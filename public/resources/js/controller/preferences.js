@@ -38,7 +38,7 @@ var signedInStatus = ko.observable(false);
     initGoogleDriveClient: initGoogleDriveClient,
 
     backToMap: function(controller) {
-      showPage("mapView", controller);
+      controller.showPage("mapView");
     },
 
     isActive: isActive,
