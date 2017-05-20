@@ -229,7 +229,7 @@ var SyncTools = (function() {
 
         return getTripList()
           .then(function(localTrips) {
-            var neededActions = SyncTools.getNeededActions(localTrips, serverTrips, lastSyncDate);
+            var neededActions = SyncTools._getNeededActions(localTrips, serverTrips, lastSyncDate);
 
             var newMaxId = Math.max(localMaxId, serverMaxId)
 
