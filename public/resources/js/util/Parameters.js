@@ -30,9 +30,10 @@ var Parameters = {
       icon: 'directions_bike'
     },
   ],
-
-     tripListStorageName: "tripList",
-     maxTripIdStorageName: "maxTripId"
-
+  storage: {
+    tripList: "tripList",
+    maxTripId: "maxTripId",
+    lastActiveTrip: "lastActiveTrip"
+  }
 
 }

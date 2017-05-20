@@ -1,5 +1,4 @@
 (function() {
-
   function showPage(pageName) {
     var element = $("body > div.page")
     if (element.length > 0) {
@@ -113,13 +112,13 @@
         // This is needed to reload it again when the application starts again
         tripViewModel.currentTrip.subscribe(function(newValue) {
           if (!!newValue) {
-            localforage.setItem("lastActiveTrip", newValue.getId())
+            localforage.setItem(Parameters.storage.lastActiveTrip, newValue.getId())
           } else {
-            localforage.removeItem("lastActiveTrip")
+            localforage.removeItem(Parameters.storage.lastActiveTrip)
           }
         })
 
-        return localforage.getItem("lastActiveTrip");
+        return localforage.getItem(Parameters.storage.lastActiveTrip);
       })
       .then(function(lastActiveTrip) {
         //Restore last active trip from localforage
