@@ -1,4 +1,4 @@
-var Parameters = {
+var Parameters = Util.deepFreeze({
   categories: [{
       label: 'Landscape',
       name: 'landscape',
@@ -30,10 +30,10 @@ var Parameters = {
       icon: 'directions_bike'
     },
   ],
-  storage: {
+  storage: Object.freeze({
     tripList: "tripList",
     maxTripId: "maxTripId",
     lastActiveTrip: "lastActiveTrip"
-  }
+  })
 
-}
+})
