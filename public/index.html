@@ -160,7 +160,10 @@
       <div class="panel-body">
         <div class="form-group label-floating">
           <label class="control-label" for="url" style="margin-top:0px">Website</label>
-          <input type="url" class="form-control" id="url" data-bind="value: website">
+          <input type="url" class="form-control" id="url" data-bind="value: website, attr: {disabled: !ko.isObservable(website)}">
+          <a class="btn btn-default btn-raised btn-sm btn-primary" style="margin: 0px; width: 100%" data-bind="visible: !ko.isObservable(website), click: $root.viewLocationController.openWebsite">
+            <h5>Visit website</h5>
+          </a>
           <span class="help-block error-message">Please enter a valid web address</span>
         </div>
       </div>
