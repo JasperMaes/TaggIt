@@ -26,14 +26,7 @@
           <label class="control-label" for="locationDescription">Description</label>
           <textarea disabled class="form-control" id="locationDescription" rows="4" data-bind="text: viewLocationController.locationData().description"></textarea>
         </div>
-        <div class="form-group form-group-lg label-floating is-focused">
-          <label class="control-label" for="locationCreationDate">Created on</label>
-          <input disabled type="text" class="form-control" id="locationCreationDate" data-bind="value: Util.getDateTimeString(viewLocationController.locationData().createTime)">
-        </div>
-        <div class="form-group form-group-lg label-floating is-focused">
-          <label class="control-label" for="locationEditDate">Last edited on</label>
-          <input disabled type="text" class="form-control" id="locationEditDate" data-bind="value: Util.getDateTimeString(viewLocationController.locationData().editTime)">
-        </div>
+
         <div class="row">
           <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".mapPreview" data-bind="click:viewLocationController.mapPreviewController.openMapPreviewHandler">place</span>
           <span class="material-icons" style="font-size: 3em;" data-collapse-group="myDivs" data-toggle="collapse" data-target=".changeCategoryCollapse" data-bind="text: Util.getCategoryIcon(viewLocationController.locationData().category), click:viewLocationController.mapPreviewController.openPanelHandler"></span>
@@ -53,6 +46,15 @@
             </div>
             <!-- /ko -->
           </div>
+        </div>
+
+        <div class="form-group form-group-lg label-floating is-focused">
+          <label class="control-label" for="locationCreationDate">Created on</label>
+          <input disabled type="text" class="form-control" id="locationCreationDate" data-bind="value: Util.getDateTimeString(viewLocationController.locationData().createTime)">
+        </div>
+        <div class="form-group form-group-lg label-floating is-focused">
+          <label class="control-label" for="locationEditDate">Last edited on</label>
+          <input disabled type="text" class="form-control" id="locationEditDate" data-bind="value: Util.getDateTimeString(viewLocationController.locationData().editTime)">
         </div>
       </form>
     </div>

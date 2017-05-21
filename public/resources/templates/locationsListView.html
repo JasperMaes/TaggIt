@@ -67,7 +67,7 @@
             <p class="h3" data-bind="text: location.title || '<No name>', click: $root.locationListController.viewLocation($root)"></p>
           </div>
           <div class="col-sm-7 col-xs-7">
-            <p class="h5" style="color: gray" data-bind="text: Util.getDateTimeString(!!location.editTime ? location.editTime : location.createTime), click: $root.locationListController.viewLocation"></p>
+            <p class="h5" style="color: gray" data-bind="text: Util.getDateTimeString(!!location.editTime ? location.editTime : location.createTime), click: $root.locationListController.viewLocation($root)"></p>
           </div>
           <div class="icon-group col-sm-5 col-xs-5">
             <div class="pull-right">

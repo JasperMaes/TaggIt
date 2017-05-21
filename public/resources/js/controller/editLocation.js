@@ -1,4 +1,7 @@
 var EditLocationController = function(tripViewModel) {
+  var imagePreviewController = ImagePreviewController(locationData);
+  var openMapEdit = ko.observable(false);
+  var invalidateSize = ko.observable(true);
 
   var locationData = {
     id: null,
@@ -10,6 +13,20 @@ var EditLocationController = function(tripViewModel) {
     position: ko.observableArray([]),
     createTime: null,
     editTime: null
+  };
+
+  var mapController = {
+    bounds: ko.observable(),
+    markers: ko.observableArray([{
+      center: [ko.observable(50.81057), ko.observable(4.93622)],
+      draggable: true
+    }]),
+    center: [ko.observable(50.81057), ko.observable(4.93622)],
+    invalidateSize: invalidateSize,
+    mapOptions: {
+      zoomControl: false
+    },
+    zoom: 16
   };
 
   function setLocationData(data) {
@@ -24,8 +41,6 @@ var EditLocationController = function(tripViewModel) {
     locationData.editTime = data.editTime;
   }
 
-  var imagePreviewController = ImagePreviewController(locationData);
-
   function clearForm() {
     locationData.id = null;
     locationData.title(null);
@@ -39,11 +54,10 @@ var EditLocationController = function(tripViewModel) {
 
   function backToViewLocation(controller) {
     controller.showPage("viewLocationView");
-    // Reset entered data
     clearForm();
   }
 
-  function deleteLocation(controller){
+  function deleteLocation(controller) {
     var result = confirm("Do you really want to delete the location?");
     if (result) {
       var trip = tripViewModel.currentTrip();
@@ -53,97 +67,87 @@ var EditLocationController = function(tripViewModel) {
     }
   }
 
-  var openMapEdit = ko.observable(false);
-  var invalidateSize = ko.observable(true);
+  function addImage(data, event) {
+    var file = event.target.files[0]; //sames as here
 
-  var mapController = {
-    bounds: ko.observable(),
-    markers: ko.observableArray([{
-      center: [ko.observable(50.81057), ko.observable(4.93622)],
-      draggable: true
-    }]),
-    center: [ko.observable(50.81057), ko.observable(4.93622)], //ko.computed(function(){return [ko.observable(locationData.position()[0]), ko.observable(locationData.position()[1])]})
-    invalidateSize: invalidateSize,
-    mapOptions: {
-      zoomControl: false
-    },
-    zoom: 16
-  };
+    if (file.type.match("image/*")) {
+      var reader = new FileReader();
+
+      reader.onerror = function() {
+        //TODO show message to inform user
+        console.log("failed loading file");
+      };
+
+      reader.onloadend = function() {
+        var newImage = reader.result;
+        var imagesArray = locationData.images();
+        var arrayLength = imagesArray.length;
+        for (var i = 0; i < arrayLength; i++) {
+          if (imagesArray[i] === newImage) {
+            console.log("Image already uploaded");
+            //TODO show popup message to confirm double upload
+            return;
+          }
+        }
+        locationData.images.push(newImage);
+      };
+
+      if (file) {
+        reader.readAsDataURL(file); //reads the data as a URL
+      } else {
+        //TODO show message to inform user
+        console.log("failed loading file");
+      }
+    } else {
+      //TODO show message to inform user
+      console.log("Not an image file, not uploading");
+    }
+
+    event.target.value = "";
+  }
+
+  function openMapEditHandler() {
+    openMapEdit(true);
+    //Set map center
+    mapController.center[0](locationData.position()[0]);
+    mapController.center[1](locationData.position()[1]);
+    //Set center marker position
+    mapController.markers()[0].center[0](locationData.position()[0]);
+    mapController.markers()[0].center[1](locationData.position()[1]);
+    invalidateSize(!invalidateSize());
+  }
+
+  function saveEditsBackToView(controller) {
+    locationData.editTime = new Date();
+    var locationDataJS = ko.toJS(locationData);
+    controller.viewLocationController.locationData(locationDataJS);
+
+    var trip = tripViewModel.currentTrip();
+    trip.update(locationDataJS);
+    tripViewModel.currentTrip(trip);
+
+    backToViewLocation(controller);
+  }
+
+  function saveMapEditHandler() {
+    var newPosition = ko.toJS(mapController.markers()[0].center);
+    locationData.position(newPosition);
+    openMapEdit(false);
+  }
 
   var editLocationController = {
     locationData: locationData,
     openMapEdit: openMapEdit,
-    openMapEditHandler: function() {
-      openMapEdit(true);
-      //Set map center
-      mapController.center[0](locationData.position()[0]);
-      mapController.center[1](locationData.position()[1]);
-      //Set center marker position
-      mapController.markers()[0].center[0](locationData.position()[0]);
-      mapController.markers()[0].center[1](locationData.position()[1]);
-      invalidateSize(!invalidateSize());
-    },
+    openMapEditHandler: openMapEditHandler,
     closeMapEditHandler: function() {
       openMapEdit(false);
     },
-    saveMapEditHandler: function() {
-      var newPosition = ko.toJS(mapController.markers()[0].center);
-      locationData.position(newPosition);
-      openMapEdit(false);
-    },
+    saveMapEditHandler: saveMapEditHandler,
     mapController: mapController,
-    mapPreviewController: MapPreviewController(locationData, function() {}),
+    mapPreviewController: PreviewPanel(locationData, function() {} , true),
     backToViewLocation: backToViewLocation,
-    saveEditsBackToView: function(controller) {
-      locationData.editTime = new Date();
-      var locationDataJS = ko.toJS(locationData);
-      controller.viewLocationController.locationData(locationDataJS);
-
-      var trip = tripViewModel.currentTrip();
-      trip.update(locationDataJS);
-      tripViewModel.currentTrip(trip);
-
-      backToViewLocation(controller);
-    },
-    addImage: function(data, event) {
-      var file = event.target.files[0]; //sames as here
-
-      if (file.type.match("image/*")) {
-        var reader = new FileReader();
-
-        reader.onerror = function() {
-          //TODO show message to inform user
-          console.log("failed loading file");
-        };
-
-        reader.onloadend = function() {
-          var newImage = reader.result;
-          var imagesArray = locationData.images();
-          var arrayLength = imagesArray.length;
-          for (var i = 0; i < arrayLength; i++) {
-            if (imagesArray[i] === newImage) {
-              console.log("Image already uploaded");
-              //TODO show popup message to confirm double upload
-              return;
-            }
-          }
-          locationData.images.push(newImage);
-          //TODO show short popup that disappears automatically to inform user
-        };
-
-        if (file) {
-          reader.readAsDataURL(file); //reads the data as a URL
-        } else {
-          //TODO show message to inform user
-          console.log("failed loading file");
-        }
-      } else {
-        //TODO show message to inform user
-        console.log("Not an image file, not uploading");
-      }
-
-      event.target.value = "";
-    },
+    saveEditsBackToView: saveEditsBackToView,
+    addImage: addImage,
     imagePreview: imagePreviewController,
     openImage: function(data, event) {
       var index = locationData.images().indexOf(data);

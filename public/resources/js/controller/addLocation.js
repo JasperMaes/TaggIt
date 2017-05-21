@@ -48,7 +48,7 @@ var AddLocationController = function(tripViewModel){
       controller.showPage("addLocationDetailsView");
     };
   },
-    mapPreviewController: MapPreviewController(locationData, getMapPreviewPanel),
+    mapPreviewController: PreviewPanel(locationData, getMapPreviewPanel, true),
     savePosition: savePosition,
     savePositionAddNew: function(controller){
       savePosition();

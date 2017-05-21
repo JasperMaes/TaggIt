@@ -8,7 +8,7 @@ var LocationListController = function(tripViewModel, viewLocationController, fil
     var controllers = [];
     if (!!tripViewModel.currentTrip()) {
       tripViewModel.currentTrip().getAll().forEach(function(locationData) {
-        var mapPreviewController = MapPreviewController(locationData, getPanel);
+        var mapPreviewController = PreviewPanel(locationData, getPanel, true);
 
         controllers.push(mapPreviewController);
       });

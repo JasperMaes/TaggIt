@@ -10,7 +10,7 @@ var ViewLocationController = function(editLocationController){
   var viewLocationController = {
     locationData: locationData,
     imagePreview: imagePreviewController,
-    mapPreviewController: MapPreviewController(locationData, getMapPreviewPanel, false),
+    mapPreviewController: PreviewPanel(locationData, getMapPreviewPanel, false),
     openWebsite: function(data){
       window.open(data.website, "_blank");
     },
