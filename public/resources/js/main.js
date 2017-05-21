@@ -160,7 +160,7 @@
         // Show initial page
         // If there are no trips, user is redirected to preferences to add one
         if (tripViewModel.trips().length > 0) {
-          if (navigator.onLine){
+          if (navigator.onLine) {
             controller.showPage("mapView");
           } else {
             controller.showPage("locationsListView");

@@ -1,6 +1,6 @@
 var PreviewPanel = function(locationData, getPanel, editable) {
 
-  if(editable === undefined){
+  if (editable === undefined) {
     editable = true;
   }
 

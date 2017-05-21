@@ -7,25 +7,25 @@ var FilterViewModel = function(tripViewModel) {
 
   function search() {
     var filterOptions = {};
-    if(isAdvancedFilterOpen()){
-      if(!!titleTerm() && titleTerm().length){
+    if (isAdvancedFilterOpen()) {
+      if (!!titleTerm() && titleTerm().length) {
         filterOptions.title = titleTerm();
       }
-      if(!!categoryTerm() && categoryTerm().length){
+      if (!!categoryTerm() && categoryTerm().length) {
         filterOptions.category = categoryTerm();
       }
-      if(!!descriptionTerm() && descriptionTerm().length){
+      if (!!descriptionTerm() && descriptionTerm().length) {
         filterOptions.description = descriptionTerm();
       }
     } else {
-      if(!!searchTerm() && searchTerm().length){
+      if (!!searchTerm() && searchTerm().length) {
         filterOptions.title = searchTerm();
       }
     }
     tripViewModel.currentTrip().filter(filterOptions);
   }
 
-  function toggleAdvancedFilter(){
+  function toggleAdvancedFilter() {
     isAdvancedFilterOpen(!isAdvancedFilterOpen());
   }
 

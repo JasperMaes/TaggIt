@@ -26,7 +26,7 @@
   bottom: 20px;
 }
 
-#btn-center-map  .btn-fab {
+#btn-center-map .btn-fab {
   position: fixed !important;
   right: 20px;
   bottom: 85px;
@@ -48,8 +48,7 @@
   color: #000;
 }
 
-.form-group input,
-textarea {
+.form-group input, textarea {
   background-color: #000;
   color: #000;
 }

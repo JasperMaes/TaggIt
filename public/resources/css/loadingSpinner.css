@@ -15,6 +15,7 @@
     opacity: 1;
   }
 }
+
 @-webkit-keyframes uil-gps-inner {
   0% {
     opacity: 1;
@@ -32,6 +33,7 @@
     opacity: 1;
   }
 }
+
 @-moz-keyframes uil-gps-inner {
   0% {
     opacity: 1;
@@ -49,6 +51,7 @@
     opacity: 1;
   }
 }
+
 @-ms-keyframes uil-gps-inner {
   0% {
     opacity: 1;
@@ -66,6 +69,7 @@
     opacity: 1;
   }
 }
+
 @-moz-keyframes uil-gps-inner {
   0% {
     opacity: 1;
@@ -83,6 +87,7 @@
     opacity: 1;
   }
 }
+
 @-webkit-keyframes uil-gps-inner {
   0% {
     opacity: 1;
@@ -100,6 +105,7 @@
     opacity: 1;
   }
 }
+
 @-o-keyframes uil-gps-inner {
   0% {
     opacity: 1;
@@ -117,6 +123,7 @@
     opacity: 1;
   }
 }
+
 @keyframes uil-gps-inner {
   0% {
     opacity: 1;
@@ -134,12 +141,14 @@
     opacity: 1;
   }
 }
+
 .uil-gps-css {
   background: none;
   position: relative;
   width: 200px;
   height: 200px;
 }
+
 .uil-gps-css .inner {
   position: absolute;
   top: 60px;
@@ -154,6 +163,7 @@
   -o-animation: uil-gps-inner 1s linear infinite;
   animation: uil-gps-inner 1s linear infinite;
 }
+
 .uil-gps-css .outer {
   position: absolute;
   top: 25px;
@@ -163,6 +173,7 @@
   border-radius: 50%;
   border: 15px solid #05c400;
 }
+
 .uil-gps-css .marker {
   position: absolute;
   width: 20px;
@@ -170,6 +181,7 @@
   border-radius: 10px;
   background: #05c400;
 }
+
 width: 100%;
 @-webkit-keyframes uil-gps-marker {
   0% {
@@ -194,6 +206,7 @@ width: 100%;
     transform: rotate(90deg);
   }
 }
+
 @-webkit-keyframes uil-gps-marker {
   0% {
     -ms-transform: rotate(0deg);
@@ -217,6 +230,7 @@ width: 100%;
     transform: rotate(90deg);
   }
 }
+
 @-moz-keyframes uil-gps-marker {
   0% {
     -ms-transform: rotate(0deg);
@@ -240,6 +254,7 @@ width: 100%;
     transform: rotate(90deg);
   }
 }
+
 @-ms-keyframes uil-gps-marker {
   0% {
     -ms-transform: rotate(0deg);
@@ -263,6 +278,7 @@ width: 100%;
     transform: rotate(90deg);
   }
 }
+
 @-moz-keyframes uil-gps-marker {
   0% {
     -ms-transform: rotate(0deg);
@@ -286,6 +302,7 @@ width: 100%;
     transform: rotate(90deg);
   }
 }
+
 @-webkit-keyframes uil-gps-marker {
   0% {
     -ms-transform: rotate(0deg);
@@ -309,6 +326,7 @@ width: 100%;
     transform: rotate(90deg);
   }
 }
+
 @-o-keyframes uil-gps-marker {
   0% {
     -ms-transform: rotate(0deg);
@@ -332,6 +350,7 @@ width: 100%;
     transform: rotate(90deg);
   }
 }
+
 @keyframes uil-gps-marker {
   0% {
     -ms-transform: rotate(0deg);
@@ -355,6 +374,7 @@ width: 100%;
     transform: rotate(90deg);
   }
 }
+
 .uil-gps-css .markers {
   -ms-transform: translate(100px, 100px);
   -moz-transform: translate(100px, 100px);
@@ -362,6 +382,7 @@ width: 100%;
   -o-transform: translate(100px, 100px);
   transform: translate(100px, 100px);
 }
+
 .uil-gps-css .markers-ib {
   width: 0;
   height: 0;
@@ -371,6 +392,7 @@ width: 100%;
   -o-animation: uil-gps-marker 1s linear infinite;
   animation: uil-gps-marker 1s linear infinite;
 }
+
 .uil-gps-css .marker:nth-of-type(1) {
   top: -20px;
   left: -10px;
@@ -380,6 +402,7 @@ width: 100%;
   -o-transform: rotate(0deg) translate(0, -70px);
   transform: rotate(0deg) translate(0, -70px);
 }
+
 .uil-gps-css .marker:nth-of-type(2) {
   top: -20px;
   left: -10px;
@@ -389,6 +412,7 @@ width: 100%;
   -o-transform: rotate(90deg) translate(0, -70px);
   transform: rotate(90deg) translate(0, -70px);
 }
+
 .uil-gps-css .marker:nth-of-type(3) {
   top: -20px;
   left: -10px;
@@ -398,6 +422,7 @@ width: 100%;
   -o-transform: rotate(180deg) translate(0, -70px);
   transform: rotate(180deg) translate(0, -70px);
 }
+
 .uil-gps-css .marker:nth-of-type(4) {
   top: -20px;
   left: -10px;

@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
+ */
 
 // DO NOT EDIT THIS GENERATED OUTPUT DIRECTLY!
 // This file should be overwritten as part of your build process.
@@ -37,7 +37,106 @@
 /* eslint-disable indent, no-unused-vars, no-multiple-empty-lines, max-nested-callbacks, space-before-function-paren, quotes, comma-spacing */
 'use strict';
 
-var precacheConfig = [["index.html","c967f1929ce22c7c5403b94ab3995c26"],["manifest.json","6e4b732c7fa38ed2fa74527b6f325d05"],["resources/css/glyphicon-util.css","c26e1cb8caa24955b8a2e765927bc021"],["resources/css/loadingSpinner.css","25756fcc80a5b59e1f2a902425e05f81"],["resources/css/main.css","d383d43f232bfabf8b4de1fbbea09990"],["resources/css/page-map.css","291fb14a1a1943fcfa0726ba16ef1a77"],["resources/css/sidebar.css","37bae727559db825c1bc5bf3d55309b0"],["resources/css/tiles.css","a95501d7b53589a466e8f6e46fb4ea7b"],["resources/images/icon.ico","a2f3014421105f7a991a1748a0d0cb58"],["resources/images/icon_128x128.png","f720b37b13709e01dcfdb6ea7287e6e1"],["resources/images/icon_16x16.png","f945c726561a7fac97e3c31dde8ac124"],["resources/images/icon_24x24.png","f1afbab55ee18dbd51be4a4aab12b52a"],["resources/images/icon_256x256.png","4ea6a9c3d55491dfcf0ae4aa345b2fbd"],["resources/images/icon_32x32.png","aca7b8151e2bf714cd607b2359d26a83"],["resources/images/icon_48x48.png","2989758a590310020ed972c9d140b6de"],["resources/images/icon_64x64.png","a26ecc965ab9e7b01ab27d32719f1946"],["resources/images/icon_96x96.png","6a0e2d53e9b6d5f6c94fc0fa4de4319c"],["resources/js/ViewModel/FilterViewModel.js","8d634cbc5e8cbd656ed2f2586c87da74"],["resources/js/ViewModel/TripViewModel.js","04cb8edef11169b77d724695ecfdb603"],["resources/js/controller/addLocation.js","c4613bdcdcc11a23453219c1a17b8cd2"],["resources/js/controller/editLocation.js","7944c47f34a3d929d63ae23f8d4dfe05"],["resources/js/controller/imagePreview.js","9203914c31d3005a8fcc513156890045"],["resources/js/controller/locationList.js","936124d37b19da5f33b4d7fa024e4897"],["resources/js/controller/map.js","8cee59a523949e1d4867da72fca1dad9"],["resources/js/controller/preferences.js","162fb7f28e19de5b4763be0f190000a7"],["resources/js/controller/previewPanels.js","55e8b9162df4b511a0ec17e8b530349e"],["resources/js/controller/sidebar.js","a7add78f925261eae700264dae237524"],["resources/js/controller/viewLocation.js","6ba561946692a23f4d8ee9e796e74913"],["resources/js/main.js","bd64fcdb28f30d7ac0ae521fda5a4586"],["resources/js/model/Trip.js","a6210e5ec14e6ab89b7a6c3e431f7618"],["resources/js/model/TripModel.js","581d700a30438e2013e2f965d5b4440f"],["resources/js/util/GeoLocation.js","afc8def6d5442d23bd28c0148dc2596a"],["resources/js/util/GoogleDrive.js","a1f759a3e57fa62a79074c05c8430cd5"],["resources/js/util/GoogleSignin.js","084cfd6bec64902243d055e0b0fa76ba"],["resources/js/util/Messages.js","a7858a09ce3e48d7235bef41e28a1ecf"],["resources/js/util/Parameters.js","5ac3e74ea8bf5966fda494c6bb717c4f"],["resources/js/util/SyncTools.js","2ec09ff01027b8e84e371980d9c4f142"],["resources/js/util/Util.js","a01d36d635a607ebcc02a1ab3b8b34c5"],["resources/js/util/ko-leaflet.js","ab33dcfced5fdfe193468391a8e041b8"],["resources/templates/addLocationDetailsView.html","5ad3aa07a34cf7c30acf87f142c9ada7"],["resources/templates/addLocationView.html","d307060953ea7c46c84d1ccb5e84ff24"],["resources/templates/editLocationDetailsView.html","f9314f010ca4b2832b94fc7591d91218"],["resources/templates/locationsListView.html","b3b94afbee0b82460f2f5d4509bb7ee3"],["resources/templates/mapView.html","3bf5d46e4b8b3c3c5253cbda8fbff23a"],["resources/templates/preferencesView.html","5bfcfaea079a867317607e09ef32e151"],["resources/templates/viewLocationView.html","a04078980f31a31879195488b2778caf"],["vendors/Google/api.js","3f5286079b00652c0e954bfde7231e97"],["vendors/LeafletPulsingIcon/L.Icon.Pulse.min.css","9c240a6c9d7419e48f755ad27b370b17"],["vendors/LeafletPulsingIcon/L.Icon.Pulse.min.js","8b6261262bd000912324148d2a2b2632"],["vendors/bootstrap-material/bootstrap-material-design.min.css","2e672801251628c5ec561cbab804648d"],["vendors/bootstrap-material/material.min.js","ffcf87341c4bea3538cc689481807c62"],["vendors/bootstrap-material/ripples.min.css","f4002a1682b839fa41fd7c5a09a28713"],["vendors/bootstrap-material/ripples.min.js","de8142542ed4c233e41a1976b9dbaafc"],["vendors/bootstrap/bootstrap.min.css","ec3bb52a00e176a7181d454dffaea219"],["vendors/bootstrap/bootstrap.min.js","5869c96cc8f19086aee625d670d741f9"],["vendors/fonts/glyphicons-halflings-regular.eot","f4769f9bdb7466be65088239c12046d1"],["vendors/fonts/glyphicons-halflings-regular.svg","89889688147bd7575d6327160d64e760"],["vendors/fonts/glyphicons-halflings-regular.ttf","e18bbf611f2a2e43afc071aa2f4e1512"],["vendors/fonts/glyphicons-halflings-regular.woff","fa2772327f55d8198301fdb8bcfc8158"],["vendors/fonts/glyphicons-halflings-regular.woff2","448c34a56d699c29117adc64c43affeb"],["vendors/fonts/material-icons/MaterialIcons-Regular.eot","e79bfd88537def476913f3ed52f4f4b3"],["vendors/fonts/material-icons/MaterialIcons-Regular.ijmap","ed6a98d002bc0b535dd8618f3ae05fe7"],["vendors/fonts/material-icons/MaterialIcons-Regular.svg","a1adea65594c502f9d9428f13ae210e1"],["vendors/fonts/material-icons/MaterialIcons-Regular.ttf","a37b0c01c0baf1888ca812cc0508f6e2"],["vendors/fonts/material-icons/MaterialIcons-Regular.woff","012cf6a10129e2275d79d6adac7f3b02"],["vendors/fonts/material-icons/MaterialIcons-Regular.woff2","570eb83859dc23dd0eec423a49e147fe"],["vendors/fonts/material-icons/material-icons.css","1186613246de1e97dff88de0dab7bdfd"],["vendors/fonts/roboto/roboto-v16-latin-300.eot","f83aa6d195038f0103ad63b728d46c35"],["vendors/fonts/roboto/roboto-v16-latin-300.svg","dd0bea1f9a808d633492fa573039ca1d"],["vendors/fonts/roboto/roboto-v16-latin-300.ttf","c254cb32fab6605176a501a26fde2079"],["vendors/fonts/roboto/roboto-v16-latin-300.woff","dc2e21898247b807422ac32ba45f58c6"],["vendors/fonts/roboto/roboto-v16-latin-300.woff2","68b24b48f11ff8e947976b529c6f5941"],["vendors/fonts/roboto/roboto-v16-latin-500.eot","713a6623ad820be635f48050f204b4d6"],["vendors/fonts/roboto/roboto-v16-latin-500.svg","95204ac95130828753c0ee0ada537c33"],["vendors/fonts/roboto/roboto-v16-latin-500.ttf","7a050a4856f9a3c67441ab09aa79e76f"],["vendors/fonts/roboto/roboto-v16-latin-500.woff","ac8381d5023c0187e7a094726d204f6e"],["vendors/fonts/roboto/roboto-v16-latin-500.woff2","4b218fc7ca179e548471ff37e3060081"],["vendors/fonts/roboto/roboto-v16-latin-700.eot","2b246a5540c3706485cc74b0066b9711"],["vendors/fonts/roboto/roboto-v16-latin-700.svg","57888be7f3e68a7050452ea3157cf4de"],["vendors/fonts/roboto/roboto-v16-latin-700.ttf","ac4b1fbb9377af314a935111f95c7c87"],["vendors/fonts/roboto/roboto-v16-latin-700.woff","89b469433216121ca9d12c1aef1353d1"],["vendors/fonts/roboto/roboto-v16-latin-700.woff2","aa3e87117db2b3c27801cbb8dfe40c6c"],["vendors/fonts/roboto/roboto-v16-latin-regular.eot","c3453f443cf8b548b6161300093c779b"],["vendors/fonts/roboto/roboto-v16-latin-regular.svg","8681f434273fd6a267b1a16a035c5f79"],["vendors/fonts/roboto/roboto-v16-latin-regular.ttf","f84c80506d15558a70e3c7752be22177"],["vendors/fonts/roboto/roboto-v16-latin-regular.woff","a9fc51fd0214c75ee5953dda0f2a06a6"],["vendors/fonts/roboto/roboto-v16-latin-regular.woff2","a2647ffe169bbbd94a3238020354c732"],["vendors/fonts/roboto/roboto.css","62e0ddb6e5910f381f0097eea7cb2e19"],["vendors/jquery/jquery-2.1.0.js","3177091fb9705dd978689ba11bf0609a"],["vendors/knockout/knockout-min.js","e956a74c005b7a243f0884d67e60f8f3"],["vendors/leaflet/images/layers-2x.png","4f0283c6ce28e888000e978e537a6a56"],["vendors/leaflet/images/layers.png","a6137456ed160d7606981aa57c559898"],["vendors/leaflet/images/marker-icon-2x.png","d95d69fa8a7dfe391399e22c0c45e203"],["vendors/leaflet/images/marker-icon.png","2273e3d8ad9264b7daa5bdbf8e6b47f8"],["vendors/leaflet/images/marker-shadow.png","44a526eed258222515aa21eaffd14a96"],["vendors/leaflet/leaflet.css","f4dfd20f27bb4f93ff1d418c370c6de8"],["vendors/leaflet/leaflet.js","c107e28b6b0a61c76a371b73e7067bbf"],["vendors/localforage/localforage.min.js","04bbe882c627de0c0d294e1fa7d8ca8b"]];
+var precacheConfig = [
+  ["index.html", "c967f1929ce22c7c5403b94ab3995c26"],
+  ["manifest.json", "6e4b732c7fa38ed2fa74527b6f325d05"],
+  ["resources/css/glyphicon-util.css", "c26e1cb8caa24955b8a2e765927bc021"],
+  ["resources/css/loadingSpinner.css", "25756fcc80a5b59e1f2a902425e05f81"],
+  ["resources/css/main.css", "d383d43f232bfabf8b4de1fbbea09990"],
+  ["resources/css/page-map.css", "291fb14a1a1943fcfa0726ba16ef1a77"],
+  ["resources/css/sidebar.css", "37bae727559db825c1bc5bf3d55309b0"],
+  ["resources/css/tiles.css", "a95501d7b53589a466e8f6e46fb4ea7b"],
+  ["resources/images/icon.ico", "a2f3014421105f7a991a1748a0d0cb58"],
+  ["resources/images/icon_128x128.png", "f720b37b13709e01dcfdb6ea7287e6e1"],
+  ["resources/images/icon_16x16.png", "f945c726561a7fac97e3c31dde8ac124"],
+  ["resources/images/icon_24x24.png", "f1afbab55ee18dbd51be4a4aab12b52a"],
+  ["resources/images/icon_256x256.png", "4ea6a9c3d55491dfcf0ae4aa345b2fbd"],
+  ["resources/images/icon_32x32.png", "aca7b8151e2bf714cd607b2359d26a83"],
+  ["resources/images/icon_48x48.png", "2989758a590310020ed972c9d140b6de"],
+  ["resources/images/icon_64x64.png", "a26ecc965ab9e7b01ab27d32719f1946"],
+  ["resources/images/icon_96x96.png", "6a0e2d53e9b6d5f6c94fc0fa4de4319c"],
+  ["resources/js/ViewModel/FilterViewModel.js", "8d634cbc5e8cbd656ed2f2586c87da74"],
+  ["resources/js/ViewModel/TripViewModel.js", "04cb8edef11169b77d724695ecfdb603"],
+  ["resources/js/controller/addLocation.js", "c4613bdcdcc11a23453219c1a17b8cd2"],
+  ["resources/js/controller/editLocation.js", "7944c47f34a3d929d63ae23f8d4dfe05"],
+  ["resources/js/controller/imagePreview.js", "9203914c31d3005a8fcc513156890045"],
+  ["resources/js/controller/locationList.js", "936124d37b19da5f33b4d7fa024e4897"],
+  ["resources/js/controller/map.js", "8cee59a523949e1d4867da72fca1dad9"],
+  ["resources/js/controller/preferences.js", "162fb7f28e19de5b4763be0f190000a7"],
+  ["resources/js/controller/previewPanels.js", "55e8b9162df4b511a0ec17e8b530349e"],
+  ["resources/js/controller/sidebar.js", "a7add78f925261eae700264dae237524"],
+  ["resources/js/controller/viewLocation.js", "6ba561946692a23f4d8ee9e796e74913"],
+  ["resources/js/main.js", "bd64fcdb28f30d7ac0ae521fda5a4586"],
+  ["resources/js/model/Trip.js", "a6210e5ec14e6ab89b7a6c3e431f7618"],
+  ["resources/js/model/TripModel.js", "581d700a30438e2013e2f965d5b4440f"],
+  ["resources/js/util/GeoLocation.js", "afc8def6d5442d23bd28c0148dc2596a"],
+  ["resources/js/util/GoogleDrive.js", "a1f759a3e57fa62a79074c05c8430cd5"],
+  ["resources/js/util/GoogleSignin.js", "084cfd6bec64902243d055e0b0fa76ba"],
+  ["resources/js/util/Messages.js", "a7858a09ce3e48d7235bef41e28a1ecf"],
+  ["resources/js/util/Parameters.js", "5ac3e74ea8bf5966fda494c6bb717c4f"],
+  ["resources/js/util/SyncTools.js", "2ec09ff01027b8e84e371980d9c4f142"],
+  ["resources/js/util/Util.js", "a01d36d635a607ebcc02a1ab3b8b34c5"],
+  ["resources/js/util/ko-leaflet.js", "ab33dcfced5fdfe193468391a8e041b8"],
+  ["resources/templates/addLocationDetailsView.html", "5ad3aa07a34cf7c30acf87f142c9ada7"],
+  ["resources/templates/addLocationView.html", "d307060953ea7c46c84d1ccb5e84ff24"],
+  ["resources/templates/editLocationDetailsView.html", "f9314f010ca4b2832b94fc7591d91218"],
+  ["resources/templates/locationsListView.html", "b3b94afbee0b82460f2f5d4509bb7ee3"],
+  ["resources/templates/mapView.html", "3bf5d46e4b8b3c3c5253cbda8fbff23a"],
+  ["resources/templates/preferencesView.html", "5bfcfaea079a867317607e09ef32e151"],
+  ["resources/templates/viewLocationView.html", "a04078980f31a31879195488b2778caf"],
+  ["vendors/Google/api.js", "3f5286079b00652c0e954bfde7231e97"],
+  ["vendors/LeafletPulsingIcon/L.Icon.Pulse.min.css", "9c240a6c9d7419e48f755ad27b370b17"],
+  ["vendors/LeafletPulsingIcon/L.Icon.Pulse.min.js", "8b6261262bd000912324148d2a2b2632"],
+  ["vendors/bootstrap-material/bootstrap-material-design.min.css", "2e672801251628c5ec561cbab804648d"],
+  ["vendors/bootstrap-material/material.min.js", "ffcf87341c4bea3538cc689481807c62"],
+  ["vendors/bootstrap-material/ripples.min.css", "f4002a1682b839fa41fd7c5a09a28713"],
+  ["vendors/bootstrap-material/ripples.min.js", "de8142542ed4c233e41a1976b9dbaafc"],
+  ["vendors/bootstrap/bootstrap.min.css", "ec3bb52a00e176a7181d454dffaea219"],
+  ["vendors/bootstrap/bootstrap.min.js", "5869c96cc8f19086aee625d670d741f9"],
+  ["vendors/fonts/glyphicons-halflings-regular.eot", "f4769f9bdb7466be65088239c12046d1"],
+  ["vendors/fonts/glyphicons-halflings-regular.svg", "89889688147bd7575d6327160d64e760"],
+  ["vendors/fonts/glyphicons-halflings-regular.ttf", "e18bbf611f2a2e43afc071aa2f4e1512"],
+  ["vendors/fonts/glyphicons-halflings-regular.woff", "fa2772327f55d8198301fdb8bcfc8158"],
+  ["vendors/fonts/glyphicons-halflings-regular.woff2", "448c34a56d699c29117adc64c43affeb"],
+  ["vendors/fonts/material-icons/MaterialIcons-Regular.eot", "e79bfd88537def476913f3ed52f4f4b3"],
+  ["vendors/fonts/material-icons/MaterialIcons-Regular.ijmap", "ed6a98d002bc0b535dd8618f3ae05fe7"],
+  ["vendors/fonts/material-icons/MaterialIcons-Regular.svg", "a1adea65594c502f9d9428f13ae210e1"],
+  ["vendors/fonts/material-icons/MaterialIcons-Regular.ttf", "a37b0c01c0baf1888ca812cc0508f6e2"],
+  ["vendors/fonts/material-icons/MaterialIcons-Regular.woff", "012cf6a10129e2275d79d6adac7f3b02"],
+  ["vendors/fonts/material-icons/MaterialIcons-Regular.woff2", "570eb83859dc23dd0eec423a49e147fe"],
+  ["vendors/fonts/material-icons/material-icons.css", "1186613246de1e97dff88de0dab7bdfd"],
+  ["vendors/fonts/roboto/roboto-v16-latin-300.eot", "f83aa6d195038f0103ad63b728d46c35"],
+  ["vendors/fonts/roboto/roboto-v16-latin-300.svg", "dd0bea1f9a808d633492fa573039ca1d"],
+  ["vendors/fonts/roboto/roboto-v16-latin-300.ttf", "c254cb32fab6605176a501a26fde2079"],
+  ["vendors/fonts/roboto/roboto-v16-latin-300.woff", "dc2e21898247b807422ac32ba45f58c6"],
+  ["vendors/fonts/roboto/roboto-v16-latin-300.woff2", "68b24b48f11ff8e947976b529c6f5941"],
+  ["vendors/fonts/roboto/roboto-v16-latin-500.eot", "713a6623ad820be635f48050f204b4d6"],
+  ["vendors/fonts/roboto/roboto-v16-latin-500.svg", "95204ac95130828753c0ee0ada537c33"],
+  ["vendors/fonts/roboto/roboto-v16-latin-500.ttf", "7a050a4856f9a3c67441ab09aa79e76f"],
+  ["vendors/fonts/roboto/roboto-v16-latin-500.woff", "ac8381d5023c0187e7a094726d204f6e"],
+  ["vendors/fonts/roboto/roboto-v16-latin-500.woff2", "4b218fc7ca179e548471ff37e3060081"],
+  ["vendors/fonts/roboto/roboto-v16-latin-700.eot", "2b246a5540c3706485cc74b0066b9711"],
+  ["vendors/fonts/roboto/roboto-v16-latin-700.svg", "57888be7f3e68a7050452ea3157cf4de"],
+  ["vendors/fonts/roboto/roboto-v16-latin-700.ttf", "ac4b1fbb9377af314a935111f95c7c87"],
+  ["vendors/fonts/roboto/roboto-v16-latin-700.woff", "89b469433216121ca9d12c1aef1353d1"],
+  ["vendors/fonts/roboto/roboto-v16-latin-700.woff2", "aa3e87117db2b3c27801cbb8dfe40c6c"],
+  ["vendors/fonts/roboto/roboto-v16-latin-regular.eot", "c3453f443cf8b548b6161300093c779b"],
+  ["vendors/fonts/roboto/roboto-v16-latin-regular.svg", "8681f434273fd6a267b1a16a035c5f79"],
+  ["vendors/fonts/roboto/roboto-v16-latin-regular.ttf", "f84c80506d15558a70e3c7752be22177"],
+  ["vendors/fonts/roboto/roboto-v16-latin-regular.woff", "a9fc51fd0214c75ee5953dda0f2a06a6"],
+  ["vendors/fonts/roboto/roboto-v16-latin-regular.woff2", "a2647ffe169bbbd94a3238020354c732"],
+  ["vendors/fonts/roboto/roboto.css", "62e0ddb6e5910f381f0097eea7cb2e19"],
+  ["vendors/jquery/jquery-2.1.0.js", "3177091fb9705dd978689ba11bf0609a"],
+  ["vendors/knockout/knockout-min.js", "e956a74c005b7a243f0884d67e60f8f3"],
+  ["vendors/leaflet/images/layers-2x.png", "4f0283c6ce28e888000e978e537a6a56"],
+  ["vendors/leaflet/images/layers.png", "a6137456ed160d7606981aa57c559898"],
+  ["vendors/leaflet/images/marker-icon-2x.png", "d95d69fa8a7dfe391399e22c0c45e203"],
+  ["vendors/leaflet/images/marker-icon.png", "2273e3d8ad9264b7daa5bdbf8e6b47f8"],
+  ["vendors/leaflet/images/marker-shadow.png", "44a526eed258222515aa21eaffd14a96"],
+  ["vendors/leaflet/leaflet.css", "f4dfd20f27bb4f93ff1d418c370c6de8"],
+  ["vendors/leaflet/leaflet.js", "c107e28b6b0a61c76a371b73e7067bbf"],
+  ["vendors/localforage/localforage.min.js", "04bbe882c627de0c0d294e1fa7d8ca8b"]
+];
 var cacheName = 'sw-precache-v3-sw-precache-' + (self.registration ? self.registration.scope : '');
 
 
@@ -45,88 +144,88 @@ var ignoreUrlParametersMatching = [/^utm_/];
 
 
 
-var addDirectoryIndex = function (originalUrl, index) {
-    var url = new URL(originalUrl);
-    if (url.pathname.slice(-1) === '/') {
-      url.pathname += index;
-    }
-    return url.toString();
-  };
+var addDirectoryIndex = function(originalUrl, index) {
+  var url = new URL(originalUrl);
+  if (url.pathname.slice(-1) === '/') {
+    url.pathname += index;
+  }
+  return url.toString();
+};
 
-var cleanResponse = function (originalResponse) {
-    // If this is not a redirected response, then we don't have to do anything.
-    if (!originalResponse.redirected) {
-      return Promise.resolve(originalResponse);
-    }
+var cleanResponse = function(originalResponse) {
+  // If this is not a redirected response, then we don't have to do anything.
+  if (!originalResponse.redirected) {
+    return Promise.resolve(originalResponse);
+  }
 
-    // Firefox 50 and below doesn't support the Response.body stream, so we may
-    // need to read the entire body to memory as a Blob.
-    var bodyPromise = 'body' in originalResponse ?
-      Promise.resolve(originalResponse.body) :
-      originalResponse.blob();
+  // Firefox 50 and below doesn't support the Response.body stream, so we may
+  // need to read the entire body to memory as a Blob.
+  var bodyPromise = 'body' in originalResponse ?
+    Promise.resolve(originalResponse.body) :
+    originalResponse.blob();
 
-    return bodyPromise.then(function(body) {
-      // new Response() is happy when passed either a stream or a Blob.
-      return new Response(body, {
-        headers: originalResponse.headers,
-        status: originalResponse.status,
-        statusText: originalResponse.statusText
+  return bodyPromise.then(function(body) {
+    // new Response() is happy when passed either a stream or a Blob.
+    return new Response(body, {
+      headers: originalResponse.headers,
+      status: originalResponse.status,
+      statusText: originalResponse.statusText
+    });
+  });
+};
+
+var createCacheKey = function(originalUrl, paramName, paramValue,
+  dontCacheBustUrlsMatching) {
+  // Create a new URL object to avoid modifying originalUrl.
+  var url = new URL(originalUrl);
+
+  // If dontCacheBustUrlsMatching is not set, or if we don't have a match,
+  // then add in the extra cache-busting URL parameter.
+  if (!dontCacheBustUrlsMatching ||
+    !(url.pathname.match(dontCacheBustUrlsMatching))) {
+    url.search += (url.search ? '&' : '') +
+      encodeURIComponent(paramName) + '=' + encodeURIComponent(paramValue);
+  }
+
+  return url.toString();
+};
+
+var isPathWhitelisted = function(whitelist, absoluteUrlString) {
+  // If the whitelist is empty, then consider all URLs to be whitelisted.
+  if (whitelist.length === 0) {
+    return true;
+  }
+
+  // Otherwise compare each path regex to the path of the URL passed in.
+  var path = (new URL(absoluteUrlString)).pathname;
+  return whitelist.some(function(whitelistedPathRegex) {
+    return path.match(whitelistedPathRegex);
+  });
+};
+
+var stripIgnoredUrlParameters = function(originalUrl,
+  ignoreUrlParametersMatching) {
+  var url = new URL(originalUrl);
+  // Remove the hash; see https://github.com/GoogleChrome/sw-precache/issues/290
+  url.hash = '';
+
+  url.search = url.search.slice(1) // Exclude initial '?'
+    .split('&') // Split into an array of 'key=value' strings
+    .map(function(kv) {
+      return kv.split('='); // Split each 'key=value' string into a [key, value] array
+    })
+    .filter(function(kv) {
+      return ignoreUrlParametersMatching.every(function(ignoredRegex) {
+        return !ignoredRegex.test(kv[0]); // Return true iff the key doesn't match any of the regexes.
       });
-    });
-  };
+    })
+    .map(function(kv) {
+      return kv.join('='); // Join each [key, value] array into a 'key=value' string
+    })
+    .join('&'); // Join the array of 'key=value' strings into a string with '&' in between each
 
-var createCacheKey = function (originalUrl, paramName, paramValue,
-                           dontCacheBustUrlsMatching) {
-    // Create a new URL object to avoid modifying originalUrl.
-    var url = new URL(originalUrl);
-
-    // If dontCacheBustUrlsMatching is not set, or if we don't have a match,
-    // then add in the extra cache-busting URL parameter.
-    if (!dontCacheBustUrlsMatching ||
-        !(url.pathname.match(dontCacheBustUrlsMatching))) {
-      url.search += (url.search ? '&' : '') +
-        encodeURIComponent(paramName) + '=' + encodeURIComponent(paramValue);
-    }
-
-    return url.toString();
-  };
-
-var isPathWhitelisted = function (whitelist, absoluteUrlString) {
-    // If the whitelist is empty, then consider all URLs to be whitelisted.
-    if (whitelist.length === 0) {
-      return true;
-    }
-
-    // Otherwise compare each path regex to the path of the URL passed in.
-    var path = (new URL(absoluteUrlString)).pathname;
-    return whitelist.some(function(whitelistedPathRegex) {
-      return path.match(whitelistedPathRegex);
-    });
-  };
-
-var stripIgnoredUrlParameters = function (originalUrl,
-    ignoreUrlParametersMatching) {
-    var url = new URL(originalUrl);
-    // Remove the hash; see https://github.com/GoogleChrome/sw-precache/issues/290
-    url.hash = '';
-
-    url.search = url.search.slice(1) // Exclude initial '?'
-      .split('&') // Split into an array of 'key=value' strings
-      .map(function(kv) {
-        return kv.split('='); // Split each 'key=value' string into a [key, value] array
-      })
-      .filter(function(kv) {
-        return ignoreUrlParametersMatching.every(function(ignoredRegex) {
-          return !ignoredRegex.test(kv[0]); // Return true iff the key doesn't match any of the regexes.
-        });
-      })
-      .map(function(kv) {
-        return kv.join('='); // Join each [key, value] array into a 'key=value' string
-      })
-      .join('&'); // Join the array of 'key=value' strings into a string with '&' in between each
-
-    return url.toString();
-  };
+  return url.toString();
+};
 
 
 var hashParamName = '_sw-precache';
@@ -158,7 +257,9 @@ self.addEventListener('install', function(event) {
           Array.from(urlsToCacheKeys.values()).map(function(cacheKey) {
             // If we don't have a key matching url in the cache already, add it.
             if (!cachedUrls.has(cacheKey)) {
-              var request = new Request(cacheKey, {credentials: 'same-origin'});
+              var request = new Request(cacheKey, {
+                credentials: 'same-origin'
+              });
               return fetch(request).then(function(response) {
                 // Bail out of installation unless we get back a 200 OK for
                 // every request.
@@ -176,10 +277,10 @@ self.addEventListener('install', function(event) {
         );
       });
     }).then(function() {
-      
+
       // Force the SW to transition from installing -> active state
       return self.skipWaiting();
-      
+
     })
   );
 });
@@ -199,9 +300,9 @@ self.addEventListener('activate', function(event) {
         );
       });
     }).then(function() {
-      
+
       return self.clients.claim();
-      
+
     })
   );
 });
@@ -231,9 +332,9 @@ self.addEventListener('fetch', function(event) {
     // request, and if so, whether the URL matches navigateFallbackWhitelist.
     var navigateFallback = '';
     if (!shouldRespond &&
-        navigateFallback &&
-        (event.request.mode === 'navigate') &&
-        isPathWhitelisted([], event.request.url)) {
+      navigateFallback &&
+      (event.request.mode === 'navigate') &&
+      isPathWhitelisted([], event.request.url)) {
       url = new URL(navigateFallback, self.location).toString();
       shouldRespond = urlsToCacheKeys.has(url);
     }
@@ -276,7 +377,753 @@ self.addEventListener('fetch', function(event) {
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
-*/!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var t;t="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self?self:this,t.toolbox=e()}}(function(){return function e(t,n,r){function o(c,s){if(!n[c]){if(!t[c]){var a="function"==typeof require&&require;if(!s&&a)return a(c,!0);if(i)return i(c,!0);var u=new Error("Cannot find module '"+c+"'");throw u.code="MODULE_NOT_FOUND",u}var f=n[c]={exports:{}};t[c][0].call(f.exports,function(e){var n=t[c][1][e];return o(n?n:e)},f,f.exports,e,t,n,r)}return n[c].exports}for(var i="function"==typeof require&&require,c=0;c<r.length;c++)o(r[c]);return o}({1:[function(e,t,n){"use strict";function r(e,t){t=t||{};var n=t.debug||m.debug;n&&console.log("[sw-toolbox] "+e)}function o(e){var t;return e&&e.cache&&(t=e.cache.name),t=t||m.cache.name,caches.open(t)}function i(e,t){t=t||{};var n=t.successResponses||m.successResponses;return fetch(e.clone()).then(function(r){return"GET"===e.method&&n.test(r.status)&&o(t).then(function(n){n.put(e,r).then(function(){var r=t.cache||m.cache;(r.maxEntries||r.maxAgeSeconds)&&r.name&&c(e,n,r)})}),r.clone()})}function c(e,t,n){var r=s.bind(null,e,t,n);d=d?d.then(r):r()}function s(e,t,n){var o=e.url,i=n.maxAgeSeconds,c=n.maxEntries,s=n.name,a=Date.now();return r("Updating LRU order for "+o+". Max entries is "+c+", max age is "+i),g.getDb(s).then(function(e){return g.setTimestampForUrl(e,o,a)}).then(function(e){return g.expireEntries(e,c,i,a)}).then(function(e){r("Successfully updated IDB.");var n=e.map(function(e){return t.delete(e)});return Promise.all(n).then(function(){r("Done with cache cleanup.")})}).catch(function(e){r(e)})}function a(e,t,n){return r("Renaming cache: ["+e+"] to ["+t+"]",n),caches.delete(t).then(function(){return Promise.all([caches.open(e),caches.open(t)]).then(function(t){var n=t[0],r=t[1];return n.keys().then(function(e){return Promise.all(e.map(function(e){return n.match(e).then(function(t){return r.put(e,t)})}))}).then(function(){return caches.delete(e)})})})}function u(e,t){return o(t).then(function(t){return t.add(e)})}function f(e,t){return o(t).then(function(t){return t.delete(e)})}function h(e){e instanceof Promise||p(e),m.preCacheItems=m.preCacheItems.concat(e)}function p(e){var t=Array.isArray(e);if(t&&e.forEach(function(e){"string"==typeof e||e instanceof Request||(t=!1)}),!t)throw new TypeError("The precache method expects either an array of strings and/or Requests or a Promise that resolves to an array of strings and/or Requests.");return e}function l(e,t,n){if(!e)return!1;if(t){var r=e.headers.get("date");if(r){var o=new Date(r);if(o.getTime()+1e3*t<n)return!1}}return!0}var d,m=e("./options"),g=e("./idb-cache-expiration");t.exports={debug:r,fetchAndCache:i,openCache:o,renameCache:a,cache:u,uncache:f,precache:h,validatePrecacheInput:p,isResponseFresh:l}},{"./idb-cache-expiration":2,"./options":4}],2:[function(e,t,n){"use strict";function r(e){return new Promise(function(t,n){var r=indexedDB.open(u+e,f);r.onupgradeneeded=function(){var e=r.result.createObjectStore(h,{keyPath:p});e.createIndex(l,l,{unique:!1})},r.onsuccess=function(){t(r.result)},r.onerror=function(){n(r.error)}})}function o(e){return e in d||(d[e]=r(e)),d[e]}function i(e,t,n){return new Promise(function(r,o){var i=e.transaction(h,"readwrite"),c=i.objectStore(h);c.put({url:t,timestamp:n}),i.oncomplete=function(){r(e)},i.onabort=function(){o(i.error)}})}function c(e,t,n){return t?new Promise(function(r,o){var i=1e3*t,c=[],s=e.transaction(h,"readwrite"),a=s.objectStore(h),u=a.index(l);u.openCursor().onsuccess=function(e){var t=e.target.result;if(t&&n-i>t.value[l]){var r=t.value[p];c.push(r),a.delete(r),t.continue()}},s.oncomplete=function(){r(c)},s.onabort=o}):Promise.resolve([])}function s(e,t){return t?new Promise(function(n,r){var o=[],i=e.transaction(h,"readwrite"),c=i.objectStore(h),s=c.index(l),a=s.count();s.count().onsuccess=function(){var e=a.result;e>t&&(s.openCursor().onsuccess=function(n){var r=n.target.result;if(r){var i=r.value[p];o.push(i),c.delete(i),e-o.length>t&&r.continue()}})},i.oncomplete=function(){n(o)},i.onabort=r}):Promise.resolve([])}function a(e,t,n,r){return c(e,n,r).then(function(n){return s(e,t).then(function(e){return n.concat(e)})})}var u="sw-toolbox-",f=1,h="store",p="url",l="timestamp",d={};t.exports={getDb:o,setTimestampForUrl:i,expireEntries:a}},{}],3:[function(e,t,n){"use strict";function r(e){var t=a.match(e.request);t?e.respondWith(t(e.request)):a.default&&"GET"===e.request.method&&0===e.request.url.indexOf("http")&&e.respondWith(a.default(e.request))}function o(e){s.debug("activate event fired");var t=u.cache.name+"$$$inactive$$$";e.waitUntil(s.renameCache(t,u.cache.name))}function i(e){return e.reduce(function(e,t){return e.concat(t)},[])}function c(e){var t=u.cache.name+"$$$inactive$$$";s.debug("install event fired"),s.debug("creating cache ["+t+"]"),e.waitUntil(s.openCache({cache:{name:t}}).then(function(e){return Promise.all(u.preCacheItems).then(i).then(s.validatePrecacheInput).then(function(t){return s.debug("preCache list: "+(t.join(", ")||"(none)")),e.addAll(t)})}))}e("serviceworker-cache-polyfill");var s=e("./helpers"),a=e("./router"),u=e("./options");t.exports={fetchListener:r,activateListener:o,installListener:c}},{"./helpers":1,"./options":4,"./router":6,"serviceworker-cache-polyfill":16}],4:[function(e,t,n){"use strict";var r;r=self.registration?self.registration.scope:self.scope||new URL("./",self.location).href,t.exports={cache:{name:"$$$toolbox-cache$$$"+r+"$$$",maxAgeSeconds:null,maxEntries:null},debug:!1,networkTimeoutSeconds:null,preCacheItems:[],successResponses:/^0|([123]\d\d)|(40[14567])|410$/}},{}],5:[function(e,t,n){"use strict";var r=new URL("./",self.location),o=r.pathname,i=e("path-to-regexp"),c=function(e,t,n,r){t instanceof RegExp?this.fullUrlRegExp=t:(0!==t.indexOf("/")&&(t=o+t),this.keys=[],this.regexp=i(t,this.keys)),this.method=e,this.options=r,this.handler=n};c.prototype.makeHandler=function(e){var t;if(this.regexp){var n=this.regexp.exec(e);t={},this.keys.forEach(function(e,r){t[e.name]=n[r+1]})}return function(e){return this.handler(e,t,this.options)}.bind(this)},t.exports=c},{"path-to-regexp":15}],6:[function(e,t,n){"use strict";function r(e){return e.replace(/[-\/\\^$*+?.()|[\]{}]/g,"\\$&")}var o=e("./route"),i=e("./helpers"),c=function(e,t){for(var n=e.entries(),r=n.next(),o=[];!r.done;){var i=new RegExp(r.value[0]);i.test(t)&&o.push(r.value[1]),r=n.next()}return o},s=function(){this.routes=new Map,this.routes.set(RegExp,new Map),this.default=null};["get","post","put","delete","head","any"].forEach(function(e){s.prototype[e]=function(t,n,r){return this.add(e,t,n,r)}}),s.prototype.add=function(e,t,n,c){c=c||{};var s;t instanceof RegExp?s=RegExp:(s=c.origin||self.location.origin,s=s instanceof RegExp?s.source:r(s)),e=e.toLowerCase();var a=new o(e,t,n,c);this.routes.has(s)||this.routes.set(s,new Map);var u=this.routes.get(s);u.has(e)||u.set(e,new Map);var f=u.get(e),h=a.regexp||a.fullUrlRegExp;f.has(h.source)&&i.debug('"'+t+'" resolves to same regex as existing route.'),f.set(h.source,a)},s.prototype.matchMethod=function(e,t){var n=new URL(t),r=n.origin,o=n.pathname;return this._match(e,c(this.routes,r),o)||this._match(e,[this.routes.get(RegExp)],t)},s.prototype._match=function(e,t,n){if(0===t.length)return null;for(var r=0;r<t.length;r++){var o=t[r],i=o&&o.get(e.toLowerCase());if(i){var s=c(i,n);if(s.length>0)return s[0].makeHandler(n)}}return null},s.prototype.match=function(e){return this.matchMethod(e.method,e.url)||this.matchMethod("any",e.url)},t.exports=new s},{"./helpers":1,"./route":5}],7:[function(e,t,n){"use strict";function r(e,t,n){return n=n||{},i.debug("Strategy: cache first ["+e.url+"]",n),i.openCache(n).then(function(t){return t.match(e).then(function(t){var r=n.cache||o.cache,c=Date.now();return i.isResponseFresh(t,r.maxAgeSeconds,c)?t:i.fetchAndCache(e,n)})})}var o=e("../options"),i=e("../helpers");t.exports=r},{"../helpers":1,"../options":4}],8:[function(e,t,n){"use strict";function r(e,t,n){return n=n||{},i.debug("Strategy: cache only ["+e.url+"]",n),i.openCache(n).then(function(t){return t.match(e).then(function(e){var t=n.cache||o.cache,r=Date.now();if(i.isResponseFresh(e,t.maxAgeSeconds,r))return e})})}var o=e("../options"),i=e("../helpers");t.exports=r},{"../helpers":1,"../options":4}],9:[function(e,t,n){"use strict";function r(e,t,n){return o.debug("Strategy: fastest ["+e.url+"]",n),new Promise(function(r,c){var s=!1,a=[],u=function(e){a.push(e.toString()),s?c(new Error('Both cache and network failed: "'+a.join('", "')+'"')):s=!0},f=function(e){e instanceof Response?r(e):u("No result returned")};o.fetchAndCache(e.clone(),n).then(f,u),i(e,t,n).then(f,u)})}var o=e("../helpers"),i=e("./cacheOnly");t.exports=r},{"../helpers":1,"./cacheOnly":8}],10:[function(e,t,n){t.exports={networkOnly:e("./networkOnly"),networkFirst:e("./networkFirst"),cacheOnly:e("./cacheOnly"),cacheFirst:e("./cacheFirst"),fastest:e("./fastest")}},{"./cacheFirst":7,"./cacheOnly":8,"./fastest":9,"./networkFirst":11,"./networkOnly":12}],11:[function(e,t,n){"use strict";function r(e,t,n){n=n||{};var r=n.successResponses||o.successResponses,c=n.networkTimeoutSeconds||o.networkTimeoutSeconds;return i.debug("Strategy: network first ["+e.url+"]",n),i.openCache(n).then(function(t){var s,a,u=[];if(c){var f=new Promise(function(r){s=setTimeout(function(){t.match(e).then(function(e){var t=n.cache||o.cache,c=Date.now(),s=t.maxAgeSeconds;i.isResponseFresh(e,s,c)&&r(e)})},1e3*c)});u.push(f)}var h=i.fetchAndCache(e,n).then(function(e){if(s&&clearTimeout(s),r.test(e.status))return e;throw i.debug("Response was an HTTP error: "+e.statusText,n),a=e,new Error("Bad response")}).catch(function(r){return i.debug("Network or response error, fallback to cache ["+e.url+"]",n),t.match(e).then(function(e){if(e)return e;if(a)return a;throw r})});return u.push(h),Promise.race(u)})}var o=e("../options"),i=e("../helpers");t.exports=r},{"../helpers":1,"../options":4}],12:[function(e,t,n){"use strict";function r(e,t,n){return o.debug("Strategy: network only ["+e.url+"]",n),fetch(e)}var o=e("../helpers");t.exports=r},{"../helpers":1}],13:[function(e,t,n){"use strict";var r=e("./options"),o=e("./router"),i=e("./helpers"),c=e("./strategies"),s=e("./listeners");i.debug("Service Worker Toolbox is loading"),self.addEventListener("install",s.installListener),self.addEventListener("activate",s.activateListener),self.addEventListener("fetch",s.fetchListener),t.exports={networkOnly:c.networkOnly,networkFirst:c.networkFirst,cacheOnly:c.cacheOnly,cacheFirst:c.cacheFirst,fastest:c.fastest,router:o,options:r,cache:i.cache,uncache:i.uncache,precache:i.precache}},{"./helpers":1,"./listeners":3,"./options":4,"./router":6,"./strategies":10}],14:[function(e,t,n){t.exports=Array.isArray||function(e){return"[object Array]"==Object.prototype.toString.call(e)}},{}],15:[function(e,t,n){function r(e,t){for(var n,r=[],o=0,i=0,c="",s=t&&t.delimiter||"/";null!=(n=x.exec(e));){var f=n[0],h=n[1],p=n.index;if(c+=e.slice(i,p),i=p+f.length,h)c+=h[1];else{var l=e[i],d=n[2],m=n[3],g=n[4],v=n[5],w=n[6],y=n[7];c&&(r.push(c),c="");var b=null!=d&&null!=l&&l!==d,E="+"===w||"*"===w,R="?"===w||"*"===w,k=n[2]||s,$=g||v;r.push({name:m||o++,prefix:d||"",delimiter:k,optional:R,repeat:E,partial:b,asterisk:!!y,pattern:$?u($):y?".*":"[^"+a(k)+"]+?"})}}return i<e.length&&(c+=e.substr(i)),c&&r.push(c),r}function o(e,t){return s(r(e,t))}function i(e){return encodeURI(e).replace(/[\/?#]/g,function(e){return"%"+e.charCodeAt(0).toString(16).toUpperCase()})}function c(e){return encodeURI(e).replace(/[?#]/g,function(e){return"%"+e.charCodeAt(0).toString(16).toUpperCase()})}function s(e){for(var t=new Array(e.length),n=0;n<e.length;n++)"object"==typeof e[n]&&(t[n]=new RegExp("^(?:"+e[n].pattern+")$"));return function(n,r){for(var o="",s=n||{},a=r||{},u=a.pretty?i:encodeURIComponent,f=0;f<e.length;f++){var h=e[f];if("string"!=typeof h){var p,l=s[h.name];if(null==l){if(h.optional){h.partial&&(o+=h.prefix);continue}throw new TypeError('Expected "'+h.name+'" to be defined')}if(v(l)){if(!h.repeat)throw new TypeError('Expected "'+h.name+'" to not repeat, but received `'+JSON.stringify(l)+"`");if(0===l.length){if(h.optional)continue;throw new TypeError('Expected "'+h.name+'" to not be empty')}for(var d=0;d<l.length;d++){if(p=u(l[d]),!t[f].test(p))throw new TypeError('Expected all "'+h.name+'" to match "'+h.pattern+'", but received `'+JSON.stringify(p)+"`");o+=(0===d?h.prefix:h.delimiter)+p}}else{if(p=h.asterisk?c(l):u(l),!t[f].test(p))throw new TypeError('Expected "'+h.name+'" to match "'+h.pattern+'", but received "'+p+'"');o+=h.prefix+p}}else o+=h}return o}}function a(e){return e.replace(/([.+*?=^!:${}()[\]|\/\\])/g,"\\$1")}function u(e){return e.replace(/([=!:$\/()])/g,"\\$1")}function f(e,t){return e.keys=t,e}function h(e){return e.sensitive?"":"i"}function p(e,t){var n=e.source.match(/\((?!\?)/g);if(n)for(var r=0;r<n.length;r++)t.push({name:r,prefix:null,delimiter:null,optional:!1,repeat:!1,partial:!1,asterisk:!1,pattern:null});return f(e,t)}function l(e,t,n){for(var r=[],o=0;o<e.length;o++)r.push(g(e[o],t,n).source);var i=new RegExp("(?:"+r.join("|")+")",h(n));return f(i,t)}function d(e,t,n){return m(r(e,n),t,n)}function m(e,t,n){v(t)||(n=t||n,t=[]),n=n||{};for(var r=n.strict,o=n.end!==!1,i="",c=0;c<e.length;c++){var s=e[c];if("string"==typeof s)i+=a(s);else{var u=a(s.prefix),p="(?:"+s.pattern+")";t.push(s),s.repeat&&(p+="(?:"+u+p+")*"),p=s.optional?s.partial?u+"("+p+")?":"(?:"+u+"("+p+"))?":u+"("+p+")",i+=p}}var l=a(n.delimiter||"/"),d=i.slice(-l.length)===l;return r||(i=(d?i.slice(0,-l.length):i)+"(?:"+l+"(?=$))?"),i+=o?"$":r&&d?"":"(?="+l+"|$)",f(new RegExp("^"+i,h(n)),t)}function g(e,t,n){return v(t)||(n=t||n,t=[]),n=n||{},e instanceof RegExp?p(e,t):v(e)?l(e,t,n):d(e,t,n)}var v=e("isarray");t.exports=g,t.exports.parse=r,t.exports.compile=o,t.exports.tokensToFunction=s,t.exports.tokensToRegExp=m;var x=new RegExp(["(\\\\.)","([\\/.])?(?:(?:\\:(\\w+)(?:\\(((?:\\\\.|[^\\\\()])+)\\))?|\\(((?:\\\\.|[^\\\\()])+)\\))([+*?])?|(\\*))"].join("|"),"g")},{isarray:14}],16:[function(e,t,n){!function(){var e=Cache.prototype.addAll,t=navigator.userAgent.match(/(Firefox|Chrome)\/(\d+\.)/);if(t)var n=t[1],r=parseInt(t[2]);e&&(!t||"Firefox"===n&&r>=46||"Chrome"===n&&r>=50)||(Cache.prototype.addAll=function(e){function t(e){this.name="NetworkError",this.code=19,this.message=e}var n=this;return t.prototype=Object.create(Error.prototype),Promise.resolve().then(function(){if(arguments.length<1)throw new TypeError;return e=e.map(function(e){return e instanceof Request?e:String(e)}),Promise.all(e.map(function(e){"string"==typeof e&&(e=new Request(e));var n=new URL(e.url).protocol;if("http:"!==n&&"https:"!==n)throw new t("Invalid scheme");return fetch(e.clone())}))}).then(function(r){if(r.some(function(e){return!e.ok}))throw new t("Incorrect response status");return Promise.all(r.map(function(t,r){return n.put(e[r],t)}))}).then(function(){})},Cache.prototype.add=function(e){return this.addAll([e])})}()},{}]},{},[13])(13)});
+*/
+! function(e) {
+  if ("object" == typeof exports && "undefined" != typeof module) module.exports = e();
+  else if ("function" == typeof define && define.amd) define([], e);
+  else {
+    var t;
+    t = "undefined" != typeof window ? window : "undefined" != typeof global ? global : "undefined" != typeof self ? self : this, t.toolbox = e()
+  }
+}(function() {
+  return function e(t, n, r) {
+    function o(c, s) {
+      if (!n[c]) {
+        if (!t[c]) {
+          var a = "function" == typeof require && require;
+          if (!s && a) return a(c, !0);
+          if (i) return i(c, !0);
+          var u = new Error("Cannot find module '" + c + "'");
+          throw u.code = "MODULE_NOT_FOUND", u
+        }
+        var f = n[c] = {
+          exports: {}
+        };
+        t[c][0].call(f.exports, function(e) {
+          var n = t[c][1][e];
+          return o(n ? n : e)
+        }, f, f.exports, e, t, n, r)
+      }
+      return n[c].exports
+    }
+    for (var i = "function" == typeof require && require, c = 0; c < r.length; c++) o(r[c]);
+    return o
+  }({
+    1: [function(e, t, n) {
+      "use strict";
+
+      function r(e, t) {
+        t = t || {};
+        var n = t.debug || m.debug;
+        n && console.log("[sw-toolbox] " + e)
+      }
+
+      function o(e) {
+        var t;
+        return e && e.cache && (t = e.cache.name), t = t || m.cache.name, caches.open(t)
+      }
+
+      function i(e, t) {
+        t = t || {};
+        var n = t.successResponses || m.successResponses;
+        return fetch(e.clone()).then(function(r) {
+          return "GET" === e.method && n.test(r.status) && o(t).then(function(n) {
+            n.put(e, r).then(function() {
+              var r = t.cache || m.cache;
+              (r.maxEntries || r.maxAgeSeconds) && r.name && c(e, n, r)
+            })
+          }), r.clone()
+        })
+      }
+
+      function c(e, t, n) {
+        var r = s.bind(null, e, t, n);
+        d = d ? d.then(r) : r()
+      }
+
+      function s(e, t, n) {
+        var o = e.url,
+          i = n.maxAgeSeconds,
+          c = n.maxEntries,
+          s = n.name,
+          a = Date.now();
+        return r("Updating LRU order for " + o + ". Max entries is " + c + ", max age is " + i), g.getDb(s).then(function(e) {
+          return g.setTimestampForUrl(e, o, a)
+        }).then(function(e) {
+          return g.expireEntries(e, c, i, a)
+        }).then(function(e) {
+          r("Successfully updated IDB.");
+          var n = e.map(function(e) {
+            return t.delete(e)
+          });
+          return Promise.all(n).then(function() {
+            r("Done with cache cleanup.")
+          })
+        }).catch(function(e) {
+          r(e)
+        })
+      }
+
+      function a(e, t, n) {
+        return r("Renaming cache: [" + e + "] to [" + t + "]", n), caches.delete(t).then(function() {
+          return Promise.all([caches.open(e), caches.open(t)]).then(function(t) {
+            var n = t[0],
+              r = t[1];
+            return n.keys().then(function(e) {
+              return Promise.all(e.map(function(e) {
+                return n.match(e).then(function(t) {
+                  return r.put(e, t)
+                })
+              }))
+            }).then(function() {
+              return caches.delete(e)
+            })
+          })
+        })
+      }
+
+      function u(e, t) {
+        return o(t).then(function(t) {
+          return t.add(e)
+        })
+      }
+
+      function f(e, t) {
+        return o(t).then(function(t) {
+          return t.delete(e)
+        })
+      }
+
+      function h(e) {
+        e instanceof Promise || p(e), m.preCacheItems = m.preCacheItems.concat(e)
+      }
+
+      function p(e) {
+        var t = Array.isArray(e);
+        if (t && e.forEach(function(e) {
+            "string" == typeof e || e instanceof Request || (t = !1)
+          }), !t) throw new TypeError("The precache method expects either an array of strings and/or Requests or a Promise that resolves to an array of strings and/or Requests.");
+        return e
+      }
+
+      function l(e, t, n) {
+        if (!e) return !1;
+        if (t) {
+          var r = e.headers.get("date");
+          if (r) {
+            var o = new Date(r);
+            if (o.getTime() + 1e3 * t < n) return !1
+          }
+        }
+        return !0
+      }
+      var d, m = e("./options"),
+        g = e("./idb-cache-expiration");
+      t.exports = {
+        debug: r,
+        fetchAndCache: i,
+        openCache: o,
+        renameCache: a,
+        cache: u,
+        uncache: f,
+        precache: h,
+        validatePrecacheInput: p,
+        isResponseFresh: l
+      }
+    }, {
+      "./idb-cache-expiration": 2,
+      "./options": 4
+    }],
+    2: [function(e, t, n) {
+      "use strict";
+
+      function r(e) {
+        return new Promise(function(t, n) {
+          var r = indexedDB.open(u + e, f);
+          r.onupgradeneeded = function() {
+            var e = r.result.createObjectStore(h, {
+              keyPath: p
+            });
+            e.createIndex(l, l, {
+              unique: !1
+            })
+          }, r.onsuccess = function() {
+            t(r.result)
+          }, r.onerror = function() {
+            n(r.error)
+          }
+        })
+      }
+
+      function o(e) {
+        return e in d || (d[e] = r(e)), d[e]
+      }
+
+      function i(e, t, n) {
+        return new Promise(function(r, o) {
+          var i = e.transaction(h, "readwrite"),
+            c = i.objectStore(h);
+          c.put({
+            url: t,
+            timestamp: n
+          }), i.oncomplete = function() {
+            r(e)
+          }, i.onabort = function() {
+            o(i.error)
+          }
+        })
+      }
+
+      function c(e, t, n) {
+        return t ? new Promise(function(r, o) {
+          var i = 1e3 * t,
+            c = [],
+            s = e.transaction(h, "readwrite"),
+            a = s.objectStore(h),
+            u = a.index(l);
+          u.openCursor().onsuccess = function(e) {
+            var t = e.target.result;
+            if (t && n - i > t.value[l]) {
+              var r = t.value[p];
+              c.push(r), a.delete(r), t.continue()
+            }
+          }, s.oncomplete = function() {
+            r(c)
+          }, s.onabort = o
+        }) : Promise.resolve([])
+      }
+
+      function s(e, t) {
+        return t ? new Promise(function(n, r) {
+          var o = [],
+            i = e.transaction(h, "readwrite"),
+            c = i.objectStore(h),
+            s = c.index(l),
+            a = s.count();
+          s.count().onsuccess = function() {
+            var e = a.result;
+            e > t && (s.openCursor().onsuccess = function(n) {
+              var r = n.target.result;
+              if (r) {
+                var i = r.value[p];
+                o.push(i), c.delete(i), e - o.length > t && r.continue()
+              }
+            })
+          }, i.oncomplete = function() {
+            n(o)
+          }, i.onabort = r
+        }) : Promise.resolve([])
+      }
+
+      function a(e, t, n, r) {
+        return c(e, n, r).then(function(n) {
+          return s(e, t).then(function(e) {
+            return n.concat(e)
+          })
+        })
+      }
+      var u = "sw-toolbox-",
+        f = 1,
+        h = "store",
+        p = "url",
+        l = "timestamp",
+        d = {};
+      t.exports = {
+        getDb: o,
+        setTimestampForUrl: i,
+        expireEntries: a
+      }
+    }, {}],
+    3: [function(e, t, n) {
+      "use strict";
+
+      function r(e) {
+        var t = a.match(e.request);
+        t ? e.respondWith(t(e.request)) : a.default && "GET" === e.request.method && 0 === e.request.url.indexOf("http") && e.respondWith(a.default(e.request))
+      }
+
+      function o(e) {
+        s.debug("activate event fired");
+        var t = u.cache.name + "$$$inactive$$$";
+        e.waitUntil(s.renameCache(t, u.cache.name))
+      }
+
+      function i(e) {
+        return e.reduce(function(e, t) {
+          return e.concat(t)
+        }, [])
+      }
+
+      function c(e) {
+        var t = u.cache.name + "$$$inactive$$$";
+        s.debug("install event fired"), s.debug("creating cache [" + t + "]"), e.waitUntil(s.openCache({
+          cache: {
+            name: t
+          }
+        }).then(function(e) {
+          return Promise.all(u.preCacheItems).then(i).then(s.validatePrecacheInput).then(function(t) {
+            return s.debug("preCache list: " + (t.join(", ") || "(none)")), e.addAll(t)
+          })
+        }))
+      }
+      e("serviceworker-cache-polyfill");
+      var s = e("./helpers"),
+        a = e("./router"),
+        u = e("./options");
+      t.exports = {
+        fetchListener: r,
+        activateListener: o,
+        installListener: c
+      }
+    }, {
+      "./helpers": 1,
+      "./options": 4,
+      "./router": 6,
+      "serviceworker-cache-polyfill": 16
+    }],
+    4: [function(e, t, n) {
+      "use strict";
+      var r;
+      r = self.registration ? self.registration.scope : self.scope || new URL("./", self.location).href, t.exports = {
+        cache: {
+          name: "$$$toolbox-cache$$$" + r + "$$$",
+          maxAgeSeconds: null,
+          maxEntries: null
+        },
+        debug: !1,
+        networkTimeoutSeconds: null,
+        preCacheItems: [],
+        successResponses: /^0|([123]\d\d)|(40[14567])|410$/
+      }
+    }, {}],
+    5: [function(e, t, n) {
+      "use strict";
+      var r = new URL("./", self.location),
+        o = r.pathname,
+        i = e("path-to-regexp"),
+        c = function(e, t, n, r) {
+          t instanceof RegExp ? this.fullUrlRegExp = t : (0 !== t.indexOf("/") && (t = o + t), this.keys = [], this.regexp = i(t, this.keys)), this.method = e, this.options = r, this.handler = n
+        };
+      c.prototype.makeHandler = function(e) {
+        var t;
+        if (this.regexp) {
+          var n = this.regexp.exec(e);
+          t = {}, this.keys.forEach(function(e, r) {
+            t[e.name] = n[r + 1]
+          })
+        }
+        return function(e) {
+          return this.handler(e, t, this.options)
+        }.bind(this)
+      }, t.exports = c
+    }, {
+      "path-to-regexp": 15
+    }],
+    6: [function(e, t, n) {
+      "use strict";
+
+      function r(e) {
+        return e.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&")
+      }
+      var o = e("./route"),
+        i = e("./helpers"),
+        c = function(e, t) {
+          for (var n = e.entries(), r = n.next(), o = []; !r.done;) {
+            var i = new RegExp(r.value[0]);
+            i.test(t) && o.push(r.value[1]), r = n.next()
+          }
+          return o
+        },
+        s = function() {
+          this.routes = new Map, this.routes.set(RegExp, new Map), this.default = null
+        };
+      ["get", "post", "put", "delete", "head", "any"].forEach(function(e) {
+        s.prototype[e] = function(t, n, r) {
+          return this.add(e, t, n, r)
+        }
+      }), s.prototype.add = function(e, t, n, c) {
+        c = c || {};
+        var s;
+        t instanceof RegExp ? s = RegExp : (s = c.origin || self.location.origin, s = s instanceof RegExp ? s.source : r(s)), e = e.toLowerCase();
+        var a = new o(e, t, n, c);
+        this.routes.has(s) || this.routes.set(s, new Map);
+        var u = this.routes.get(s);
+        u.has(e) || u.set(e, new Map);
+        var f = u.get(e),
+          h = a.regexp || a.fullUrlRegExp;
+        f.has(h.source) && i.debug('"' + t + '" resolves to same regex as existing route.'), f.set(h.source, a)
+      }, s.prototype.matchMethod = function(e, t) {
+        var n = new URL(t),
+          r = n.origin,
+          o = n.pathname;
+        return this._match(e, c(this.routes, r), o) || this._match(e, [this.routes.get(RegExp)], t)
+      }, s.prototype._match = function(e, t, n) {
+        if (0 === t.length) return null;
+        for (var r = 0; r < t.length; r++) {
+          var o = t[r],
+            i = o && o.get(e.toLowerCase());
+          if (i) {
+            var s = c(i, n);
+            if (s.length > 0) return s[0].makeHandler(n)
+          }
+        }
+        return null
+      }, s.prototype.match = function(e) {
+        return this.matchMethod(e.method, e.url) || this.matchMethod("any", e.url)
+      }, t.exports = new s
+    }, {
+      "./helpers": 1,
+      "./route": 5
+    }],
+    7: [function(e, t, n) {
+      "use strict";
+
+      function r(e, t, n) {
+        return n = n || {}, i.debug("Strategy: cache first [" + e.url + "]", n), i.openCache(n).then(function(t) {
+          return t.match(e).then(function(t) {
+            var r = n.cache || o.cache,
+              c = Date.now();
+            return i.isResponseFresh(t, r.maxAgeSeconds, c) ? t : i.fetchAndCache(e, n)
+          })
+        })
+      }
+      var o = e("../options"),
+        i = e("../helpers");
+      t.exports = r
+    }, {
+      "../helpers": 1,
+      "../options": 4
+    }],
+    8: [function(e, t, n) {
+      "use strict";
+
+      function r(e, t, n) {
+        return n = n || {}, i.debug("Strategy: cache only [" + e.url + "]", n), i.openCache(n).then(function(t) {
+          return t.match(e).then(function(e) {
+            var t = n.cache || o.cache,
+              r = Date.now();
+            if (i.isResponseFresh(e, t.maxAgeSeconds, r)) return e
+          })
+        })
+      }
+      var o = e("../options"),
+        i = e("../helpers");
+      t.exports = r
+    }, {
+      "../helpers": 1,
+      "../options": 4
+    }],
+    9: [function(e, t, n) {
+      "use strict";
+
+      function r(e, t, n) {
+        return o.debug("Strategy: fastest [" + e.url + "]", n), new Promise(function(r, c) {
+          var s = !1,
+            a = [],
+            u = function(e) {
+              a.push(e.toString()), s ? c(new Error('Both cache and network failed: "' + a.join('", "') + '"')) : s = !0
+            },
+            f = function(e) {
+              e instanceof Response ? r(e) : u("No result returned")
+            };
+          o.fetchAndCache(e.clone(), n).then(f, u), i(e, t, n).then(f, u)
+        })
+      }
+      var o = e("../helpers"),
+        i = e("./cacheOnly");
+      t.exports = r
+    }, {
+      "../helpers": 1,
+      "./cacheOnly": 8
+    }],
+    10: [function(e, t, n) {
+      t.exports = {
+        networkOnly: e("./networkOnly"),
+        networkFirst: e("./networkFirst"),
+        cacheOnly: e("./cacheOnly"),
+        cacheFirst: e("./cacheFirst"),
+        fastest: e("./fastest")
+      }
+    }, {
+      "./cacheFirst": 7,
+      "./cacheOnly": 8,
+      "./fastest": 9,
+      "./networkFirst": 11,
+      "./networkOnly": 12
+    }],
+    11: [function(e, t, n) {
+      "use strict";
+
+      function r(e, t, n) {
+        n = n || {};
+        var r = n.successResponses || o.successResponses,
+          c = n.networkTimeoutSeconds || o.networkTimeoutSeconds;
+        return i.debug("Strategy: network first [" + e.url + "]", n), i.openCache(n).then(function(t) {
+          var s, a, u = [];
+          if (c) {
+            var f = new Promise(function(r) {
+              s = setTimeout(function() {
+                t.match(e).then(function(e) {
+                  var t = n.cache || o.cache,
+                    c = Date.now(),
+                    s = t.maxAgeSeconds;
+                  i.isResponseFresh(e, s, c) && r(e)
+                })
+              }, 1e3 * c)
+            });
+            u.push(f)
+          }
+          var h = i.fetchAndCache(e, n).then(function(e) {
+            if (s && clearTimeout(s), r.test(e.status)) return e;
+            throw i.debug("Response was an HTTP error: " + e.statusText, n), a = e, new Error("Bad response")
+          }).catch(function(r) {
+            return i.debug("Network or response error, fallback to cache [" + e.url + "]", n), t.match(e).then(function(e) {
+              if (e) return e;
+              if (a) return a;
+              throw r
+            })
+          });
+          return u.push(h), Promise.race(u)
+        })
+      }
+      var o = e("../options"),
+        i = e("../helpers");
+      t.exports = r
+    }, {
+      "../helpers": 1,
+      "../options": 4
+    }],
+    12: [function(e, t, n) {
+      "use strict";
+
+      function r(e, t, n) {
+        return o.debug("Strategy: network only [" + e.url + "]", n), fetch(e)
+      }
+      var o = e("../helpers");
+      t.exports = r
+    }, {
+      "../helpers": 1
+    }],
+    13: [function(e, t, n) {
+      "use strict";
+      var r = e("./options"),
+        o = e("./router"),
+        i = e("./helpers"),
+        c = e("./strategies"),
+        s = e("./listeners");
+      i.debug("Service Worker Toolbox is loading"), self.addEventListener("install", s.installListener), self.addEventListener("activate", s.activateListener), self.addEventListener("fetch", s.fetchListener), t.exports = {
+        networkOnly: c.networkOnly,
+        networkFirst: c.networkFirst,
+        cacheOnly: c.cacheOnly,
+        cacheFirst: c.cacheFirst,
+        fastest: c.fastest,
+        router: o,
+        options: r,
+        cache: i.cache,
+        uncache: i.uncache,
+        precache: i.precache
+      }
+    }, {
+      "./helpers": 1,
+      "./listeners": 3,
+      "./options": 4,
+      "./router": 6,
+      "./strategies": 10
+    }],
+    14: [function(e, t, n) {
+      t.exports = Array.isArray || function(e) {
+        return "[object Array]" == Object.prototype.toString.call(e)
+      }
+    }, {}],
+    15: [function(e, t, n) {
+      function r(e, t) {
+        for (var n, r = [], o = 0, i = 0, c = "", s = t && t.delimiter || "/"; null != (n = x.exec(e));) {
+          var f = n[0],
+            h = n[1],
+            p = n.index;
+          if (c += e.slice(i, p), i = p + f.length, h) c += h[1];
+          else {
+            var l = e[i],
+              d = n[2],
+              m = n[3],
+              g = n[4],
+              v = n[5],
+              w = n[6],
+              y = n[7];
+            c && (r.push(c), c = "");
+            var b = null != d && null != l && l !== d,
+              E = "+" === w || "*" === w,
+              R = "?" === w || "*" === w,
+              k = n[2] || s,
+              $ = g || v;
+            r.push({
+              name: m || o++,
+              prefix: d || "",
+              delimiter: k,
+              optional: R,
+              repeat: E,
+              partial: b,
+              asterisk: !!y,
+              pattern: $ ? u($) : y ? ".*" : "[^" + a(k) + "]+?"
+            })
+          }
+        }
+        return i < e.length && (c += e.substr(i)), c && r.push(c), r
+      }
+
+      function o(e, t) {
+        return s(r(e, t))
+      }
+
+      function i(e) {
+        return encodeURI(e).replace(/[\/?#]/g, function(e) {
+          return "%" + e.charCodeAt(0).toString(16).toUpperCase()
+        })
+      }
+
+      function c(e) {
+        return encodeURI(e).replace(/[?#]/g, function(e) {
+          return "%" + e.charCodeAt(0).toString(16).toUpperCase()
+        })
+      }
+
+      function s(e) {
+        for (var t = new Array(e.length), n = 0; n < e.length; n++) "object" == typeof e[n] && (t[n] = new RegExp("^(?:" + e[n].pattern + ")$"));
+        return function(n, r) {
+          for (var o = "", s = n || {}, a = r || {}, u = a.pretty ? i : encodeURIComponent, f = 0; f < e.length; f++) {
+            var h = e[f];
+            if ("string" != typeof h) {
+              var p, l = s[h.name];
+              if (null == l) {
+                if (h.optional) {
+                  h.partial && (o += h.prefix);
+                  continue
+                }
+                throw new TypeError('Expected "' + h.name + '" to be defined')
+              }
+              if (v(l)) {
+                if (!h.repeat) throw new TypeError('Expected "' + h.name + '" to not repeat, but received `' + JSON.stringify(l) + "`");
+                if (0 === l.length) {
+                  if (h.optional) continue;
+                  throw new TypeError('Expected "' + h.name + '" to not be empty')
+                }
+                for (var d = 0; d < l.length; d++) {
+                  if (p = u(l[d]), !t[f].test(p)) throw new TypeError('Expected all "' + h.name + '" to match "' + h.pattern + '", but received `' + JSON.stringify(p) + "`");
+                  o += (0 === d ? h.prefix : h.delimiter) + p
+                }
+              } else {
+                if (p = h.asterisk ? c(l) : u(l), !t[f].test(p)) throw new TypeError('Expected "' + h.name + '" to match "' + h.pattern + '", but received "' + p + '"');
+                o += h.prefix + p
+              }
+            } else o += h
+          }
+          return o
+        }
+      }
+
+      function a(e) {
+        return e.replace(/([.+*?=^!:${}()[\]|\/\\])/g, "\\$1")
+      }
+
+      function u(e) {
+        return e.replace(/([=!:$\/()])/g, "\\$1")
+      }
+
+      function f(e, t) {
+        return e.keys = t, e
+      }
+
+      function h(e) {
+        return e.sensitive ? "" : "i"
+      }
+
+      function p(e, t) {
+        var n = e.source.match(/\((?!\?)/g);
+        if (n)
+          for (var r = 0; r < n.length; r++) t.push({
+            name: r,
+            prefix: null,
+            delimiter: null,
+            optional: !1,
+            repeat: !1,
+            partial: !1,
+            asterisk: !1,
+            pattern: null
+          });
+        return f(e, t)
+      }
+
+      function l(e, t, n) {
+        for (var r = [], o = 0; o < e.length; o++) r.push(g(e[o], t, n).source);
+        var i = new RegExp("(?:" + r.join("|") + ")", h(n));
+        return f(i, t)
+      }
+
+      function d(e, t, n) {
+        return m(r(e, n), t, n)
+      }
+
+      function m(e, t, n) {
+        v(t) || (n = t || n, t = []), n = n || {};
+        for (var r = n.strict, o = n.end !== !1, i = "", c = 0; c < e.length; c++) {
+          var s = e[c];
+          if ("string" == typeof s) i += a(s);
+          else {
+            var u = a(s.prefix),
+              p = "(?:" + s.pattern + ")";
+            t.push(s), s.repeat && (p += "(?:" + u + p + ")*"), p = s.optional ? s.partial ? u + "(" + p + ")?" : "(?:" + u + "(" + p + "))?" : u + "(" + p + ")", i += p
+          }
+        }
+        var l = a(n.delimiter || "/"),
+          d = i.slice(-l.length) === l;
+        return r || (i = (d ? i.slice(0, -l.length) : i) + "(?:" + l + "(?=$))?"), i += o ? "$" : r && d ? "" : "(?=" + l + "|$)", f(new RegExp("^" + i, h(n)), t)
+      }
+
+      function g(e, t, n) {
+        return v(t) || (n = t || n, t = []), n = n || {}, e instanceof RegExp ? p(e, t) : v(e) ? l(e, t, n) : d(e, t, n)
+      }
+      var v = e("isarray");
+      t.exports = g, t.exports.parse = r, t.exports.compile = o, t.exports.tokensToFunction = s, t.exports.tokensToRegExp = m;
+      var x = new RegExp(["(\\\\.)", "([\\/.])?(?:(?:\\:(\\w+)(?:\\(((?:\\\\.|[^\\\\()])+)\\))?|\\(((?:\\\\.|[^\\\\()])+)\\))([+*?])?|(\\*))"].join("|"), "g")
+    }, {
+      isarray: 14
+    }],
+    16: [function(e, t, n) {
+      ! function() {
+        var e = Cache.prototype.addAll,
+          t = navigator.userAgent.match(/(Firefox|Chrome)\/(\d+\.)/);
+        if (t) var n = t[1],
+          r = parseInt(t[2]);
+        e && (!t || "Firefox" === n && r >= 46 || "Chrome" === n && r >= 50) || (Cache.prototype.addAll = function(e) {
+          function t(e) {
+            this.name = "NetworkError", this.code = 19, this.message = e
+          }
+          var n = this;
+          return t.prototype = Object.create(Error.prototype), Promise.resolve().then(function() {
+            if (arguments.length < 1) throw new TypeError;
+            return e = e.map(function(e) {
+              return e instanceof Request ? e : String(e)
+            }), Promise.all(e.map(function(e) {
+              "string" == typeof e && (e = new Request(e));
+              var n = new URL(e.url).protocol;
+              if ("http:" !== n && "https:" !== n) throw new t("Invalid scheme");
+              return fetch(e.clone())
+            }))
+          }).then(function(r) {
+            if (r.some(function(e) {
+                return !e.ok
+              })) throw new t("Incorrect response status");
+            return Promise.all(r.map(function(t, r) {
+              return n.put(e[r], t)
+            }))
+          }).then(function() {})
+        }, Cache.prototype.add = function(e) {
+          return this.addAll([e])
+        })
+      }()
+    }, {}]
+  }, {}, [13])(13)
+});
 
 
 // *** End of auto-included sw-toolbox code. ***
@@ -287,7 +1134,3 @@ self.addEventListener('fetch', function(event) {
 
 toolbox.router.get("*.openstreetmap.org/*", toolbox.networkFirst, {});
 toolbox.router.get("http://staticmap.openstreetmap.de/staticmap/*", toolbox.networkFirst, {});
-
-
-
-

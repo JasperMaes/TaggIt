@@ -53,7 +53,7 @@ var TripModel = (function() {
       });
   }
 
-  function getTripIndex(tripsList, tripId){
+  function getTripIndex(tripsList, tripId) {
     var index = -1;
     var arrayLength = tripsList.length;
     for (var i = 0; i < arrayLength; i++) {
@@ -109,7 +109,7 @@ var TripModel = (function() {
       });
   }
 
-  function addTripWithId(tripDetails){
+  function addTripWithId(tripDetails) {
     var tripId = tripDetails.id;
     var setItemPromise = tripStore.setItem(tripId, tripDetails);
     var updateTripListPromise = addToTripListTripsList(tripId, tripDetails.label);
@@ -143,7 +143,7 @@ var TripModel = (function() {
       });
   }
 
-  function createEmptyTrip(tripLabel){
+  function createEmptyTrip(tripLabel) {
     return {
       label: tripLabel,
       locations: [],
@@ -153,18 +153,18 @@ var TripModel = (function() {
     };
   }
 
-  function updateTrip(trip){
+  function updateTrip(trip) {
     return existsTrip(trip.getId())
-    .then(function (exists){
-      if(exists){
-        return tripStore.setItem(trip.getId(), trip._getRawData())
-        .then(function(){
-          return Promise.resolve(Message.TripUpdateSuccess);
-        });
-      } else {
-        return Promise.reject(Message.UnknownTrip);
-      }
-    });
+      .then(function(exists) {
+        if (exists) {
+          return tripStore.setItem(trip.getId(), trip._getRawData())
+            .then(function() {
+              return Promise.resolve(Message.TripUpdateSuccess);
+            });
+        } else {
+          return Promise.reject(Message.UnknownTrip);
+        }
+      });
   }
 
   return {

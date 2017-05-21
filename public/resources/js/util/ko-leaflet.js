@@ -226,7 +226,7 @@
         // by processing add/delete simultaneously adding elements might overwrite an element that needs to be disposed of
         // afterwards, the list of delete items is removed from markersList, if there hasn't been an addition at that index
         // in that case the item is already replaced and thus removed
-        each(changes, function(c){
+        each(changes, function(c) {
           if (c.status === "deleted") {
             // sometimes we receive a delete status although the markersList is empty.
             if (c.index < markersList.length) {

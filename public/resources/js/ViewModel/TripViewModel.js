@@ -17,7 +17,7 @@ var TripViewModel = function() {
   });
 
   activeTripDetails.subscribe(function(newValue) {
-    if(!!newValue){//Don't update when no trip is selected
+    if (!!newValue) { //Don't update when no trip is selected
       TripModel.updateTrip(newValue);
     }
   });

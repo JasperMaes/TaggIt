@@ -15,10 +15,10 @@ var Trip = function(tripDetails) {
 
   var details = convertTripObjectToKnockout(tripDetails);
   var filter = ko.observable({});
-    var getAllFilteredLocations = ko.computed(function() {
-      var result = applyFilter(filter(), details.locations());
-      return result;
-    });
+  var getAllFilteredLocations = ko.computed(function() {
+    var result = applyFilter(filter(), details.locations());
+    return result;
+  });
 
   function findLocation(searchParameters) {
     return applyFilter(searchParameters, getAllLocations());
