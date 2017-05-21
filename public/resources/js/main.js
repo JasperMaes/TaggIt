@@ -61,7 +61,7 @@
     var controller = {};
     controller.templates = {};
 
-    //setupServiceWorker();
+    setupServiceWorker();
     var viewsToLoad = ["mapView", "addLocationView", "addLocationDetailsView", "preferencesView", "locationsListView", "viewLocationView", "editLocationDetailsView"];
     preloadViews(viewsToLoad, controller.templates);
     initializeApp(controller);

@@ -114,10 +114,23 @@ var MapController = function(updateLocationGpsError, initLocationGpsError, tripV
     var trip = tripViewModel.currentTrip();
     if (!!trip) {
       trip.getAllFiltered().forEach(function(location) {
+        var text = "";
+        if (!!location.title && (location.title.length > 0)) {
+          text = "<strong>" + Util.encodeHTML(location.title) + "</strong>";
+        } else {
+          text = "<strong>" + Util.encodeHTML("<No name>") + "</strong>";
+        }
+        if (location.description) {
+          if (text.length > 0) {
+            text += "<br>";
+          }
+          text += Util.encodeHTML(location.description);
+        }
         result.push({
           center: [ko.observable(location.position[0]), ko.observable(location.position[1])],
           draggable: false,
-          opened: ko.observable(false)
+          opened: ko.observable(false),
+          text: text
         });
       });
     }

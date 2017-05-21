@@ -87,12 +87,17 @@ var Util = (function() {
     return Object.freeze(obj);
   }
 
+  function encodeHTML(value) {
+    return $("<div/>").text(value).html();
+  }
+
   return {
     getCategoryIcon: getCategoryIcon,
     getDateTimeString: getDateTimeString,
     getUniqueArray: getUniqueArray,
     findIdInArray: findIdInArray,
     compareObjectParameters: compareObjectParameters,
-    deepFreeze: deepFreeze
+    deepFreeze: deepFreeze,
+    encodeHTML: encodeHTML
   };
 })();
