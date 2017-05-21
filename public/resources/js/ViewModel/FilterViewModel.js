@@ -1,4 +1,4 @@
-var FilterViewModel = function() {
+var FilterViewModel = function(tripViewModel) {
   var searchTerm = ko.observable("");
   var titleTerm = ko.observable("");
   var categoryTerm = ko.observable("");

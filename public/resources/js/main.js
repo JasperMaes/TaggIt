@@ -127,7 +127,7 @@
         }
       })
       .then(function() {
-        var filterViewModel = FilterViewModel();
+        var filterViewModel = FilterViewModel(tripViewModel);
         var addLocationController = AddLocationController(tripViewModel);
         var editLocationController = EditLocationController(tripViewModel);
         var viewLocationController = ViewLocationController(editLocationController);

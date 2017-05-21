@@ -12,7 +12,7 @@
     </div>
 
     <!-- ko if: !!tripViewModel.currentTrip() -->
-    <!-- ko if: (tripViewModel.currentTrip().getAllFiltered().length > 0) -->
+    <!-- ko if: (tripViewModel.currentTrip().getAll().length > 0) -->
     <div class="container">
       <div class="row">
 
@@ -57,8 +57,8 @@
         </div>
       </div>
     </div>
-    <!-- /ko -->
 
+    <!-- ko if: (tripViewModel.currentTrip().getAllFiltered().length > 0) -->
     <div class="container locationList" data-bind="foreach: {data: tripViewModel.currentTrip().getAllFiltered(), as: 'location'}">
 
       <div class="locationList-item">
@@ -87,7 +87,15 @@
 
       </div>
     </div>
+    <!-- /ko -->
     <!-- ko if: (tripViewModel.currentTrip().getAllFiltered().length === 0) -->
+    <div style="text-align: center; font-style: italic;margin-top: 35vh;">
+      <p>There are no locations matching this filter.</p>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ^^^ Close if for currentTrip.getAll().length > 0 -->
+    <!-- ko if: (tripViewModel.currentTrip().getAll().length === 0) -->
     <div style="text-align: center; font-style: italic;margin-top: 35vh;">
       <p>
         There are no locations registered for this trip.</br>
