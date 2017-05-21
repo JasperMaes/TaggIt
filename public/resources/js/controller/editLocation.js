@@ -1,8 +1,4 @@
 var EditLocationController = function(tripViewModel) {
-  var imagePreviewController = ImagePreviewController(locationData);
-  var openMapEdit = ko.observable(false);
-  var invalidateSize = ko.observable(true);
-
   var locationData = {
     id: null,
     category: ko.observable(),
@@ -14,6 +10,10 @@ var EditLocationController = function(tripViewModel) {
     createTime: null,
     editTime: null
   };
+
+  var imagePreviewController = ImagePreviewController(locationData);
+  var openMapEdit = ko.observable(false);
+  var invalidateSize = ko.observable(true);
 
   var mapController = {
     bounds: ko.observable(),
