@@ -1,9 +1,7 @@
 var MapController = function(updateLocationGpsError, initLocationGpsError, tripViewModel, addLocationController, filterViewModel) {
 
   var watchId;
-
   var buttonsVisible = ko.observable(false);
-
   var centerMarker = {
     center: [ko.observable(50.81057), ko.observable(4.93622)],
     draggable: false,
@@ -12,8 +10,24 @@ var MapController = function(updateLocationGpsError, initLocationGpsError, tripV
       color: '#2196F3'
     })
   };
-
   var markers = ko.observableArray([]);
+  var center = [ko.observable(50.81057), ko.observable(4.93622)];
+  var zoom = ko.observable(16);
+  var centerCircle = {
+    radius: ko.observable(0)
+  };
+  var mapVisible = ko.observable(false);
+  var filterbarVisible = ko.observable(false);
+  var isInitialized = ko.observable(false);
+  var bounds = ko.observable();
+  var events = {
+    dragstart: function(evt) {
+      if (watchId > 0) {
+        GeoLocation.clearWatch(watchId);
+        watchId = -1;
+      }
+    }
+  };
 
   function addMarker(position, controller) {
     addLocationController.locationData.position = position;
@@ -36,14 +50,6 @@ var MapController = function(updateLocationGpsError, initLocationGpsError, tripV
     }
     updateCenterMarker(options);
   }
-
-  var center = [ko.observable(50.81057), ko.observable(4.93622)];
-
-  var zoom = ko.observable(16);
-
-  var centerCircle = {
-    radius: ko.observable(0)
-  };
 
   function initMap() {
     GeoLocation.get().then(function(position) {
@@ -81,70 +87,27 @@ var MapController = function(updateLocationGpsError, initLocationGpsError, tripV
     filterbarVisible(true);
   }
 
-  var mapVisible = ko.observable(false);
-  var filterbarVisible = ko.observable(false);
-  var isInitialized = ko.observable(false);
-  var bounds = ko.observable();
+  function addMarkerHandler(controller) {
+    var lat = centerMarker.center[0]();
+    var lng = centerMarker.center[1]();
 
-  var mapController = {
-    filterViewModel: filterViewModel,
-    center: center,
-    markers: markers,
-    zoom: zoom,
-    mapOptions: {
-      zoomControl: false
-    },
-    events: {
-      dragstart: function(evt) {
-        if (watchId > 0) {
-          GeoLocation.clearWatch(watchId);
-          watchId = -1;
-        }
-      }
-    },
-    centerMarker: centerMarker,
-    centerCircle: centerCircle,
-    mapVisible: mapVisible,
-    buttonsVisible: buttonsVisible,
-    filterbarVisible: filterbarVisible,
-    bounds: bounds,
-    isInitialized: isInitialized,
+    addMarker([lat, lng], controller);
+  }
 
-    addMarkerHandler: function(controller) {
-      var lat = centerMarker.center[0]();
-      var lng = centerMarker.center[1]();
-
-      addMarker([lat, lng], controller);
-    },
-
-    centerMapHandler: function() {
-      // Update the location immediately with the current position of the center marker
-      // It will also be updated when the watch method calls the callback but this can have some delay
-      // Setting the postition immediately avoids this delay
-      updateCenter({
-        lat: centerMarker.center[0](),
-        lng: centerMarker.center[1]()
-      });
-      if (watchId > 0) {
-        GeoLocation.clearWatch(watchId);
-        watchId = -1;
-      }
-      watchId = GeoLocation.watch(updateMyLocationMarker, updateLocationGpsError);
-    },
-
-    addMarker: addMarker,
-
-    removeMarker: function(i) {
-      markers.splice(i, 1);
-    },
-    updateCenter: updateCenter,
-
-    updateZoom: zoom,
-    updateCenterMarker: updateCenterMarker,
-    updateMyLocationMarker: updateMyLocationMarker,
-
-    initMap: initMap
-  };
+  function centerMapHandler() {
+    // Update the location immediately with the current position of the center marker
+    // It will also be updated when the watch method calls the callback but this can have some delay
+    // Setting the postition immediately avoids this delay
+    updateCenter({
+      lat: centerMarker.center[0](),
+      lng: centerMarker.center[1]()
+    });
+    if (watchId > 0) {
+      GeoLocation.clearWatch(watchId);
+      watchId = -1;
+    }
+    watchId = GeoLocation.watch(updateMyLocationMarker, updateLocationGpsError);
+  }
 
   ko.computed(function() {
     var result = [];
@@ -160,6 +123,35 @@ var MapController = function(updateLocationGpsError, initLocationGpsError, tripV
     }
     markers(result);
   });
+
+  var mapController = {
+    filterViewModel: filterViewModel,
+    center: center,
+    markers: markers,
+    zoom: zoom,
+    mapOptions: {
+      zoomControl: false
+    },
+    events: events,
+    centerMarker: centerMarker,
+    centerCircle: centerCircle,
+    mapVisible: mapVisible,
+    buttonsVisible: buttonsVisible,
+    filterbarVisible: filterbarVisible,
+    bounds: bounds,
+    isInitialized: isInitialized,
+    addMarker: addMarker,
+    addMarkerHandler: addMarkerHandler,
+    centerMapHandler: centerMapHandler,
+    removeMarker: function(i) {
+      markers.splice(i, 1);
+    },
+    updateCenter: updateCenter,
+    updateZoom: zoom,
+    updateCenterMarker: updateCenterMarker,
+    updateMyLocationMarker: updateMyLocationMarker,
+    initMap: initMap
+  };
 
   return mapController;
 };

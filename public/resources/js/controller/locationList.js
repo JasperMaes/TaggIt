@@ -16,21 +16,25 @@ var LocationListController = function(tripViewModel, viewLocationController, fil
     return controllers;
   });
 
+  function backToMap(controller) {
+    controller.showPage("mapView");
+    tripViewModel.currentTrip().filter({});
+  }
+
+  function viewLocation(controller) {
+    return function(data, event) {
+      viewLocationController.locationData(data);
+      controller.showPage("viewLocationView");
+    };
+  }
+
   return {
-    backToMap: function(controller){
-      controller.showPage("mapView");
-      tripViewModel.currentTrip().filter({});
-  },
+    backToMap: backToMap,
     mapPreviewControllers: mapPreviewControllers,
     openWebsite: function(data) {
       window.open(data.website, "_blank");
     },
     filterViewModel: filterViewModel,
-    viewLocation: function (controller){
-      return function(data, event) {
-        viewLocationController.locationData(data);
-        controller.showPage("viewLocationView");
-      };
-    }
+    viewLocation: viewLocation
   };
 };

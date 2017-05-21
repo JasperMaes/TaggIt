@@ -3,7 +3,7 @@ App for Mobile Web Applications and Security by [Jasper Maes](mailto:jasper.maes
 
 Web app also hosted on [GitHub](https://jaspermaes.github.io/Taggit/public/).
 
-Repository located on [GitHub](https://github.com/JasperMaes/Taggit).
+The repository is located on [GitHub](https://github.com/JasperMaes/Taggit).
 
 ## Running the app locally
 ```bash
@@ -11,9 +11,10 @@ json-server --watch db.json
 ```
 Followed by opening a [webbrowser](http://localhost:3000).
 
-## Generating the rough ServiceWorker
+**IMPORTANT:** The app uses the GeoLocation API. In Chrome, this is only enabled when using HTTPS or localhost.
+
+## Generating the ServiceWorker
 ```bash
   npm install -g sw-precache
-  cd public
-  sw-precache
+  sw-precache --config sw-precache-options.json --root='public' --verbose
 ```

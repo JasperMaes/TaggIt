@@ -1,0 +1,16 @@
+{
+  "staticFileGlobs": [
+    "public/resources/**",
+    "public/vendors/**",
+    "public/index.html",
+    "public/manifest.json"
+  ],
+  "stripPrefix": "public/",
+  "runtimeCaching": [{
+    "urlPattern": "*.openstreetmap.org/*",
+    "handler": "networkFirst"
+  }, {
+    "urlPattern": "http://staticmap.openstreetmap.de/staticmap/*",
+    "handler": "networkFirst"
+    }]
+}

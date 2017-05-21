@@ -14,8 +14,11 @@ var Trip = function(tripDetails) {
   }
 
   var details = convertTripObjectToKnockout(tripDetails);
-
   var filter = ko.observable({});
+    var getAllFilteredLocations = ko.computed(function() {
+      var result = applyFilter(filter(), details.locations());
+      return result;
+    });
 
   function findLocation(searchParameters) {
     return applyFilter(searchParameters, getAllLocations());
@@ -28,11 +31,6 @@ var Trip = function(tripDetails) {
   function getAllLocations() {
     return details.locations();
   }
-
-  var getAllFilteredLocations = ko.computed(function() {
-    var result = applyFilter(filter(), details.locations());
-    return result;
-  });
 
   function getLocation(locationId) {
     var result = Message.UnknownLocation;
@@ -72,7 +70,7 @@ var Trip = function(tripDetails) {
     var index = getLocationIndex(locationId);
     if (index > -1) {
       var locations = this.details.locations();
-      var removedValue = locations.splice(index, 1)[0]
+      var removedValue = locations.splice(index, 1)[0];
       this.details.locations(locations);
       this.details.editTime = new Date();
       return removedValue;
@@ -83,7 +81,7 @@ var Trip = function(tripDetails) {
 
   function updateLocation(updatedLocation) {
     var locations = this.details.locations();
-    var index = getLocationIndex(updatedLocation.id, locations)
+    var index = getLocationIndex(updatedLocation.id, locations);
     locations[index] = updatedLocation;
     this.details.locations(locations);
     this.details.editTime = new Date();
@@ -98,10 +96,9 @@ var Trip = function(tripDetails) {
     find: findLocation,
     add: addLocation,
     remove: removeLocation,
-    find: findLocation,
     update: updateLocation,
     _getRawData: function() {
-      return ko.toJS(this.details)
+      return ko.toJS(this.details);
     },
     getKoData: function() {
       return this.details;
@@ -112,6 +109,6 @@ var Trip = function(tripDetails) {
     getId: function() {
       return this.details.id;
     }
-  }
+  };
 
-}
+};

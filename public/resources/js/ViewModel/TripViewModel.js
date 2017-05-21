@@ -2,11 +2,7 @@ var TripViewModel = function() {
 
   var trips = ko.observableArray([]);
   var activeTripId = ko.observable(null);
-  var activeTripDetails = function(value){
-    var val = value;
-    return {getId:function(){return val.getId();}};
-  };
-  activeTripDetails = ko.observable(null);
+  var activeTripDetails = ko.observable(null);
 
   ko.computed(function() {
     var tripId = activeTripId();

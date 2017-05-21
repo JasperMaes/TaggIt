@@ -1,3 +1,7 @@
+/*
+There is a large overlap with AddLocationController because they perform similar
+tasks but for editing there are more observables
+*/
 var EditLocationController = function(tripViewModel) {
   var locationData = {
     id: null,
@@ -12,6 +16,7 @@ var EditLocationController = function(tripViewModel) {
   };
 
   var imagePreviewController = ImagePreviewController(locationData);
+  var mapPreviewController = PreviewPanel(locationData, function() {}, true);
   var openMapEdit = ko.observable(false);
   var invalidateSize = ko.observable(true);
 
@@ -74,8 +79,7 @@ var EditLocationController = function(tripViewModel) {
       var reader = new FileReader();
 
       reader.onerror = function() {
-        //TODO show message to inform user
-        console.log("failed loading file");
+        alert("Uploading image failed");
       };
 
       reader.onloadend = function() {
@@ -84,8 +88,7 @@ var EditLocationController = function(tripViewModel) {
         var arrayLength = imagesArray.length;
         for (var i = 0; i < arrayLength; i++) {
           if (imagesArray[i] === newImage) {
-            console.log("Image already uploaded");
-            //TODO show popup message to confirm double upload
+            alert("This image has already been added.");
             return;
           }
         }
@@ -95,12 +98,10 @@ var EditLocationController = function(tripViewModel) {
       if (file) {
         reader.readAsDataURL(file); //reads the data as a URL
       } else {
-        //TODO show message to inform user
-        console.log("failed loading file");
+        alert("Uploading image failed");
       }
     } else {
-      //TODO show message to inform user
-      console.log("Not an image file, not uploading");
+      alert("This is not an image file, it can't be uploaded");
     }
 
     event.target.value = "";
@@ -135,6 +136,11 @@ var EditLocationController = function(tripViewModel) {
     openMapEdit(false);
   }
 
+  function openImage(data, event) {
+    var index = locationData.images().indexOf(data);
+    imagePreviewController.imageIndex(index);
+  }
+
   var editLocationController = {
     locationData: locationData,
     openMapEdit: openMapEdit,
@@ -144,15 +150,12 @@ var EditLocationController = function(tripViewModel) {
     },
     saveMapEditHandler: saveMapEditHandler,
     mapController: mapController,
-    mapPreviewController: PreviewPanel(locationData, function() {} , true),
     backToViewLocation: backToViewLocation,
     saveEditsBackToView: saveEditsBackToView,
     addImage: addImage,
     imagePreview: imagePreviewController,
-    openImage: function(data, event) {
-      var index = locationData.images().indexOf(data);
-      imagePreviewController.imageIndex(index);
-    },
+    mapPreviewController: mapPreviewController,
+    openImage: openImage,
     setLocationData: setLocationData,
     deleteLocation: deleteLocation
   };
