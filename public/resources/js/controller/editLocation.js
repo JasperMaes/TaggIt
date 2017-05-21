@@ -33,12 +33,12 @@ var EditLocationController = function(tripViewModel) {
     locationData.website(null);
     locationData.category(null);
     locationData.position();
-    locationData.images([])
+    locationData.images([]);
     locationData.createTime = null;
   }
 
   function backToViewLocation(controller) {
-    controller.showPage("viewLocationView")
+    controller.showPage("viewLocationView");
     // Reset entered data
     clearForm();
   }
@@ -48,13 +48,13 @@ var EditLocationController = function(tripViewModel) {
     if (result) {
       var trip = tripViewModel.currentTrip();
       trip.remove(locationData.id);
-      tripViewModel.currentTrip(trip)
+      tripViewModel.currentTrip(trip);
       controller.showPage("locationsListView");
     }
   }
 
-  var openMapEdit = ko.observable(false)
-  var invalidateSize = ko.observable(true)
+  var openMapEdit = ko.observable(false);
+  var invalidateSize = ko.observable(true);
 
   var mapController = {
     bounds: ko.observable(),
@@ -84,24 +84,24 @@ var EditLocationController = function(tripViewModel) {
       invalidateSize(!invalidateSize());
     },
     closeMapEditHandler: function() {
-      openMapEdit(false)
+      openMapEdit(false);
     },
     saveMapEditHandler: function() {
       var newPosition = ko.toJS(mapController.markers()[0].center);
       locationData.position(newPosition);
-      openMapEdit(false)
+      openMapEdit(false);
     },
     mapController: mapController,
     mapPreviewController: MapPreviewController(locationData, function() {}),
     backToViewLocation: backToViewLocation,
     saveEditsBackToView: function(controller) {
       locationData.editTime = new Date();
-      var locationDataJS = ko.toJS(locationData)
+      var locationDataJS = ko.toJS(locationData);
       controller.viewLocationController.locationData(locationDataJS);
 
       var trip = tripViewModel.currentTrip();
       trip.update(locationDataJS);
-      tripViewModel.currentTrip(trip)
+      tripViewModel.currentTrip(trip);
 
       backToViewLocation(controller);
     },
@@ -113,8 +113,8 @@ var EditLocationController = function(tripViewModel) {
 
         reader.onerror = function() {
           //TODO show message to inform user
-          console.log("failed loading file")
-        }
+          console.log("failed loading file");
+        };
 
         reader.onloadend = function() {
           var newImage = reader.result;
@@ -129,13 +129,13 @@ var EditLocationController = function(tripViewModel) {
           }
           locationData.images.push(newImage);
           //TODO show short popup that disappears automatically to inform user
-        }
+        };
 
         if (file) {
           reader.readAsDataURL(file); //reads the data as a URL
         } else {
           //TODO show message to inform user
-          console.log("failed loading file")
+          console.log("failed loading file");
         }
       } else {
         //TODO show message to inform user
@@ -146,12 +146,12 @@ var EditLocationController = function(tripViewModel) {
     },
     imagePreview: imagePreviewController,
     openImage: function(data, event) {
-      var index = locationData.images().indexOf(data)
+      var index = locationData.images().indexOf(data);
       imagePreviewController.imageIndex(index);
     },
     setLocationData: setLocationData,
     deleteLocation: deleteLocation
-  }
+  };
 
   return editLocationController;
-}
+};
