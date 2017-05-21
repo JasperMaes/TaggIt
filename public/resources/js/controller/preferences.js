@@ -1,22 +1,27 @@
 var PreferencesController = function(tripViewModel) {
   var newTripName = ko.observable("");
+  var signedInStatus = ko.observable(false);
+  var lastSyncText = ko.computed(function() {
+    var dateString = !!SyncTools.lastSyncDate() ? Util.getDateTimeString(SyncTools.lastSyncDate()) : 'Never';
+    return 'Last sync: ' + dateString;
+  });
 
   function isActive(current) {
     var result = (!!tripViewModel.currentTrip() && (tripViewModel.currentTrip().getId() === current));
     return result;
   }
 
-var signInHandler = function(){
-  if(!signedInStatus()){
-    GoogleSignin.signIn();
+  function signInHandler() {
+    if (!signedInStatus()) {
+      GoogleSignin.signIn();
+    }
   }
-};
-var signOutHandler = function(){
-  if(signedInStatus()){
-    GoogleSignin.signOut();
+
+  function signOutHandler() {
+    if (signedInStatus()) {
+      GoogleSignin.signOut();
+    }
   }
-};
-var signedInStatus = ko.observable(false);
 
   function initGoogleDriveClient() {
     GoogleSignin.load()
@@ -31,46 +36,45 @@ var signedInStatus = ko.observable(false);
       });
   }
 
+  function addNewTripHandler(controller) {
+    var tripLabel = newTripName();
+    if (tripLabel) {
+      var trip = tripViewModel.createEmptyTrip(tripLabel);
+      trip.createTime = new Date();
+      tripViewModel.addTrip(trip)
+        .then(function() {
+          var trips = tripViewModel.trips();
+          if (trips.length === 1) {
+            tripViewModel.selectTrip(trips[0].id);
+          }
+        });
+      newTripName("");
+    }
+  }
+
+  function deleteTripHandler() {
+    var result = confirm("Do you really want to delete this trips and all its locations?");
+    if (result) {
+      tripViewModel.removeTrip(this.id);
+    }
+  }
+
   return {
     signInHandler: signInHandler,
     signOutHandler: signOutHandler,
     signedInStatus: signedInStatus,
     initGoogleDriveClient: initGoogleDriveClient,
-
+    isActive: isActive,
+    newTripName: newTripName,
+    addNewTripHandler: addNewTripHandler,
+    deleteTripHandler: deleteTripHandler,
+    lastSyncText: lastSyncText,
     backToMap: function(controller) {
       controller.showPage("mapView");
     },
-
-    isActive: isActive,
-
     selectTrip: function() {
       tripViewModel.selectTrip(this.id);
-    },
-
-    newTripName: newTripName,
-
-    addNewTripHandler: function(controller) {
-      var tripLabel = newTripName();
-      if (tripLabel) {
-        var trip = tripViewModel.createEmptyTrip(tripLabel);
-        trip.createTime = new Date();
-        tripViewModel.addTrip(trip);
-        //TODO select added trip if it is the only one
-        //TODO message to inform user that trip was added successfully
-        newTripName("");
-      }
-    },
-
-    deleteTripHandler: function() {
-      tripViewModel.removeTrip(this.id);
-    },
-
-    lastSyncText: ko.computed(function(){
-      var dateString = !!SyncTools.lastSyncDate() ? Util.getDateTimeString(SyncTools.lastSyncDate()) : 'Never';
-      return 'Last sync: '+dateString;
-    })
-
-
+    }
   };
 
 };
