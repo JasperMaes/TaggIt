@@ -43,7 +43,6 @@
           <p>
             Signed in successfully
           </p>
-          <!-- TODO: Fix sync button (blocks sometimes) or remove it if no fix found -->
           <input type="button" value="Sign out" class="btn btn-danger btn-raised btn-sm" data-bind="click: preferencesController.signOutHandler" />
           <button class="btn btn-primary btn-raised btn-sm has-spinner" data-bind="attr: {disabled: SyncTools.isSyncing()}, click: SyncTools.triggerSync"><span class="spinner"><i class="icon-spin icon-refresh"></i></span>
               Sync now</button>

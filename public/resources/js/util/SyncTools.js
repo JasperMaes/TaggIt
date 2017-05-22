@@ -94,7 +94,7 @@ var SyncTools = (function() {
 
   function getOrCreateFileId(fileName) {
     return GoogleDrive.getAppDataFiles()
-      .then(function(files) { // TODO handle error
+      .then(function(files) {
         var result = $.grep(files, function(el) {
           return el.fileName === fileName;
         });
@@ -215,7 +215,7 @@ var SyncTools = (function() {
   function triggerSync() {
     isSyncing(true);
     getOrCreateFileId("TripList.json")
-      .then(function(fileId) { //TODO handle error
+      .then(function(fileId) {
         return Promise.all([GoogleDrive.getAppDataFileContent(fileId), getLastSyncDate()]);
       })
       .then(function(data) {
