@@ -18,7 +18,6 @@ var LocationListController = function(tripViewModel, viewLocationController, fil
 
   function backToMap(controller) {
     controller.showPage("mapView");
-    tripViewModel.currentTrip().filter({});
   }
 
   function viewLocation(controller) {
