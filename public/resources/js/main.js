@@ -39,7 +39,7 @@
 
     // Load template file and stored in templates global
     viewsToLoad.forEach(function(viewName) {
-      fetch('/resources/templates/' + viewName + '.html', requestParams)
+      fetch('resources/templates/' + viewName + '.html', requestParams)
         .then(function(response) {
           return response.text();
         }).then(function(content) {
